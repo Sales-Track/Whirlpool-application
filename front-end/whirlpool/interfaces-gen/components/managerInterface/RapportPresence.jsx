@@ -22,7 +22,7 @@ function RapportDePresence() {
 
   const getPdvs = async (pdv) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/pdvs/getId/${pdv}`);
+      const response = await axios.get(`${port}/api/pdvs/getId/${pdv}`);
       setPdvs(response.data);
     } catch (error) {
       console.error('Error fetching pdvs:', error);
@@ -31,7 +31,7 @@ function RapportDePresence() {
 
   const getUsers = async (userIds) => {
     try {
-      const responses = await Promise.all(userIds.map(id => axios.get(`http://${port}:3000/api/user/users/${id}`)));
+      const responses = await Promise.all(userIds.map(id => axios.get(`${port}/api/user/users/${id}`)));
       const usersData = responses.reduce((acc, response) => {
         acc[response.data.idusers] = response.data;
         return acc;
@@ -44,7 +44,7 @@ function RapportDePresence() {
 
   const getPresence = async () => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/presences/presences`);
+      const response = await axios.get(`${port}/api/presences/presences`);
       const presences = response.data.filter(e => e.PDV_idPDV === pdvs.idPDV && new Date(e.createdAt).getMonth() === month - 1);
       setPres(presences);
       const userIds = [...new Set(presences.map(p => p.Users_idusers))];

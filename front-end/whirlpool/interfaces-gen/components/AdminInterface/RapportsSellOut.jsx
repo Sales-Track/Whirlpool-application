@@ -36,7 +36,7 @@ function RapportSellOut() {
 /////////////////////////////////////Functions////////////////////////////////////////
 const Fetchallref=async()=>{
     try{
-      const response=await axios.get("http://"+port+":3000/api/reference/references")
+      const response=await axios.get(port+"/api/reference/references")
       setReferences(response.data)
       setLoading(false)
     }catch (error) {
@@ -45,7 +45,7 @@ const Fetchallref=async()=>{
     }
 const GetAllSellouts=async()=>{
     try{
-        const response=await axios.get("http://"+port+":3000/api/sellout/sellouts")
+        const response=await axios.get(port+"/api/sellout/sellouts")
         setSellouts(response.data)
         setLoading(false)
     }catch (error) {
@@ -54,7 +54,7 @@ const GetAllSellouts=async()=>{
 }
 const GetRefSel=async()=>{
     try{
-        const response=await axios.get("http://"+port+":3000/api/refsel/ReferenceSel")
+        const response=await axios.get(port+"/api/refsel/ReferenceSel")
         setSellRef(response.data)
         setLoading(false)
         console.log(response.data); 
@@ -64,7 +64,7 @@ const GetRefSel=async()=>{
 }
 const getPdvs = async (pdv) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/pdvs/getId/${pdv}`);
+      const response = await axios.get(`${port}/api/pdvs/getId/${pdv}`);
       setPdvs(response.data);
       setLoading(false)
     } catch (error) {

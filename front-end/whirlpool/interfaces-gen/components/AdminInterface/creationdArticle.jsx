@@ -82,7 +82,7 @@ const prixdata={
 /////////////////////////////////////////////FUNCTIONs/////////////////////////////
 const  fetchallArticle=async (id)=>{
   try{
-      const response = await axios.get("http://"+port+":3000/api/articles/articles")
+      const response = await axios.get(port+"/api/articles/articles")
       const articles = response.data;
       console.log("idd",id);
       const couleurs = articles.map(article =>{
@@ -109,7 +109,7 @@ const  fetchallArticle=async (id)=>{
 
 const Fetchallref=async()=>{
 try{
-  const response=await axios.get("http://"+port+":3000/api/reference/references")
+  const response=await axios.get(port+"/api/reference/references")
   setReferences(response.data)
 }catch (error) {
     console.error('Error fetching :', error)
@@ -117,7 +117,7 @@ try{
 }
 const Fetchallmarq=async()=>{
   try{
-    const response=await axios.get("http://"+port+":3000/api/marques/marques")
+    const response=await axios.get(port+"/api/marques/marques")
     setMarques(response.data)
   }catch (error) {
     console.error('Error fetching :', error)
@@ -125,7 +125,7 @@ const Fetchallmarq=async()=>{
 }
 const Fetchallcateg=async()=>{
   try{
-    const response=await axios.get("http://"+port+":3000/api/categories/categorie")
+    const response=await axios.get(port+"/api/categories/categorie")
     setCategories(response.data)
   }
   catch (error) {
@@ -138,7 +138,7 @@ const PostArticle=async(data1,id,data2,showAlert )=>{
     data1.Reference_idReference=id
     console.log(data1.Reference_idReference,'idddd');
     if(data1.Reference_idReference!=null){
-     const response = await axios.post("http://"+port+":3000/api/articles/articles",data1)
+     const response = await axios.post(port+"/api/articles/articles",data1)
       showAlert('success', "Un Nouveau Article a été créé");
       setLoad(!load)
      
@@ -164,7 +164,7 @@ const PostArticle=async(data1,id,data2,showAlert )=>{
 const getOneArticlebyref=async(id)=>{
   try{
     console.log(id);
-    const res=await axios.get("http://"+port+":3000/api/articles/articlesbyref/"+id)
+    const res=await axios.get(port+"/api/articles/articlesbyref/"+id)
     setOneArticle(res.data)
   }
   catch (error) {
@@ -173,7 +173,7 @@ const getOneArticlebyref=async(id)=>{
 }
 const getOneRef=async(id)=>{
   try{
-    const response=await axios.get("http://"+port+":3000/api/reference/references/"+id)
+    const response=await axios.get(port+"/api/reference/references/"+id)
     setOneref(response.data)
   }
   catch (error) {
@@ -183,7 +183,7 @@ const getOneRef=async(id)=>{
 
 const Editref=async(data,id,showAlert )=>{
   try{
-    await axios.put("http://"+port+":3000/api/reference/references/"+id,{Referencename:data})
+    await axios.put(port+"/api/reference/references/"+id,{Referencename:data})
     showAlert('success', "Une Nouvelle Reference a été Modifier");
 
     setLoad(!load)
@@ -198,7 +198,7 @@ const Editref=async(data,id,showAlert )=>{
 
 const EditMarque=async(data,id,showAlert )=>{
   try{
-    await axios.put("http://"+port+":3000/api/marques/marques/"+id,{marquename:data})
+    await axios.put(port+"/api/marques/marques/"+id,{marquename:data})
     showAlert('success', "Une Nouvelle Marque a été Modifier");
 
   }
@@ -211,7 +211,7 @@ const EditMarque=async(data,id,showAlert )=>{
 
 const EditArticle=async(data,id,showAlert )=>{
   try{
-    await axios.put("http://"+port+":3000/api/articles/articles/"+id,data)
+    await axios.put(port+"/api/articles/articles/"+id,data)
     showAlert('success', "Un Nouveau Article a été Modifier");
 
   }
@@ -224,7 +224,7 @@ const EditArticle=async(data,id,showAlert )=>{
 }
 const fetchPdvs = async () => {
   try {
-      const response = await axios.get(`http://${port}:3000/api/pdvs/pdvs`);
+      const response = await axios.get(`${port}/api/pdvs/pdvs`);
       const pdvs = response.data
       setPdvs(pdvs);
   } catch (error) {
@@ -308,7 +308,7 @@ const getOneArticleByCC=async()=>{
   try{
 
     if (idref!== null) {
-      const response = await axios.post(`http://${port}:3000/api/articles/arcticlebyCC/${idref}`, {
+      const response = await axios.post(`${port}/api/articles/arcticlebyCC/${idref}`, {
           couleur: couleur,
           capacite: capacitee
       });

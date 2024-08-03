@@ -43,7 +43,7 @@ const [isLoading, setIsLoading] = useState(true);
       };
     const  fetchallArticle=async (id)=>{
         try{
-            const response = await axios.get("http://"+port+":3000/api/articles/articles")
+            const response = await axios.get(port+"/api/articles/articles")
             const articles = response.data;
             console.log("idd",id);
             const couleurs = articles.map(article =>{
@@ -70,7 +70,7 @@ const [isLoading, setIsLoading] = useState(true);
 
     const fetchAllCateg = async () => {
         try {
-            const response = await axios.get(`http://${port}:3000/api/categories/categorie`);
+            const response = await axios.get(`${port}/api/categories/categorie`);
             setCategories(response.data);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -79,7 +79,7 @@ const [isLoading, setIsLoading] = useState(true);
     const fetchRefByCatg = async (id) => {
         if (!id) return;
         try {
-            const response = await axios.get(`http://${port}:3000/api/reference/referencebycateg/${id}`);
+            const response = await axios.get(`${port}/api/reference/referencebycateg/${id}`);
             setReferences(response.data);
             const initialSales = response.data.reduce((acc, ref) => {
                 acc[ref.idReference] = { name: ref.Referencename, sales: 0, idarticles: null };
@@ -95,8 +95,8 @@ const [isLoading, setIsLoading] = useState(true);
 
     const fetchExistingSales = async (references, initialSales) => {
         try {
-            const selloutResponse = await axios.get(`http://${port}:3000/api/sellout/sellouts`);
-            const refselResponse = await axios.get(`http://${port}:3000/api/refsel/ReferenceSel`);
+            const selloutResponse = await axios.get(`${port}/api/sellout/sellouts`);
+            const refselResponse = await axios.get(`${port}/api/refsel/ReferenceSel`);
             const todayDate = new Date().toISOString().split('T')[0];
 
             const existingSales = selloutResponse.data.filter(sellout => sellout.PDV_idPDV === ani.PDV_idPDV && sellout.dateCr.split('T')[0] === todayDate);
@@ -150,7 +150,7 @@ const [isLoading, setIsLoading] = useState(true);
             }
             
             if (selectedReferenceId !== null) {
-                const response = await axios.post(`http://${port}:3000/api/articles/arcticlebyCC/${selectedReferenceId}`, {
+                const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
                     couleur: couleur,
                     capacite: capacitee
                 });
@@ -192,7 +192,7 @@ const [isLoading, setIsLoading] = useState(true);
                 return;
             }
             if (selectedReferenceId !== null) {
-                const response = await axios.post(`http://${port}:3000/api/articles/arcticlebyCC/${selectedReferenceId}`, {
+                const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
                     couleur: couleur,
                     capacite: capacitee
                 });
@@ -240,7 +240,7 @@ const [isLoading, setIsLoading] = useState(true);
 
     const handleSelloutCreationorUpdate = async (idref, updatedSales, idart, option) => {
         try {
-            const allrefsel = await axios.get(`http://${port}:3000/api/refsel/ReferenceSel`);
+            const allrefsel = await axios.get(`${port}/api/refsel/ReferenceSel`);
             const todayDate = new Date().toISOString().split('T')[0];
     
             // Recherche de l'enregistrement refsel existant pour la référence et l'article
@@ -250,7 +250,7 @@ const [isLoading, setIsLoading] = useState(true);
     
             if (existingRefSel) {
                 // Si un refsel existe, mettre à jour le sellout correspondant
-                const selloutResponse = await axios.get(`http://${port}:3000/api/sellout/sellouts/${existingRefSel.Sellout_idSellout}`);
+                const selloutResponse = await axios.get(`${port}/api/sellout/sellouts/${existingRefSel.Sellout_idSellout}`);
                 if (option === "add") {
                     updatedSellout = {
                         ...selloutResponse.data,
@@ -262,15 +262,15 @@ const [isLoading, setIsLoading] = useState(true);
                         nbrV: selloutResponse.data.nbrV - 1 // Décrémenter nbrV
                     };
                 }
-                await axios.put(`http://${port}:3000/api/sellout/sellouts/${existingRefSel.Sellout_idSellout}`, updatedSellout);
+                await axios.put(`${port}/api/sellout/sellouts/${existingRefSel.Sellout_idSellout}`, updatedSellout);
             } else {
                 // Sinon, créer un nouveau sellout
                 const selloutData = { dateCr: todayDate, nbrV: updatedSales, PDV_idPDV: ani.PDV_idPDV };
-                const selloutcreate = await axios.post(`http://${port}:3000/api/sellout/sellouts`, selloutData);
+                const selloutcreate = await axios.post(`${port}/api/sellout/sellouts`, selloutData);
                 const selloutId = selloutcreate.data.idSellout;
     
                 // Créer un nouvel enregistrement refsel associant la référence et le sellout
-                await axios.post(`http://${port}:3000/api/refsel/creatRefSel`, {
+                await axios.post(`${port}/api/refsel/creatRefSel`, {
                     Reference_idReference: idref,
                     Sellout_idSellout: selloutId,
                     Article_idArticle: idart

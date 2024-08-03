@@ -40,7 +40,7 @@ function CreationCompte() {
 /////////////////////////////Functions///////////////////////////
 const CreatUser=async(data,showAlert)=>{
   try{
-      axios.post("http://"+port+":3000/api/users/creatuser",data)
+      axios.post(port+"/api/users/creatuser",data)
       console.log("adedd");
       showAlert('success', "Un Nouveau Utilisateur a été créé");
       }catch (error) {
@@ -51,7 +51,7 @@ const CreatUser=async(data,showAlert)=>{
 }
 const fetchPdvsname = async () => {
   try {
-    const response = await axios.get(`http://${port}:3000/api/pdvs/pdvs`);
+    const response = await axios.get(`${port}/api/pdvs/pdvs`);
     const pdvNames = response.data.map(pdv => pdv.pdvname);
     setPdvs(response.data)
     setNomspdv(pdvNames);

@@ -29,7 +29,7 @@ function RapportExpodet() {
   const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
   const fetchArticleByCategory = async (categ) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/articles/artCat/${categ}`);
+      const response = await axios.get(`${port}/api/articles/artCat/${categ}`);
   
       // Filtrer les articles qui ont le même idArticle dans sameExpoData
       const filteredArticles = response.data.filter(article => {
@@ -47,7 +47,7 @@ function RapportExpodet() {
   
   const fetchRef = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/reference/references/${id}`);
+      const response = await axios.get(`${port}/api/reference/references/${id}`);
       setRefs(prevRefs => ({ ...prevRefs, [id]: response.data }));
       return response.data;
     } catch (error) {
@@ -57,7 +57,7 @@ function RapportExpodet() {
 
   const fetchMarque = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/marques/marques/${id}`);
+      const response = await axios.get(`${port}/api/marques/marques/${id}`);
       setMarques(prevMarques => ({ ...prevMarques, [id]: response.data }));
     } catch (error) {
       console.error('Error fetching marque:', error);

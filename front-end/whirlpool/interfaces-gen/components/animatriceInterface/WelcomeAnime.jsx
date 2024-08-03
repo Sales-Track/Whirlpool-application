@@ -71,7 +71,7 @@ function WelcomeAnime() {
 
   const Allpresence = async () => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/presences/presences`);
+      const response = await axios.get(`${port}/api/presences/presences`);
       setAllpres(response.data);
     } catch (error) {
       console.error('Error handling getallpresence:', error);
@@ -80,7 +80,7 @@ function WelcomeAnime() {
 
   const Allusers = async () => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/users/animateur`);
+      const response = await axios.get(`${port}/api/users/animateur`);
       setAllusers(response.data);
     } catch (error) {
       console.error('Error handling getallAnnime:', error);
@@ -89,7 +89,7 @@ function WelcomeAnime() {
 
   const logHistory = async (message) => {
     try {
-      await axios.post(`http://${port}:3000/api/logs/logs`, {
+      await axios.post(`${port}/api/logs/logs`, {
         messageAc: message,
         dateAc: formatDateWithoutTime(new Date()),
         TimeAc: new Date().toLocaleTimeString(),
@@ -103,7 +103,7 @@ function WelcomeAnime() {
   const getlastidpresence = async (userIdd, pdvIdd) => {
     try {
       console.log("Fetching latest presence for user ID:", userIdd, "and PDV ID:", pdvIdd);
-      const response = await axios.post(`http://${port}:3000/api/presences/presence/latest`, {
+      const response = await axios.post(`${port}/api/presences/presence/latest`, {
         userId: userIdd,
         pdvId: pdvIdd,
       });
@@ -126,11 +126,11 @@ function WelcomeAnime() {
   const presence = async () => {
     try {
       if (status) {
-        const response = await axios.post(`http://${port}:3000/api/presences/presences`, onligne);
+        const response = await axios.post(`${port}/api/presences/presences`, onligne);
         setLastpres(response.data.idPresence);
       } else {
         if (lastpres) {
-          await axios.put(`http://${port}:3000/api/presences/presences/checkout/${lastpres}`, offligne);
+          await axios.put(`${port}/api/presences/presences/checkout/${lastpres}`, offligne);
         } else {
           console.error('Latest presence ID is invalid');
         }
@@ -144,11 +144,11 @@ function WelcomeAnime() {
     const handleToggle = async () => {
       try {
         if (!status) {
-          const response = await axios.post(`http://${port}:3000/api/presences/presences`, onligne);
+          const response = await axios.post(`${port}/api/presences/presences`, onligne);
           setLastpres(response.data.idPresence);
         } else {
           if (lastpres) {
-            await axios.put(`http://${port}:3000/api/presences/presences/checkout/${lastpres}`, offligne);
+            await axios.put(`${port}/api/presences/presences/checkout/${lastpres}`, offligne);
           } else {
             console.error('Latest presence ID is invalid');
           }

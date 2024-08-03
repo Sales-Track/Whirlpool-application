@@ -30,7 +30,7 @@ function RapportExpodet() {
 
   const fetchArticleByCategory = async (categ) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/articles/artCat/${categ}`);
+      const response = await axios.get(`${port}/api/articles/artCat/${categ}`);
       const filteredArticles = response.data.filter(article => {
         return sameExpoData.some(item => item.Article_idArticle === article.idArticle);
       });
@@ -45,7 +45,7 @@ function RapportExpodet() {
 
   const fetchRef = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/reference/references/${id}`);
+      const response = await axios.get(`${port}/api/reference/references/${id}`);
       setRefs(prevRefs => ({ ...prevRefs, [id]: response.data }));
       return response.data;
     } catch (error) {
@@ -55,7 +55,7 @@ function RapportExpodet() {
 
   const fetchMarque = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/marques/marques/${id}`);
+      const response = await axios.get(`${port}/api/marques/marques/${id}`);
       setMarques(prevMarques => ({ ...prevMarques, [id]: response.data }));
     } catch (error) {
       console.error('Error fetching marque:', error);

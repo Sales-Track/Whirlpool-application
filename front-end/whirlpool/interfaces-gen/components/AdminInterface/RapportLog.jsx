@@ -22,7 +22,7 @@ function RapportLog() {
 
   const getPdvs = async (pdv) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/pdvs/getId/${pdv}`);
+      const response = await axios.get(`${port}/api/pdvs/getId/${pdv}`);
       setPdvs(response.data);
     } catch (error) {
       console.error('Error fetching pdvs:', error);
@@ -31,7 +31,7 @@ function RapportLog() {
 
   const getPresence = async (pdvId) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/presences/presences`);
+      const response = await axios.get(`${port}/api/presences/presences`);
       const presences = response.data.filter(e => e.PDV_idPDV === pdvId);
       setPres(presences);
     } catch (error) {
@@ -41,7 +41,7 @@ function RapportLog() {
 
   const fetchLog = async (presences) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/logs/logs`);
+      const response = await axios.get(`${port}/api/logs/logs`);
       const logs = response.data.filter(log => 
         presences.some(pres => pres.idPresence === log.Presence_idPresence && new Date(log.createdAt).getMonth() === month - 1)
       );

@@ -34,7 +34,7 @@ const LoginScreen = ({ navigation }) => {
     setLoading(true); // Démarrer l'indicateur de chargement
 
     try {
-      const response = await fetch(`http://${port}:3000/auth/login`, {
+      const response = await fetch(`${port}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -50,15 +50,15 @@ const LoginScreen = ({ navigation }) => {
 
         // Navigate to appropriate screen based on role
         if (role === "admin") {
-          const adminResponse = await axios.get(`http://${port}:3000/api/users/admin`);
+          const adminResponse = await axios.get(`${port}/api/users/admin`);
           let adm = adminResponse.data.filter((e) => e.email === email);
           navigation.navigate("WelcomeAdmin", { adm: adm[0] });
         } else if (role === "manager") {
-          const adminResponse = await axios.get(`http://${port}:3000/api/users/manager`);
+          const adminResponse = await axios.get(`${port}/api/users/manager`);
           let adm = adminResponse.data.filter((e) => e.email === email);
           navigation.navigate("WelcomeManager", { adm: adm[0] });
         } else if (role === "animatrice") {
-          const animResponse = await axios.get(`http://${port}:3000/api/users/animateur`);
+          const animResponse = await axios.get(`${port}/api/users/animateur`);
           let ani = animResponse.data.filter((e) => e.email === email);
           navigation.navigate("WelcomeAnime", { ani: ani[0] });
         }

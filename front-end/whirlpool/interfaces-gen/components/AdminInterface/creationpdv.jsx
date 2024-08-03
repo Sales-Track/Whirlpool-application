@@ -64,7 +64,7 @@ const Pdv={
 ////////////////////////FUNCTIONS///////////////////////////
 const Fetchallref=async()=>{
   try{
-    const response=await axios.get("http://"+port+":3000/api/reference/references")
+    const response=await axios.get(port+"/api/reference/references")
     setRefnom(response.data)
     console.log(response.data);
   }catch (error) {
@@ -74,7 +74,7 @@ const Fetchallref=async()=>{
 // const addObjectif=async(idref,idsel,objc)=>{
 //   try{
 
-//     const response=await axios.put(`http://${port}:3000/api/refsel/addobjct/${idref}/${idsel}`,objc)
+//     const response=await axios.put(`${port}/api/refsel/addobjct/${idref}/${idsel}`,objc)
 //     setObjct(response.data)
 //     console.log(response.data);
 //   }catch (error) {
@@ -84,7 +84,7 @@ const Fetchallref=async()=>{
 
 const handleClick = async (refName, obj) => {
   try {
-    const response = await axios.put("http://"+port+":3000/api/reference/addObject", {
+    const response = await axios.put(port+"/api/reference/addObject", {
       nomRef: refName,
       objectif: obj
     });
@@ -95,7 +95,7 @@ const handleClick = async (refName, obj) => {
 };
 const Fetchallmarq=async()=>{
   try{
-    const response=await axios.get("http://"+port+":3000/api/marques/marques")
+    const response=await axios.get(port+"/api/marques/marques")
     setMarques(response.data)
     console.log(response.data);
   }catch (error) {
@@ -104,7 +104,7 @@ const Fetchallmarq=async()=>{
 }
 const Fetchallcateg=async()=>{
   try{
-    const response=await axios.get("http://"+port+":3000/api/categories/categorie")
+    const response=await axios.get(port+"/api/categories/categorie")
     setCategs(response.data)
     console.log(response.data);
   }
@@ -114,7 +114,7 @@ const Fetchallcateg=async()=>{
 }
 const fetchPdvsname = async () => {
   try {
-    const response = await axios.get(`http://${port}:3000/api/pdvs/pdvs`);
+    const response = await axios.get(`${port}/api/pdvs/pdvs`);
     const pdvNames = response.data.map(pdv => pdv.pdvname);
     setNomspdv(pdvNames);
   } catch (error) {
@@ -123,7 +123,7 @@ const fetchPdvsname = async () => {
 }
 const getpdvByname=async(info)=>{
   try{
-    let response=await axios.get("http://"+port+":3000/api/pdvs/getId/"+info)
+    let response=await axios.get(port+"/api/pdvs/getId/"+info)
     setIdpdv(response.data.idPDV)
     return response.data.idPDV
     setload(!load)
@@ -134,7 +134,7 @@ const getpdvByname=async(info)=>{
 }
 const fetchAnimname = async () => {
   try {
-    const response = await axios.get(`http://${port}:3000/api/users/`);
+    const response = await axios.get(`${port}/api/users/`);
     const nameAnims = response.data.reduce((acc, el) => {
       if (el.role === 'animatrice' && el.name && el.lastname) {
         const fullName = `${el.name} ${el.lastname}`;
@@ -153,7 +153,7 @@ const fetchAnimname = async () => {
 };
 const getIdbyname = async (name, lastname) => {
   try {
-    const response = await axios.get(`http://${port}:3000/api/users/getonenameuser`, {
+    const response = await axios.get(`${port}/api/users/getonenameuser`, {
       params: {
         name: name,
         lastname: lastname
@@ -176,7 +176,7 @@ const getIdbyname = async (name, lastname) => {
 
 const Addpdvs=async (info,showAlert)=>{
   try{
-    axios.post('http://'+port+':3000/api/pdvs/pdvs',info)
+    axios.post(port+'/api/pdvs/pdvs',info)
     console.log('pdv aded');
     setload(!load)
     showAlert('success', "Un Nouveau Point de vente a été créé");
@@ -189,7 +189,7 @@ const Addpdvs=async (info,showAlert)=>{
 }
 const AddCateg=async (info,showAlert)=>{
   try{
-      axios.post('http://'+port+':3000/api/categories/categories',{Categoryname:info})
+      axios.post(port+'/api/categories/categories',{Categoryname:info})
       setload(!load)
     showAlert('success', "Un Nouveau Categorie a été créé");
 
@@ -202,7 +202,7 @@ const AddCateg=async (info,showAlert)=>{
 }
 const AddMarque=async (info,showAlert)=>{
   try{
-    axios.post('http://'+port+':3000/api/marques/marques',{marquename:info})
+    axios.post(port+'/api/marques/marques',{marquename:info})
     setload(!load)
     showAlert('success', "Un Nouveau Marque a été créé");
   }
@@ -214,7 +214,7 @@ const AddMarque=async (info,showAlert)=>{
 }
 const AddRef=async(info,showAlert)=>{
   try{
-    axios.post('http://'+port+':3000/api/reference/references',info)
+    axios.post(port+'/api/reference/references',info)
     setload(!load)
     showAlert('success', "Un Nouveau Refernce a été créé");
   }
@@ -230,7 +230,7 @@ const updateAnimByPdv = async (userId, pdvId, showAlert) => {
       throw new Error('User ID or PDV ID is missing');
     }
 
-    const response = await axios.put(`http://${port}:3000/api/users/animbypdv/${userId}`, { PDV_idPDV: pdvId });
+    const response = await axios.put(`${port}/api/users/animbypdv/${userId}`, { PDV_idPDV: pdvId });
 
     if (response.status === 200) {
       console.log('Animateur bien affecté');

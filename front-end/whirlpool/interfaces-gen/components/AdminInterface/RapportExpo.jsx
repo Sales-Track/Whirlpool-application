@@ -87,7 +87,7 @@ function RapportExpo() {
 
   const getpdvByID = useCallback(async (name) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/pdvs/getId/${name}`);
+      const response = await axios.get(`${port}/api/pdvs/getId/${name}`);
       setPdvs(response.data);
     } catch (error) {
       console.error('Error fetching PDVs:', error);
@@ -96,7 +96,7 @@ function RapportExpo() {
 
   const FetchAnim = useCallback(async (idpdv) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/user/user/${idpdv}`);
+      const response = await axios.get(`${port}/api/user/user/${idpdv}`);
       setAnim(response.data);
     } catch (error) {
       console.log('Error fetching animators:', error);

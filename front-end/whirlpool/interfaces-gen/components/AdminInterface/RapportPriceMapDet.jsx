@@ -37,7 +37,7 @@ function RapportPriceMapDet({ route }){
     /////////////////////////Functions///////////////////////////
     const fetchReferences = async () => {
       try {
-        const response = await axios.get(`http://${port}:3000/api/reference/referencebycateg/${categoryId}`);
+        const response = await axios.get(`${port}/api/reference/referencebycateg/${categoryId}`);
         setReferences(response.data);
         await fetchMarqueNames(response.data); // Fetch marque names after references are fetched
       } catch (error) {
@@ -47,7 +47,7 @@ function RapportPriceMapDet({ route }){
     
     const fetchcolor = async () => {
       try {
-        const response = await axios.get(`http://${port}:3000/api/articles/colors`);
+        const response = await axios.get(`${port}/api/articles/colors`);
         setColors(response.data);
       } catch (error) {
         console.error('Error fetching references:', error);
@@ -69,7 +69,7 @@ function RapportPriceMapDet({ route }){
     // Fetch marque name by ID
     const fetchMarqueById = async (id) => {
       try {
-        const response = await axios.get(`http://${port}:3000/api/marques/marques/${id}`);
+        const response = await axios.get(`${port}/api/marques/marques/${id}`);
         return response.data.marquename;
       } catch (error) {
         console.error('Error fetching marque:', error);
@@ -80,7 +80,7 @@ function RapportPriceMapDet({ route }){
     const fetchArticlbyCU = async (colorr, unitee) => {
       try {
         if (colorr === color && unitee === unite) {
-          const response = await axios.post(`http://${port}:3000/api/articles/articlesCU`, {
+          const response = await axios.post(`${port}/api/articles/articlesCU`, {
             couleur: colorr,
             unite: unitee
           });
