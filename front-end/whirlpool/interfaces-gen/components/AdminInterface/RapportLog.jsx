@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import { NativeBaseProvider, Center, Box, Select, CheckIcon } from "native-base";
+import { NativeBaseProvider, Center, Spinner } from "native-base";
 import Header from './header';
 import Footer from './footer';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -22,7 +22,7 @@ function RapportLog() {
 
   const getPdvs = async (pdv) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/pdvs/getId/${pdv}`);
+      const response = await axios.get(`${port}/api/pdvs/getId/${pdv}`);
       setPdvs(response.data);
     } catch (error) {
       console.error('Error fetching pdvs:', error);
@@ -31,7 +31,7 @@ function RapportLog() {
 
   const getPresence = async (pdvId) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/presences/presences`);
+      const response = await axios.get(`${port}/api/presences/presences`);
       const presences = response.data.filter(e => e.PDV_idPDV === pdvId);
       setPres(presences);
     } catch (error) {
@@ -41,7 +41,7 @@ function RapportLog() {
 
   const fetchLog = async (presences) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/logs/logs`);
+      const response = await axios.get(`${port}/api/logs/logs`);
       const logs = response.data.filter(log => 
         presences.some(pres => pres.idPresence === log.Presence_idPresence && new Date(log.createdAt).getMonth() === month - 1)
       );
@@ -136,9 +136,15 @@ function RapportLog() {
         <Center flex={1} mt={'-140%'}>
           <Text style={styles.title}>Rapport Log</Text>
         </Center>
-        <ScrollView style={styles.scrollView}>
-          {Tableaux()}
-        </ScrollView>
+        {isLoading ? (
+          <Center flex={1}>
+            <Spinner size="lg" color="#FDC100"/>
+          </Center>
+        ) : (
+          <ScrollView style={styles.scrollView}>
+            {Tableaux()}
+          </ScrollView>
+        )}
         <Center>
           <TouchableOpacity onPress={exportToExcel} style={styles.btns}>
             <Text style={styles.btnText}>Exporter</Text>

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import axios from "axios";
-import port from './port'
+import port from './port';
+
 const Divider = () => <View style={styles.divider} />;
-
-
 
 const InputField = ({ label, placeholder, isPassword, onChangeText }) => (
   <>
@@ -24,6 +23,7 @@ const LoginScreen = ({ navigation }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // État pour l'indicateur de chargement
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -31,8 +31,10 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
 
+    setLoading(true); // Démarrer l'indicateur de chargement
+
     try {
-      const response = await fetch(`http://${port}:3000/auth/login`, {
+      const response = await fetch(`${port}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -44,18 +46,19 @@ const LoginScreen = ({ navigation }) => {
 
       if (response.ok) {
         const { role } = data;
-console.log(role);
+        console.log(role);
+
         // Navigate to appropriate screen based on role
         if (role === "admin") {
-          const adminResponse = await axios.get(`http://${port}:3000/api/users/admin`);
+          const adminResponse = await axios.get(`${port}/api/users/admin`);
           let adm = adminResponse.data.filter((e) => e.email === email);
-          navigation.navigate("WelcomeAdmin",{ adm: adm[0] });
+          navigation.navigate("WelcomeAdmin", { adm: adm[0] });
         } else if (role === "manager") {
-          const adminResponse = await axios.get(`http://${port}:3000/api/users/manager`);
+          const adminResponse = await axios.get(`${port}/api/users/manager`);
           let adm = adminResponse.data.filter((e) => e.email === email);
-          navigation.navigate("WelcomeManager", {adm: adm[0] });
+          navigation.navigate("WelcomeManager", { adm: adm[0] });
         } else if (role === "animatrice") {
-          const animResponse = await axios.get(`http://${port}:3000/api/users/animateur`);
+          const animResponse = await axios.get(`${port}/api/users/animateur`);
           let ani = animResponse.data.filter((e) => e.email === email);
           navigation.navigate("WelcomeAnime", { ani: ani[0] });
         }
@@ -65,6 +68,8 @@ console.log(role);
     } catch (error) {
       console.error(error);
       Alert.alert("Error", "An error occurred. Please try again.");
+    } finally {
+      setLoading(false); // Arrêter l'indicateur de chargement
     }
   };
 
@@ -78,9 +83,13 @@ console.log(role);
         <Divider />
         <InputField label="Password" placeholder="Enter your password" isPassword={true} onChangeText={setPassword} />
         <Divider />
-        <TouchableOpacity style={styles.loginButton} onPress={()=>{handleLogin()}}>
-          <Text style={styles.loginButtonText}>Login</Text>
-        </TouchableOpacity>
+        {loading ? ( // Afficher l'indicateur de chargement si loading est true
+          <ActivityIndicator size="large" color="#FDC100" style={styles.loadingIndicator} />
+        ) : (
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -124,6 +133,9 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: "#ADADAD",
+  },
+  loadingIndicator: {
+    marginTop: 36,
   },
   loginButton: {
     backgroundColor: "#FDC100",

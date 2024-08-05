@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image,ActivityIndicator } from "react-native";
 import { Select, Box, Center, NativeBaseProvider, Modal, Button } from "native-base";
 import axios from 'axios';
 import port from '../port';
@@ -23,6 +23,7 @@ function CreationRapportSO() {
     const [article, setArticle]=useState([]);
     const [couleurs,setCouleurs]=useState([]);
     const [capacites,setCapacites]=useState([]);
+const [isLoading, setIsLoading] = useState(true);
 
     const [sales, setSales] = useState({});
 
@@ -42,7 +43,7 @@ function CreationRapportSO() {
       };
     const  fetchallArticle=async (id)=>{
         try{
-            const response = await axios.get("http://"+port+":3000/api/articles/articles")
+            const response = await axios.get(port+"/api/articles/articles")
             const articles = response.data;
             console.log("idd",id);
             const couleurs = articles.map(article =>{
@@ -69,7 +70,7 @@ function CreationRapportSO() {
 
     const fetchAllCateg = async () => {
         try {
-            const response = await axios.get(`http://${port}:3000/api/categories/categorie`);
+            const response = await axios.get(`${port}/api/categories/categorie`);
             setCategories(response.data);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -78,13 +79,14 @@ function CreationRapportSO() {
     const fetchRefByCatg = async (id) => {
         if (!id) return;
         try {
-            const response = await axios.get(`http://${port}:3000/api/reference/referencebycateg/${id}`);
+            const response = await axios.get(`${port}/api/reference/referencebycateg/${id}`);
             setReferences(response.data);
             const initialSales = response.data.reduce((acc, ref) => {
                 acc[ref.idReference] = { name: ref.Referencename, sales: 0, idarticles: null };
                 return acc;
             }, {});
             setSales(initialSales);
+            setIsLoading(false)
             await fetchExistingSales(response.data, initialSales);
         } catch (error) {
             console.error('Error fetching references:', error);
@@ -93,8 +95,8 @@ function CreationRapportSO() {
 
     const fetchExistingSales = async (references, initialSales) => {
         try {
-            const selloutResponse = await axios.get(`http://${port}:3000/api/sellout/sellouts`);
-            const refselResponse = await axios.get(`http://${port}:3000/api/refsel/ReferenceSel`);
+            const selloutResponse = await axios.get(`${port}/api/sellout/sellouts`);
+            const refselResponse = await axios.get(`${port}/api/refsel/ReferenceSel`);
             const todayDate = new Date().toISOString().split('T')[0];
 
             const existingSales = selloutResponse.data.filter(sellout => sellout.PDV_idPDV === ani.PDV_idPDV && sellout.dateCr.split('T')[0] === todayDate);
@@ -148,7 +150,7 @@ function CreationRapportSO() {
             }
             
             if (selectedReferenceId !== null) {
-                const response = await axios.post(`http://${port}:3000/api/articles/arcticlebyCC/${selectedReferenceId}`, {
+                const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
                     couleur: couleur,
                     capacite: capacitee
                 });
@@ -190,7 +192,7 @@ function CreationRapportSO() {
                 return;
             }
             if (selectedReferenceId !== null) {
-                const response = await axios.post(`http://${port}:3000/api/articles/arcticlebyCC/${selectedReferenceId}`, {
+                const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
                     couleur: couleur,
                     capacite: capacitee
                 });
@@ -238,7 +240,7 @@ function CreationRapportSO() {
 
     const handleSelloutCreationorUpdate = async (idref, updatedSales, idart, option) => {
         try {
-            const allrefsel = await axios.get(`http://${port}:3000/api/refsel/ReferenceSel`);
+            const allrefsel = await axios.get(`${port}/api/refsel/ReferenceSel`);
             const todayDate = new Date().toISOString().split('T')[0];
     
             // Recherche de l'enregistrement refsel existant pour la référence et l'article
@@ -248,7 +250,7 @@ function CreationRapportSO() {
     
             if (existingRefSel) {
                 // Si un refsel existe, mettre à jour le sellout correspondant
-                const selloutResponse = await axios.get(`http://${port}:3000/api/sellout/sellouts/${existingRefSel.Sellout_idSellout}`);
+                const selloutResponse = await axios.get(`${port}/api/sellout/sellouts/${existingRefSel.Sellout_idSellout}`);
                 if (option === "add") {
                     updatedSellout = {
                         ...selloutResponse.data,
@@ -260,15 +262,15 @@ function CreationRapportSO() {
                         nbrV: selloutResponse.data.nbrV - 1 // Décrémenter nbrV
                     };
                 }
-                await axios.put(`http://${port}:3000/api/sellout/sellouts/${existingRefSel.Sellout_idSellout}`, updatedSellout);
+                await axios.put(`${port}/api/sellout/sellouts/${existingRefSel.Sellout_idSellout}`, updatedSellout);
             } else {
                 // Sinon, créer un nouveau sellout
                 const selloutData = { dateCr: todayDate, nbrV: updatedSales, PDV_idPDV: ani.PDV_idPDV };
-                const selloutcreate = await axios.post(`http://${port}:3000/api/sellout/sellouts`, selloutData);
+                const selloutcreate = await axios.post(`${port}/api/sellout/sellouts`, selloutData);
                 const selloutId = selloutcreate.data.idSellout;
     
                 // Créer un nouvel enregistrement refsel associant la référence et le sellout
-                await axios.post(`http://${port}:3000/api/refsel/creatRefSel`, {
+                await axios.post(`${port}/api/refsel/creatRefSel`, {
                     Reference_idReference: idref,
                     Sellout_idSellout: selloutId,
                     Article_idArticle: idart
@@ -354,7 +356,11 @@ function CreationRapportSO() {
                     <Text style={styles.headerCell}>Corriger</Text>
                 </View>
                 <ScrollView>
-                    {references.map((item, index) => (
+                {isLoading ? (
+  <ActivityIndicator size="large" color="#FDC100" style={{ marginTop: 20 }} />
+) : (
+
+                    references.map((item, index) => (
                         <View style={styles.row} key={index}>
                             <TouchableOpacity style={styles.cell1} onPress={() => handleReferenceClick(item.idReference)}>
                                 <Text style={styles.textcell1}>{item.Referencename}</Text>
@@ -366,7 +372,7 @@ function CreationRapportSO() {
                                 <Text style={styles.textcell1}>Corriger</Text>
                             </TouchableOpacity>
                         </View>
-                    ))}
+                    )))}
                 </ScrollView>
             </View>
         );

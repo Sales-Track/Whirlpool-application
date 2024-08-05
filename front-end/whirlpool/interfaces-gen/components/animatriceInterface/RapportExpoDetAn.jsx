@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text,Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text,Image, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
 import { NativeBaseProvider,Modal } from "native-base";
 import Header from './header';
 import Footer from './footer';
@@ -24,10 +24,12 @@ function RapportExpodet() {
   const [showpopup, setShowpop] = useState(false);
   const [popupData, setPopupData] = useState({});
   const [dataChanged, setDataChanged] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
   const fetchArticleByCategory = async (categ) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/articles/artCat/${categ}`);
+      const response = await axios.get(`${port}/api/articles/artCat/${categ}`);
   
       // Filtrer les articles qui ont le même idArticle dans sameExpoData
       const filteredArticles = response.data.filter(article => {
@@ -36,7 +38,8 @@ function RapportExpodet() {
   
       console.log(filteredArticles); // Vérifiez la sortie dans la console pour vous assurer que les données sont correctes
   
-      setArticles(filteredArticles); // Mettez à jour l'état des articles avec les données filtrées
+      setArticles(filteredArticles); 
+      setIsLoading(false)// Mettez à jour l'état des articles avec les données filtrées
     } catch (error) {
       console.error('Error fetching articles:', error);
     }
@@ -44,7 +47,7 @@ function RapportExpodet() {
   
   const fetchRef = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/reference/references/${id}`);
+      const response = await axios.get(`${port}/api/reference/references/${id}`);
       setRefs(prevRefs => ({ ...prevRefs, [id]: response.data }));
       return response.data;
     } catch (error) {
@@ -54,7 +57,7 @@ function RapportExpodet() {
 
   const fetchMarque = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/marques/marques/${id}`);
+      const response = await axios.get(`${port}/api/marques/marques/${id}`);
       setMarques(prevMarques => ({ ...prevMarques, [id]: response.data }));
     } catch (error) {
       console.error('Error fetching marque:', error);
@@ -140,7 +143,11 @@ function RapportExpodet() {
                 <View style={styles.cell}><Text>Prix</Text></View>
                 <View style={styles.cell}><Text>Action</Text></View>
               </View>
-              {articles.map((article, index) => (
+              {isLoading ? (
+  <ActivityIndicator size="large" color="#FDC100" style={{ marginTop: 20 }} />
+) : (
+
+              articles.map((article, index) => (
                 <View style={styles.row} key={index}>
                   <View style={styles.cell1}><Text>{marques[refs[article.Reference_idReference]?.Marque_idMarque]?.marquename || ''}</Text></View>
                   <View style={styles.cell1}><Text>{refs[article.Reference_idReference]?.Referencename || ''}</Text></View>
@@ -148,8 +155,8 @@ function RapportExpodet() {
                   <TouchableOpacity onPress={() => handleModifyClick(article)}>
                     <View style={styles.cell2}><Text style={styles.textcell2}>Modifier</Text></View>
                   </TouchableOpacity>
-                </View>
-              ))}
+                </View> 
+              )))}
             </View>
           </View>
         </ScrollView>

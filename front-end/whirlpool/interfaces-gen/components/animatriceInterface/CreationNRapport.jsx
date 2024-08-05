@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity,Modal } from "react-native";
+import { View, StyleSheet, Image, Text, TouchableOpacity,Modal,ActivityIndicator } from "react-native";
 import { CheckIcon, Select, Box, Icon, Center, NativeBaseProvider, ScrollView,Input  } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -19,6 +19,7 @@ function CreationNRapport() {
   const route = useRoute();
   const { ani } = route.params;
   const [city,setCity]= React.useState("");
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const [load, setLoad] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -56,7 +57,7 @@ console.log(datev);
 
   const getAllSellout = async () => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/sellout/sellouts`);
+      const response = await axios.get(`${port}/api/sellout/sellouts`);
       setSellouts(response.data);
     } catch (error) {
       console.error('Error fetching sellouts:', error);
@@ -65,7 +66,7 @@ console.log(datev);
 
   const getRefSellByidRef = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/refsel/RefSels/${id}`);
+      const response = await axios.get(`${port}/api/refsel/RefSels/${id}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching refsell:', error);
@@ -73,7 +74,7 @@ console.log(datev);
   };
   const getSelloutByid=async(id)=>{
     try {
-      const response = await axios.get(`http://${port}:3000/api/sellout/sellouts/${id}`)
+      const response = await axios.get(`${port}/api/sellout/sellouts/${id}`)
       return response.data
     }
     catch (error) {
@@ -82,7 +83,7 @@ console.log(datev);
   }
   const getArticlebyid=async(id)=>{
     try {
-      const response = await axios.get(`http://${port}:3000/api/articles/articles/${id}`)
+      const response = await axios.get(`${port}/api/articles/articles/${id}`)
       console.log(response.data.coloeur);
       return response.data
     } catch (error) {
@@ -91,7 +92,7 @@ console.log(datev);
   }
   const getRefSellByidRef2 = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/refsel/RefSels/${id}`);
+      const response = await axios.get(`${port}/api/refsel/RefSels/${id}`);
       setRefsbyid(response.data)
       console.log(response.data,"herre");
 
@@ -157,9 +158,10 @@ console.log(datev);
   const fetchRefByCatg = async (id) => {
     if (!id) return;
     try {
-      const response = await axios.get(`http://${port}:3000/api/reference/referencebycateg/${id}`);
+      const response = await axios.get(`${port}/api/reference/referencebycateg/${id}`);
       setReferences(response.data);
       calculateTotals(response.data);
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching references:', error);
     }
@@ -167,7 +169,7 @@ console.log(datev);
 
   const fetchAllCategories = async () => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/categories/categorie`);
+      const response = await axios.get(`${port}/api/categories/categorie`);
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -175,7 +177,7 @@ console.log(datev);
   };
   const getnamePdv =async ()=>{
     try {
-      const response = await axios.get("http://"+port+":3000/api/pdvs/pdvs/"+ani.PDV_idPDV)
+      const response = await axios.get(port+"/api/pdvs/pdvs/"+ani.PDV_idPDV)
       setPdv(response.data)
     }
     catch (error) {
@@ -276,7 +278,11 @@ console.log(datev);
             <View style={styles.cell}><Text>Reference</Text></View>
             <View style={styles.cell3}><Text>Total Ventes</Text></View>
           </View>
-          {references.map(el => (
+          {isLoading ? (
+  <ActivityIndicator size="large" color="#FDC100" style={{ marginTop: 20 }} />
+) : (
+
+          references.map(el => (
             <View style={styles.row2} key={el.idReference}>
               <View style={styles.cell1}>
                 <TouchableOpacity onPress={()=>{handlebtnRef(el.idReference,el.Referencename)}}>
@@ -285,7 +291,7 @@ console.log(datev);
                 </View>
               <View style={styles.cell2}><Text>{totals[el.idReference] || 0}</Text></View>
             </View>
-          ))}
+          )))}
         </View>
       </View>
     );

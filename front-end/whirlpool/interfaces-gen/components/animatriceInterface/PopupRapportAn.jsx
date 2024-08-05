@@ -17,7 +17,7 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
 
     const fetchPdvsname = async () => {
         try {
-            const response = await axios.get(`http://${port}:3000/api/pdvs/pdvs`);
+            const response = await axios.get(`${port}/api/pdvs/pdvs`);
             const pdvNames = response.data.map(pdv => pdv.pdvname);
             setNomspdv(pdvNames);
         } catch (error) {

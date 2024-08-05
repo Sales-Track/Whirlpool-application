@@ -4,10 +4,10 @@
     "slug": "whirlpool",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/WHIRLPOOL_LOGO.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/WHIRLPOOL_LOGO.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/WHIRLPOOL_LOGO.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.salah123.whirlpool"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/WHIRLPOOL_LOGO.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f92ca845-1d3e-4218-8d4b-44e66fef7bf5"
+      }
     }
   }
 }

@@ -16,16 +16,16 @@ function Modifpopup({ article, refData, marqueData, price,onClose }) {
     const modification =(reff , marque ,prix )=>{
       
       if (reff){
-axios.put (`http://${port}:3000/api/reference/references/${refData.idReference}`, {Referencename: reff})
+axios.put (`${port}/api/reference/references/${refData.idReference}`, {Referencename: reff})
 console.log('ref modifier');
       }
       if(marque){
-        axios.put (`http://${port}:3000/api/marques/marques/${marqueData.idMarque}`, {marquename:marque})
+        axios.put (`${port}/api/marques/marques/${marqueData.idMarque}`, {marquename:marque})
         console.log('marq modifier');
 
       }
       if(prix){
-        axios.put (`http://${port}:3000/api/articles/price/${article.idArticle}`,{prix:prix})
+        axios.put (`${port}/api/articles/price/${article.idArticle}`,{prix:prix})
         console.log('art modifier');
 
       }

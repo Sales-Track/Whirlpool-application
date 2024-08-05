@@ -1,2 +1,2 @@
-const port='192.168.110.68'
+const port='https://hostingvpsserver.site'
 export default port

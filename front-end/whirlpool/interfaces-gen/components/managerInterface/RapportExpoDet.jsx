@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { View, Text,Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { NativeBaseProvider,Modal } from "native-base";
+import { View, Text,Image, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
+import { NativeBaseProvider,Modal,Center } from "native-base";
 import Header from './header';
 import Footer from './footer';
 import Modifpopup from './ModifRapEx'
@@ -25,14 +25,17 @@ function RapportExpodet() {
   const [popupData, setPopupData] = useState({});
   const [dataChanged, setDataChanged] = useState(false);
   const [sortedArticles, setSortedArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const sortArticlesByPrice = () => {
     const sorted = [...articles].sort((a, b) => b.prix - a.prix);
     setSortedArticles(sorted);
+    setIsLoading(false)
   };
   const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
   const fetchArticleByCategory = async (categ) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/articles/artCat/${categ}`);
+      const response = await axios.get(`${port}/api/articles/artCat/${categ}`);
   
       // Filtrer les articles qui ont le même idArticle dans sameExpoData
       const filteredArticles = response.data.filter(article => {
@@ -49,7 +52,7 @@ function RapportExpodet() {
   
   const fetchRef = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/reference/references/${id}`);
+      const response = await axios.get(`${port}/api/reference/references/${id}`);
       setRefs(prevRefs => ({ ...prevRefs, [id]: response.data }));
       return response.data;
     } catch (error) {
@@ -59,7 +62,7 @@ function RapportExpodet() {
 
   const fetchMarque = async (id) => {
     try {
-      const response = await axios.get(`http://${port}:3000/api/marques/marques/${id}`);
+      const response = await axios.get(`${port}/api/marques/marques/${id}`);
       setMarques(prevMarques => ({ ...prevMarques, [id]: response.data }));
     } catch (error) {
       console.error('Error fetching marque:', error);
@@ -145,18 +148,23 @@ function RapportExpodet() {
                 <View style={styles.cell}><Text>Marques</Text></View>
                 <View style={styles.cell}><Text>Référence</Text></View>
                 <View style={styles.cell}><Text>Prix</Text></View>
-                <View style={styles.cell}><Text>Action</Text></View>
+                {/* <View style={styles.cell}><Text>Action</Text></View> */}
               </View>
-              {sortedArticles.map((article, index) => (
+              {isLoading ? (
+          <Center flex={1}>
+            <ActivityIndicator size="large" color="#FDC100" />
+          </Center>
+        ) : (
+              sortedArticles.map((article, index) => (
                 <View style={styles.row} key={index}>
                   <View style={styles.cell1}><Text>{marques[refs[article.Reference_idReference]?.Marque_idMarque]?.marquename || ''}</Text></View>
                   <View style={styles.cell1}><Text>{refs[article.Reference_idReference]?.Referencename || ''}</Text></View>
                   <View style={styles.cell1}><Text>{article.prix}</Text></View>
-                  <TouchableOpacity onPress={() => handleModifyClick(article)}>
+                  {/* <TouchableOpacity onPress={() => handleModifyClick(article)}>
                     <View style={styles.cell2}><Text style={styles.textcell2}>Modifier</Text></View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
-              ))}
+              )))}
             </View>
           </View>
         </ScrollView>
