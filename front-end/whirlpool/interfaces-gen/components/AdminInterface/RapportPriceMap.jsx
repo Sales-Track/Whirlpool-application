@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text,Image, StyleSheet,Button, PermissionsAndroid, ScrollView, LogBox,TouchableOpacity,ActivityIndicator  } from "react-native";
+import { View, Text,Image, StyleSheet,Button, PermissionsAndroid, ScrollView, LogBox,TouchableOpacity,ActivityIndicator,Dimensions  } from "react-native";
 import { NativeBaseProvider, Center,Box,Select,CheckIcon,Stack,Input,Icon} from "native-base";
 import Header from './header'
 import Footer from './footer'
@@ -7,7 +7,15 @@ import port from '../port'
 import axios from 'axios'
 import { useNavigation,useRoute } from '@react-navigation/native';
 import { MaterialIcons } from "@expo/vector-icons";
+const { width, height } = Dimensions.get('window');
 
+const wp = (percentage) => {
+  return width * (percentage / 100);
+};
+
+const hp = (percentage) => {
+  return height * (percentage / 100);
+};
 
 function RapportPriceMap(){
   const route = useRoute();
@@ -171,45 +179,45 @@ const RenderInput=(text)=>{
 
 }
 const styles = StyleSheet.create({
-    view1: {
-        flex: 1,
-        justifyContent: 'center',
-        padding: 20,
-         },
-         View2:{
-          marginLeft:-200
-         },
-         image12: {
-          width: 125,
-          height: 95,
-          position: "absolute",
-          top: 0,
-          left: 15,
-        },
-      categtext:{
-        width:'100%',
-        alignItems:'center',
-        backgroundColor:'#D0D3D4',
-        padding:10,
-        borderRadius:5,
-        marginTop:15
-      },
-      viewbtns:{
-        width:"100%",
-      },
-      btns: {
-        backgroundColor: '#FDC100',
-        padding: 10,
-        borderRadius: 5,
-        width: "100%", // Utiliser toute la largeur disponible
-        marginTop: 10, // Ajouter un espace en haut
-        alignSelf: 'center', 
-      },
-      
-      btnText: {
-        color: 'white', // Text color
-        fontSize: 16,
-        textAlign:"center"
-      },
-})
+  view1: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: wp(5), // Padding proportionnel
+  },
+  View2: {
+    marginLeft: wp(-45), // Déplacer proportionnellement en fonction de l'écran
+  },
+  image12: {
+    width: wp(30), // Largeur proportionnelle
+    height: hp(20), // Hauteur proportionnelle
+    position: 'absolute',
+    top: 0,
+    left: wp(5), // Positionnement proportionnel
+  },
+  categtext: {
+    width: '100%',
+    alignItems: 'center',
+    backgroundColor: '#D0D3D4',
+    padding: wp(3), // Padding proportionnel
+    borderRadius: wp(2), // Rayon de bordure proportionnel
+    marginTop: hp(2), // Marge supérieure proportionnelle
+  },
+  viewbtns: {
+    width: '100%',
+  },
+  btns: {
+    backgroundColor: '#FDC100',
+    padding: wp(4), // Padding proportionnel
+    borderRadius: wp(2), // Rayon de bordure proportionnel
+    width: '100%', // Utiliser toute la largeur disponible
+    marginTop: hp(2), // Marge supérieure proportionnelle
+    alignSelf: 'center',
+  },
+  btnText: {
+    color: 'white',
+    fontSize: wp(4), // Taille de la police proportionnelle
+    textAlign: 'center',
+  },
+});
+
 export default RapportPriceMap;

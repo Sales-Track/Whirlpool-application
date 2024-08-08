@@ -1,11 +1,12 @@
 import React from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity,Dimensions } from "react-native";
 import { CheckIcon, Center, NativeBaseProvider, Box, Select, View, Icon, Spinner } from "native-base";
 import { useNavigation } from '@react-navigation/native';
 import axios from "axios";
 import { MaterialIcons } from "@expo/vector-icons";  // Importing the icons from @expo/vector-icons
 import port from '../port';
 import { useRoute } from '@react-navigation/native';
+const { width, height } = Dimensions.get('window');
 
 function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportName, link }) {
     const navigation = useNavigation();
@@ -107,135 +108,136 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
 
     return (
         <NativeBaseProvider>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={true}
-                onRequestClose={onClose}
-            >
-                <Center style={styles.center}>
-                    <Box style={styles.modal}>
-                        <Text style={styles.title}>{rapportName}</Text>
-                        {loading ? (
-                            <Spinner size="lg" color="#FDC100" />
-                        ) : (
-                            <>
-                                <ExampleMonth text={'Mois :'} setOption={setMonth} option={month} />
-                                <Example text={'Point De Vente'} setOption={setPdv} option={pdv} />
-                            </>
-                        )}
-                        <Center mt={10}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                {buttonLoading ? (
-                                    <Spinner size="lg" color="#FDC100" />
-                                ) : (
-                                    <>
-                                        <TouchableOpacity
-                                            onPress={handleVerifyPress}
-                                            style={styles.btns}
-                                        >
-                                            <Text style={styles.btnText}>Vérifier</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={onClose}
-                                            style={styles.btns}
-                                        >
-                                            <Text style={styles.btnText}>Fermer</Text>
-                                        </TouchableOpacity>
-                                    </>
-                                )}
-                            </View>
-                        </Center>
-                    </Box>
-                </Center>
-            </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={true}
+        onRequestClose={onClose}
+      >
+        <Center style={styles.center}>
+          <Box style={styles.modal}>
+            <Text style={styles.title}>{rapportName}</Text>
+            {loading ? (
+              <Spinner size="lg" color="#FDC100" />
+            ) : (
+              <>
+                <ExampleMonth text={'Mois :'} setOption={setMonth} option={month} />
+                <Example text={'Point De Vente'} setOption={setPdv} option={pdv} />
+              </>
+            )}
+            <Center mt={10}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                {buttonLoading ? (
+                  <Spinner size="lg" color="#FDC100" />
+                ) : (
+                  <>
+                    <TouchableOpacity
+                      onPress={handleVerifyPress}
+                      style={styles.btns}
+                    >
+                      <Text style={styles.btnText}>Vérifier</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={onClose}
+                      style={styles.btns}
+                    >
+                      <Text style={styles.btnText}>Fermer</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </View>
+            </Center>
+          </Box>
+        </Center>
+      </Modal>
 
-            {/* Warning Modal */}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={warningVisible}
-                onRequestClose={() => setWarningVisible(false)}
+      {/* Warning Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={warningVisible}
+        onRequestClose={() => setWarningVisible(false)}
+      >
+        <Center style={styles.center}>
+          <Box style={styles.warningModal}>
+            <Text style={styles.warningTitle}>Avertissement</Text>
+            <Text style={styles.warningText}>Veuillez remplir tous les champs.</Text>
+            <TouchableOpacity
+              onPress={() => setWarningVisible(false)}
+              style={styles.btns}
             >
-                <Center style={styles.center}>
-                    <Box style={styles.warningModal}>
-                        <Text style={styles.warningTitle}>Avertissement</Text>
-                        <Text style={styles.warningText}>Veuillez remplir tous les champs.</Text>
-                        <TouchableOpacity
-                            onPress={() => setWarningVisible(false)}
-                            style={styles.btns}
-                        >
-                            <Text style={styles.btnText}>Fermer</Text>
-                        </TouchableOpacity>
-                    </Box>
-                </Center>
-            </Modal>
-        </NativeBaseProvider>
-    );
+              <Text style={styles.btnText}>Fermer</Text>
+            </TouchableOpacity>
+          </Box>
+        </Center>
+      </Modal>
+    </NativeBaseProvider>
+  );
 }
 
 const styles = StyleSheet.create({
     center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent pour overlay derrière le modal
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
     },
     modal: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 15,
-        width: "80%",
-        height: "40%",
-        borderWidth: 1,
-        borderColor: '#FDC100',
+      backgroundColor: 'white',
+      padding: width * 0.05, // 5% of screen width
+      borderRadius: width * 0.04, // 4% of screen width
+      width: width * 0.8, // 80% of screen width
+      height: height * 0.4, // 40% of screen height
+      borderWidth: 1,
+      borderColor: '#FDC100',
     },
     title: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 30,
-        textAlign: 'center',
+      fontSize: width * 0.05, // 5% of screen width
+      fontWeight: '600',
+      marginBottom: height * 0.03, // 3% of screen height
+      textAlign: 'center',
     },
     warningModal: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 15,
-        width: "80%",
-        height: "20%",
-        borderWidth: 1,
-        borderColor: '#FDC100',
-        alignItems: 'center',
+      backgroundColor: 'white',
+      padding: width * 0.05, // 5% of screen width
+      borderRadius: width * 0.04, // 4% of screen width
+      width: width * 0.8, // 80% of screen width
+      height: height * 0.25, // 25% of screen height
+      borderWidth: 1,
+      borderColor: '#FDC100',
+      alignItems: 'center',
     },
     warningTitle: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 10,
-        textAlign: 'center',
+      fontSize: width * 0.05, // 5% of screen width
+      fontWeight: '600',
+      marginBottom: height * 0.02, // 2% of screen height
+      textAlign: 'center',
     },
     warningText: {
-        fontSize: 16,
-        marginBottom: 20,
-        textAlign: 'center',
+      fontSize: width * 0.04, // 4% of screen width
+      marginBottom: height * 0.03, // 3% of screen height
+      textAlign: 'center',
     },
     btns: {
-        backgroundColor: 'white', // Couleur de fond du bouton
-        padding: 10,
-        borderRadius: 5,
-        width: 90,
-        height: 50,
-        marginTop: "0%",
-        marginBottom: '10%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        alignItems: 'center',
-        borderWidth: 1.5,
-        borderColor: '#FDC100',
+      backgroundColor: 'white',
+      padding: width * 0.03, // 3% of screen width
+      borderRadius: width * 0.02, // 2% of screen width
+      width: width * 0.3, // 30% of screen width
+      height: height * 0.07, // 7% of screen height
+      marginTop: height * 0.01, // 1% of screen height
+      marginBottom: height * 0.02, // 2% of screen height
+      marginLeft: width * 0.02, // 2% of screen width
+      marginRight: width * 0.02, // 2% of screen width
+      alignItems: 'center',
+      borderWidth: 1.5,
+      borderColor: '#FDC100',
     },
     btnText: {
-        color: '#FDC100', // Couleur du texte
-        fontSize: 16,
-        textAlign: "center"
+      color: '#FDC100',
+      fontSize: width * 0.04, // 4% of screen width
+      textAlign: 'center',
     },
-});
+  });
+  
 
 export default PopupRapport;

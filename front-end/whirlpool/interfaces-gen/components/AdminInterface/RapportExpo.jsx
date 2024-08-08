@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator  } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator,Dimensions  } from "react-native";
 import { NativeBaseProvider, Center } from "native-base";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Header from './header';
@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
+const { width, height } = Dimensions.get('window');
 
 function RapportExpo() {
   const route = useRoute();
@@ -212,7 +213,7 @@ function RapportExpo() {
             <ActivityIndicator size="large" color="#FDC100" />
           </Center>
         ) : (
-          <ScrollView style={{ marginTop: -50 }}>
+          <ScrollView style={{ marginTop: -20 }}>
             <View>
               <View>
                 <Text style={styles.textexpo}>Date : {month}</Text>
@@ -220,6 +221,7 @@ function RapportExpo() {
                 <Text style={styles.textexpo}>Magasin : {pdv}</Text>
                 <Text style={styles.textexpo}>Animatrice : {anim.length > 0 ? anim[0].name : "Loading..."}</Text>
               </View>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.container2}>
                 {/* Première colonne */}
                 <View style={styles.column}>
@@ -268,6 +270,7 @@ function RapportExpo() {
                   <View style={styles.cell}><Text>{TotalTaux()}%</Text></View>
                 </View>
               </View>
+                </ScrollView>
               <Center>
                 <TouchableOpacity onPress={exportToExcel} style={styles.btns}>
                   <Text style={styles.btnText}>Exporter</Text>
@@ -287,17 +290,17 @@ const styles = StyleSheet.create({
   view1: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    padding: width * 0.05, // 5% of screen width
   },
   image12: {
-    width: 125,
-    height: 95,
+    width: width * 0.3, // 30% of screen width
+    height: height * 0.2, // 20% of screen height
     position: "absolute",
     top: 0,
-    left: 15,
+    left: width * 0.03, // 3% of screen width
   },
   textexpo: {
-    fontSize: 15,
+    fontSize: width * 0.04, // 4% of screen width
     fontWeight: '500',
   },
   container2: {
@@ -313,21 +316,21 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    padding: 10,
+    padding: width * 0.02, // 2% of screen width
     justifyContent: 'center',
     alignItems: 'center',
     borderRightWidth: 0.5,
     borderBottomWidth: 0.5,
     borderLeftWidth: 0.5,
     borderColor: '#D0D3D4',
-    maxWidth: 95,
-    minWidth: 95,
-    maxHeight: 55,
-    minHeight: 55
+    maxWidth: width * 0.25, // 25% of screen width
+    minWidth: width * 0.25, // 25% of screen width
+    maxHeight: height * 0.07, // 7% of screen height
+    minHeight: height * 0.07, // 7% of screen height
   },
   cell1: {
     flex: 1,
-    padding: 10,
+    padding: width * 0.02, // 2% of screen width
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#D0D3D4',
@@ -335,39 +338,39 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0.5,
     borderTopWidth: 0.5,
     borderColor: 'black',
-    maxWidth: 95,
-    minWidth: 95,
-    maxHeight: 55,
-    minHeight: 55
+    maxWidth: width * 0.25, // 25% of screen width
+    minWidth: width * 0.25, // 25% of screen width
+    maxHeight: height * 0.07, // 7% of screen height
+    minHeight: height * 0.07, // 7% of screen height
   },
   cell2: {
     flex: 1,
-    padding: 10,
+    padding: width * 0.02, // 2% of screen width
     justifyContent: 'center',
     alignItems: 'center',
     borderTopWidth: 0.5,
     backgroundColor: '#FDC100',
     borderColor: 'black',
-    maxWidth: 95,
-    minWidth: 95,
-    maxHeight: 55,
-    minHeight: 55
+    maxWidth: width * 0.25, // 25% of screen width
+    minWidth: width * 0.25, // 25% of screen width
+    maxHeight: height * 0.07, // 7% of screen height
+    minHeight: height * 0.07, // 7% of screen height
   },
   textcell2: {
     color: 'white',
   },
   btns: {
     backgroundColor: '#FDC100',
-    padding: 10,
-    borderRadius: 5,
-    width: 150,
-    marginTop: "5%",
+    padding: width * 0.03, // 3% of screen width
+    borderRadius: width * 0.02, // 2% of screen width
+    width: width * 0.4, // 40% of screen width
+    marginTop: height * 0.02, // 2% of screen height
     alignItems: 'center',
   },
   btnText: {
     color: 'white',
-    fontSize: 16,
-    textAlign: "center"
+    fontSize: width * 0.04, // 4% of screen width
+    textAlign: "center",
   },
 });
 

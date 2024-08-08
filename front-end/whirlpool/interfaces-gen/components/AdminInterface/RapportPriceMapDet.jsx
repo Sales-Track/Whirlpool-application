@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet,Button,Image, PermissionsAndroid, ScrollView, LogBox,TouchableOpacity,ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet,Button,Image, PermissionsAndroid, ScrollView, LogBox,TouchableOpacity,ActivityIndicator,Dimensions } from "react-native";
 import { NativeBaseProvider, Center,Box,Select,CheckIcon,Slider, Stack} from "native-base";
 import Header from './header'
 import Footer from './footer'
@@ -8,7 +8,15 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import port from "../port";
 import axios from 'axios';
+const { width, height } = Dimensions.get('window');
 
+const wp = (percentage) => {
+  return width * (percentage / 100);
+};
+
+const hp = (percentage) => {
+  return height * (percentage / 100);
+};
 function RapportPriceMapDet({ route }){
 
   const { categoryId,adm } = route.params;

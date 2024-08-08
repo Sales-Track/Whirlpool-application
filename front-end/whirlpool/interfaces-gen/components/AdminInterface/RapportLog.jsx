@@ -142,7 +142,9 @@ function RapportLog() {
           </Center>
         ) : (
           <ScrollView style={styles.scrollView}>
+            <ScrollView horizontal={true}>
             {Tableaux()}
+          </ScrollView>
           </ScrollView>
         )}
         <Center>
@@ -158,6 +160,7 @@ function RapportLog() {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop:30,
     flex: 1,
   },
   image12: {
@@ -244,8 +247,9 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    padding: 20,
-    marginTop: -200
+    padding: 10,
+    marginTop: -200,
+    marginLeft:10
   },
   btns: {
     backgroundColor: '#FDC100',
