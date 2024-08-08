@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image,ActivityIndicator } from "react-native";
+import { View, StyleSheet,Dimensions, Text, TouchableOpacity, ScrollView, Image,ActivityIndicator } from "react-native";
 import { Select, Box, Center, NativeBaseProvider, Modal, Button } from "native-base";
 import axios from 'axios';
 import port from '../port';
@@ -8,7 +8,12 @@ import Header from './header';
 import Footer from './footer';
 import { useRoute } from '@react-navigation/native';
 
+
+
+
+const { width, height } = Dimensions.get('window');
 function CreationRapportSO() {
+
     console.disableYellowBox = true; // Pour masquer tous les avertissements jaunes
 
     const route = useRoute();
@@ -438,80 +443,80 @@ const [isLoading, setIsLoading] = useState(true);
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        paddingHorizontal: 20,
-        paddingBottom: 80,
-        marginTop: -950
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'space-around',
+      paddingHorizontal: width * 0.05, // Relative padding
+      paddingBottom: height * 0.1, // Relative padding
+      marginTop: -height * 1.2, // Relative marginTop
     },
     tableContainer: {
-        marginTop: -450,
-        width: '100%'
+      marginTop: -height * 0.5, // Relative marginTop
+      width: '100%',
     },
     tableHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     headerCell: {
-        textAlign: 'center',
-        paddingVertical: 10,
-        fontWeight: 'bold',
-        margin: 5,
-        padding: 10,
-        backgroundColor: '#f0f0f0',
-        width: '30%',
-        borderRadius: 5
+      textAlign: 'center',
+      paddingVertical: height * 0.012, // Relative padding
+      fontWeight: 'bold',
+      margin: width * 0.012, // Relative margin
+      padding: width * 0.025, // Relative padding
+      backgroundColor: '#f0f0f0',
+      width: '30%',
+      borderRadius: 5,
     },
     row: {
-        flexDirection: 'row',
-        paddingVertical: 8,
+      flexDirection: 'row',
+      paddingVertical: height * 0.01, // Relative padding
     },
     cell: {
-        flex: 1,
-        textAlign: 'center',
-        backgroundColor: '#D0D3D4',
-        borderRadius: 5,
-        padding: 8,
-        margin: 2
+      flex: 1,
+      textAlign: 'center',
+      backgroundColor: '#D0D3D4',
+      borderRadius: 5,
+      padding: width * 0.02, // Relative padding
+      margin: width * 0.005, // Relative margin
     },
     image12: {
-        width: 125,
-        height: 95,
-        position: "absolute",
-        top: 0,
-        left: 15,
+      width: width * 0.31, // Relative width
+      height: height * 0.12, // Relative height
+      position: "absolute",
+      top: 0,
+      left: width * 0.04, // Relative left position
     },
     cell1: {
-        flex: 1,
-        borderRadius: 5,
-        padding: 8,
-        backgroundColor: '#FDC100',
-        margin: 2
+      flex: 1,
+      borderRadius: 5,
+      padding: width * 0.02, // Relative padding
+      backgroundColor: '#FDC100',
+      margin: width * 0.005, // Relative margin
     },
     textcell1: {
-        color: 'white',
-        padding: 5,
-        textAlign: 'center',
-        fontSize: 16
+      color: 'white',
+      padding: height * 0.006, // Relative padding
+      textAlign: 'center',
+      fontSize: width * 0.04, // Relative font size
     },
     textcell: {
-        padding: 5,
-        textAlign: 'center',
-        fontSize: 16
+      padding: height * 0.006, // Relative padding
+      textAlign: 'center',
+      fontSize: width * 0.04, // Relative font size
     },
     btns: {
-        backgroundColor: '#FDC100',
-        padding: 10,
-        borderRadius: 5,
-        width: 150,
-        marginTop: "5%",
+      backgroundColor: '#FDC100',
+      padding: width * 0.025, // Relative padding
+      borderRadius: 5,
+      width: width * 0.4, // Relative width
+      marginTop: '5%',
     },
     btnText: {
-        color: 'white',
-        fontSize: 16,
-        textAlign: "center"
+      color: 'white',
+      fontSize: width * 0.04, // Relative font size
+      textAlign: "center",
     },
-});
+  });
 
 export default CreationRapportSO;

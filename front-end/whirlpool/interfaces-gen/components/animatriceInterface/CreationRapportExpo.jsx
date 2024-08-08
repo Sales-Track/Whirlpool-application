@@ -1,5 +1,5 @@
 import * as React from "react";
-import {FlatList,Alert,ScrollView,View,StyleSheet,Image,Text,TouchableOpacity,Modal } from "react-native";
+import {FlatList,Alert,Dimensions,ScrollView,View,StyleSheet,Image,Text,TouchableOpacity,Modal } from "react-native";
 import { CheckIcon,Input,CloseIcon,HStack,IconButton, Divider,Heading, Button, Select, Box, Center, NativeBaseProvider,Stack, Icon,Skeleton, VStack,} from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import Header from './header'
@@ -10,7 +10,7 @@ import PopupRapport from './PopupRapportAn';
 
 const leftimage = require('../../../assets/icons8-right-50.png'); 
 const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
-
+const { width, height } = Dimensions.get('window');
 function CreationRapportExpo(){
   console.disableYellowBox = true; // Pour masquer tous les avertissements jaunes
 
@@ -105,73 +105,78 @@ return(
 
 )
 }
+
+
 const styles = StyleSheet.create({
-    alert: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#F5FCFF',
-    },
-    textprop:{
-        fontSize: 18,
-        fontWeight:"600"
-    },
-    image12: {
-      width: 125,
-      height: 95,
-      position: "absolute",
-      top: 0,
-      left: 15,
-    },
-    btns: {
-      backgroundColor: '#FDC100', // Background color of the button
-      padding: 10,
-      borderRadius: 5,
-      width:150,
-      marginTop:"5%",
-      
-    },
-    btnText: {
-      color: 'white', // Text color
-      fontSize: 16,
-      textAlign:"center"
-    },
-    inputs:{
-      marginTop:'5%',
-      marginBottom:'5%',
-    },
-    view1: {
-      flex: 1,
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      padding: 39,
-      paddingHorizontal: 35,
-      paddingBottom: 80,
-    },
-    view2: {
-      flex: 1,
-      alignItems: 'center',
-    },
-    image1: {
-      width: 24,
-      height: 24, // Added height for aspect ratio
-      marginBottom: 20, // Give some space below the image
-    },
-    row: {
-      flexDirection: 'row', // Layout children in a row
-      justifyContent: 'space-between', // Align children to the start and end of the container
-      width: '100%', // Make the row take the full width
-      alignItems: 'center', // Align items vertically
-      marginTop: 10,
-    },
-    text: {
-      fontSize: 16,
-      fontWeight: '500',
-      marginRight: 50, // Space between text and arrow
-    },
-    leftimage: {
-      width: 30,
-      height: 30,
-    },
-        })
+  alert: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  textprop: {
+    fontSize: width * 0.045, // Relative font size
+    fontWeight: "600",
+  },
+  image12: {
+    width: width * 0.3, // Relative width
+    height: height * 0.12, // Relative height
+    position: "absolute",
+    top: 0,
+    left: width * 0.04, // Relative left position
+  },
+  btns: {
+    backgroundColor: '#FDC100',
+    padding: 10,
+    borderRadius: 5,
+    width: width * 0.4, // Relative width
+    marginTop: '5%',
+    alignItems: 'center',
+  },
+  btnText: {
+    color: 'white',
+    fontSize: width * 0.04, // Relative font size
+    textAlign: "center",
+  },
+  inputs: {
+    marginTop: '5%',
+    marginBottom: '5%',
+  },
+  view1: {
+    flex: 1,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    padding: width * 0.1, // Relative padding
+    paddingHorizontal: width * 0.09, // Relative horizontal padding
+    paddingBottom: 80,
+  },
+  view2: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  image1: {
+    width: width * 0.06, // Relative width
+    height: width * 0.06, // Relative height
+    marginBottom: 20,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  text: {
+    fontSize: width * 0.04, // Relative font size
+    fontWeight: '500',
+    marginRight: width * 0.12, // Relative margin right
+  },
+  leftimage: {
+    width: width * 0.08, // Relative width
+    height: width * 0.08, // Relative height
+  },
+});
+
+
+
 export default CreationRapportExpo;

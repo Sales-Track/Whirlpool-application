@@ -1,7 +1,9 @@
 import * as React from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity,Modal,ActivityIndicator } from "react-native";
+import { View, StyleSheet,Dimensions, Image, Text, TouchableOpacity,Modal,ActivityIndicator } from "react-native";
 import { CheckIcon, Select, Box, Icon, Center, NativeBaseProvider, ScrollView,Input  } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
+
+
 
 import port from '../port';
 import axios from 'axios';
@@ -12,10 +14,9 @@ import { useRoute } from '@react-navigation/native';
 
 const downicon = require('../../../assets/icons8-down-50.png');
 const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
-
+const { width, height } = Dimensions.get('window');
 function CreationNRapport() {
   console.disableYellowBox = true; // Pour masquer tous les avertissements jaunes
-
   const route = useRoute();
   const { ani } = route.params;
   const [city,setCity]= React.useState("");
@@ -358,22 +359,24 @@ console.log(datev);
   );
 }
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-around',
     paddingHorizontal: 20,
     paddingBottom: 80,
-    marginTop:-480
+    marginTop: -height * 0.6, // Adjusted to be relative
   },
   textexpo: {
-    fontSize: 15,
+    fontSize: width * 0.04, // Relative font size
     fontWeight: '500',
-    marginBottom:4
+    marginBottom: 4,
   },
   image12: {
-    width: 125,
-    height: 95,
+    width: width * 0.3, // Relative width
+    height: height * 0.12, // Relative height
     position: "absolute",
     top: 0,
     left: 15,
@@ -386,13 +389,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   text: {
-    fontSize: 16,
+    fontSize: width * 0.04, // Relative font size
     fontWeight: '500',
     marginRight: 10,
   },
   leftimage: {
-    width: 30,
-    height: 30,
+    width: width * 0.08, // Relative width
+    height: width * 0.08, // Relative height
   },
   doubleInput: {
     flexDirection: 'row',
@@ -403,13 +406,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDC100',
     padding: 10,
     borderRadius: 5,
-    width: 150,
+    width: width * 0.4, // Relative width
     marginTop: "5%",
     alignItems: 'center',
   },
   btnText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: width * 0.04, // Relative font size
     textAlign: "center",
   },
   container2: {
@@ -417,18 +420,17 @@ const styles = StyleSheet.create({
   },
   row2: {
     flexDirection: 'row',
-    marginBottom:9
+    marginBottom: 9,
   },
   cell: {
     flex: 1,
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    
     backgroundColor: '#D0D3D4',
-    marginBottom:10,
-    maxWidth: 200,
-    minWidth: 200
+    marginBottom: 10,
+    maxWidth: width * 0.5, // Relative max width
+    minWidth: width * 0.5, // Relative min width
   },
   cell1: {
     flex: 1,
@@ -436,9 +438,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FDC100',
-    
-    maxWidth: 200,
-    minWidth: 200,
+    maxWidth: width * 0.5, // Relative max width
+    minWidth: width * 0.5, // Relative min width
   },
   cell2: {
     flex: 1,
@@ -446,21 +447,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#D0D3D4',
-    maxWidth: "30%",
-    minWidth: "30%",
-    marginLeft:30
-
+    maxWidth: width * 0.3, // Relative max width
+    minWidth: width * 0.3, // Relative min width
+    marginLeft: width * 0.075, // Relative margin
   },
   cell3: {
     flex: 1,
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    maxWidth: "30%",
-    minWidth: "30%",
-    marginLeft:30,
+    maxWidth: width * 0.3, // Relative max width
+    minWidth: width * 0.3, // Relative min width
+    marginLeft: width * 0.075, // Relative margin
     backgroundColor: '#D0D3D4',
-    marginBottom:10
+    marginBottom: 10,
   },
   container21: {
     justifyContent: 'center',
@@ -473,17 +473,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContainer: {
-    width: 300,
-    height:300,
+    width: width * 0.8, // Relative width
+    height: height * 0.4, // Relative height
     padding: 20,
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
     elevation: 5,
-
   },
   text2: {
-    fontSize: 16,
+    fontSize: width * 0.04, // Relative font size
     marginVertical: 5,
   },
   buttonContainer: {
@@ -496,14 +495,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 10,
-    marginBottom:15
-  },  
+    marginBottom: 15,
+  },
   btn2: {
     backgroundColor: '#D0D3D4',
     padding: 10,
     borderRadius: 5,
     marginHorizontal: 10,
-    marginTop:5
+    marginTop: 5,
   },
   btnText2: {
     color: 'white',

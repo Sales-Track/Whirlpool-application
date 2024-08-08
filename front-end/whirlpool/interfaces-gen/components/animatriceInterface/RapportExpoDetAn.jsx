@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text,Image, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
+import { View, Text,Image, StyleSheet,Dimensions, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
 import { NativeBaseProvider,Modal } from "native-base";
 import Header from './header';
 import Footer from './footer';
@@ -13,6 +13,10 @@ import * as Sharing from 'expo-sharing';
 import port from "../port";
 import {useRoute } from '@react-navigation/native';
 
+
+
+
+const { width, height } = Dimensions.get('window');
 function RapportExpodet() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -176,10 +180,10 @@ const styles = StyleSheet.create({
   view1: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    padding: width * 0.05, // Relative padding
   },
   textexpo: {
-    fontSize: 15,
+    fontSize: width * 0.04, // Relative font size
     fontWeight: '500',
   },
   container: {
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 0.5,
     borderColor: '#D0D3D4',
-    marginTop: 5,
+    marginTop: height * 0.01, // Relative marginTop
   },
   row: {
     flexDirection: 'row',
@@ -197,7 +201,7 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    padding: 10,
+    padding: width * 0.025, // Relative padding
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.5,
@@ -205,7 +209,7 @@ const styles = StyleSheet.create({
   },
   cell1: {
     flex: 1,
-    padding: 10,
+    padding: width * 0.025, // Relative padding
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#D0D3D4',
@@ -213,15 +217,15 @@ const styles = StyleSheet.create({
     borderColor: '#D0D3D4',
   },
   image12: {
-    width: 125,
-    height: 95,
+    width: width * 0.33, // Relative width
+    height: height * 0.12, // Relative height
     position: "absolute",
     top: 0,
-    left: 15,
+    left: width * 0.04, // Relative left position
   },
   cell2: {
     flex: 1,
-    padding: 10,
+    padding: width * 0.025, // Relative padding
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FDC100',
@@ -233,16 +237,16 @@ const styles = StyleSheet.create({
   },
   btns: {
     backgroundColor: '#FDC100',
-    padding: 10,
+    padding: width * 0.025, // Relative padding
     borderRadius: 5,
-    width: 150,
-    marginTop: 20,
+    width: width * 0.4, // Relative width
+    marginTop: height * 0.02, // Relative marginTop
     alignItems: 'center',
     alignSelf: 'center'
   },
   btnText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: width * 0.04, // Relative font size
     textAlign: "center",
   },
 });

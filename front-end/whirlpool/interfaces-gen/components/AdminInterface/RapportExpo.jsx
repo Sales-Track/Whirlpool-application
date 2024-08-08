@@ -42,7 +42,7 @@ function RapportExpo() {
   // Functions
   const getExpo = useCallback(async () => {
     try {
-      const response = await axios.get("http://" + port + ":3000/api/expositions/expositions");
+      const response = await axios.get(port+"/api/expositions/expositions");
       setExpo(response.data);
     } catch (error) {
       console.error('Error fetching Expositions:', error);
@@ -51,7 +51,7 @@ function RapportExpo() {
 
   const getAllArticle = useCallback(async () => {
     try {
-      const response = await axios.get("http://" + port + ":3000/api/articles/articles");
+      const response = await axios.get(port+"/api/articles/articles");
       setArticles(response.data);
     } catch (error) {
       console.error('Error fetching Articles:', error);
@@ -60,7 +60,7 @@ function RapportExpo() {
 
   const Fetchallcateg = useCallback(async () => {
     try {
-      const response = await axios.get("http://" + port + ":3000/api/categories/categorie");
+      const response = await axios.get(port+"/api/categories/categorie");
       setCateg(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -69,7 +69,7 @@ function RapportExpo() {
 
   const Fetchallref = useCallback(async () => {
     try {
-      const response = await axios.get("http://" + port + ":3000/api/reference/references");
+      const response = await axios.get(port+"/api/reference/references");
       setReferences(response.data);
     } catch (error) {
       console.error('Error fetching references:', error);
@@ -78,7 +78,7 @@ function RapportExpo() {
 
   const Fetchallmarq = useCallback(async () => {
     try {
-      const response = await axios.get("http://" + port + ":3000/api/marques/marques");
+      const response = await axios.get(port+"/api/marques/marques");
       setMarques(response.data);
     } catch (error) {
       console.error('Error fetching marques:', error);

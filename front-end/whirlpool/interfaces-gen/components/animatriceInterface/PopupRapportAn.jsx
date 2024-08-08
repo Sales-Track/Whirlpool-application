@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Modal, StyleSheet,Dimensions, Text, TouchableOpacity } from "react-native";
 import { CheckIcon, Center, NativeBaseProvider, Box, Select, View, Icon } from "native-base";
 import { useNavigation } from '@react-navigation/native';
 import axios from "axios";
@@ -7,6 +7,9 @@ import { MaterialIcons } from "@expo/vector-icons";  // Importing the icons from
 import port from '../port';
 import { useRoute } from '@react-navigation/native';
 
+
+
+const { width, height } = Dimensions.get('window');
 function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportName, link }) {
     const navigation = useNavigation();
     const route = useRoute();
@@ -157,66 +160,66 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
 
 const styles = StyleSheet.create({
     center: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent pour overlay derrière le modal
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent pour overlay derrière le modal
     },
     modal: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 15,
-        width: "80%",
-        height: "40%",
-        borderWidth: 1,
-        borderColor: '#FDC100',
+      backgroundColor: 'white',
+      padding: width * 0.05, // Relative padding
+      borderRadius: 15,
+      width: "80%",
+      height: "40%",
+      borderWidth: 1,
+      borderColor: '#FDC100',
     },
     title: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 30,
-        textAlign: 'center',
+      fontSize: width * 0.045, // Relative font size
+      fontWeight: '600',
+      marginBottom: height * 0.03, // Relative marginBottom
+      textAlign: 'center',
     },
     warningModal: {
-        backgroundColor: 'white',
-        padding: 20,
-        borderRadius: 15,
-        width: "80%",
-        height: "20%",
-        borderWidth: 1,
-        borderColor: '#FDC100',
-        alignItems: 'center',
+      backgroundColor: 'white',
+      padding: width * 0.05, // Relative padding
+      borderRadius: 15,
+      width: "80%",
+      height: "20%",
+      borderWidth: 1,
+      borderColor: '#FDC100',
+      alignItems: 'center',
     },
     warningTitle: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 10,
-        textAlign: 'center',
+      fontSize: width * 0.045, // Relative font size
+      fontWeight: '600',
+      marginBottom: height * 0.01, // Relative marginBottom
+      textAlign: 'center',
     },
     warningText: {
-        fontSize: 16,
-        marginBottom: 20,
-        textAlign: 'center',
+      fontSize: width * 0.04, // Relative font size
+      marginBottom: height * 0.02, // Relative marginBottom
+      textAlign: 'center',
     },
     btns: {
-        backgroundColor: 'white', // Couleur de fond du bouton
-        padding: 10,
-        borderRadius: 5,
-        width: 90,
-        height: 50,
-        marginTop: "0%",
-        marginBottom: '10%',
-        marginLeft: '2%',
-        marginRight: '2%',
-        alignItems: 'center',
-        borderWidth: 1.5,
-        borderColor: '#FDC100',
+      backgroundColor: 'white', // Couleur de fond du bouton
+      padding: height * 0.012, // Relative padding
+      borderRadius: 5,
+      width: width * 0.23, // Relative width
+      height: height * 0.06, // Relative height
+      marginTop: "0%",
+      marginBottom: height * 0.02, // Relative marginBottom
+      marginLeft: width * 0.02, // Relative marginLeft
+      marginRight: width * 0.02, // Relative marginRight
+      alignItems: 'center',
+      borderWidth: 1.5,
+      borderColor: '#FDC100',
     },
     btnText: {
-        color: '#FDC100', // Couleur du texte
-        fontSize: 16,
-        textAlign: "center"
+      color: '#FDC100', // Couleur du texte
+      fontSize: width * 0.04, // Relative font size
+      textAlign: "center",
     },
-});
+  });
 
 export default PopupRapport;
