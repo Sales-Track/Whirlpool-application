@@ -1,5 +1,5 @@
 import * as React from "react";
-import {FlatList,ScrollView,View,StyleSheet,Image,Text,TouchableOpacity,} from "react-native";
+import {FlatList,ScrollView,View,StyleSheet,Image,Text,TouchableOpacity,Dimensions} from "react-native";
 import { CheckIcon,Alert,Input,CloseIcon,HStack,IconButton, Divider,Heading, Button, Select, Box, Center, NativeBaseProvider,Stack, Icon,Skeleton, VStack,Checkbox,Modal } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from 'axios';
@@ -847,7 +847,7 @@ const etape2=async()=>{
                 <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
 
         <View style={styles.view1}>
-        <Text style={{fontSize:18, fontWeight:700 , marginTop:20}}>Creation d'Article :</Text>
+        <Text style={{fontSize:18, fontWeight:700 , marginTop:45}}>Creation d'Article :</Text>
         {alertData.visible && (
           <ExampleAlert
             status={alertData.status}
@@ -897,73 +897,76 @@ const etape2=async()=>{
         </NativeBaseProvider>
       );
     }
-      const styles = StyleSheet.create({
-        alert: {
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#F5FCFF',
-        },
-        textprop:{
-            fontSize: 18,
-            fontWeight:"600"
-        },
-        btns: {
-          backgroundColor: '#FDC100', // Background color of the button
-          padding: 10,
-          borderRadius: 5,
-          width:150,
-          marginTop:"5%",
-        },
-        image12: {
-          width: 125,
-          height: 95,
-          position: "absolute",
-          top: 0,
-          left: 15,
-        },
-        btnText: {
-          color: 'white', // Text color
-          fontSize: 16,
-          textAlign:"center"
-        },
-        inputs:{
-          marginTop:'5%',
-          marginBottom:'5%',
-        },
-        view1: {
-          flex: 1,
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          padding: 39,
-          paddingHorizontal: 35,
-          paddingBottom: 80,
-        },
-        view2: {
-          flex: 1,
-          alignItems: 'center',
-        },
-        image1: {
-          width: 24,
-          height: 24, // Added height for aspect ratio
-          marginBottom: 20, // Give some space below the image
-        },
-        row: {
-          flexDirection: 'row', // Layout children in a row
-          justifyContent: 'space-between', // Align children to the start and end of the container
-          width: '100%', // Make the row take the full width
-          alignItems: 'center', // Align items vertically
-          marginTop: 10,
-        },
-        text: {
-          fontSize: 16,
-          fontWeight: '500',
-          marginRight: 50, // Space between text and arrow
-        },
-        leftimage: {
-          width: 30,
-          height: 30,
-        },
-            })
+    const { width, height } = Dimensions.get('window');
+
+    const styles = StyleSheet.create({
+      alert: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+      },
+      textprop: {
+        fontSize: width * 0.05, // 5% of screen width
+        fontWeight: '600',
+      },
+      btns: {
+        backgroundColor: '#FDC100',
+        padding: width * 0.03, // 3% of screen width
+        borderRadius: width * 0.02, // 2% of screen width
+        width: width * 0.4, // 40% of screen width
+        marginTop: height * 0.05, // 5% of screen height
+      },
+      image12: {
+        width: width * 0.33, // 33% of screen width
+        height: height * 0.15, // 15% of screen height
+        position: 'absolute',
+        top: 0,
+        left: 15,
+      },
+      btnText: {
+        color: 'white',
+        fontSize: width * 0.04, // 4% of screen width
+        textAlign: 'center',
+      },
+      inputs: {
+        marginTop: height * 0.05, // 5% of screen height
+        marginBottom: height * 0.05, // 5% of screen height
+      },
+      view1: {
+        flex: 1,
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        padding: width * 0.1, // 10% of screen width
+        paddingHorizontal: width * 0.08, // 8% of screen width
+        paddingBottom: height * 0.1, // 10% of screen height
+      },
+      view2: {
+        flex: 1,
+        alignItems: 'center',
+      },
+      image1: {
+        width: width * 0.06, // 6% of screen width
+        height: width * 0.06, // 6% of screen width (maintaining aspect ratio)
+        marginBottom: height * 0.02, // 2% of screen height
+      },
+      row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        alignItems: 'center',
+        marginTop: height * 0.02, // 2% of screen height
+      },
+      text: {
+        fontSize: width * 0.04, // 4% of screen width
+        fontWeight: '500',
+        marginRight: width * 0.1, // 10% of screen width
+      },
+      leftimage: {
+        width: width * 0.08, // 8% of screen width
+        height: width * 0.08, // 8% of screen width
+      },
+    });
+    
 
 export default CreationArticle;

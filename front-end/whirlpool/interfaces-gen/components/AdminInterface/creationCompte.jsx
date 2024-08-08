@@ -1,5 +1,5 @@
 import * as React from "react";
-import {  View,Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {  View,Image, StyleSheet, Text, TouchableOpacity,Dimensions } from "react-native";
 import { Alert,CheckIcon,Input,CloseIcon,HStack,IconButton, Divider,Heading, Button, Select, Box, Center, NativeBaseProvider,Stack, Icon,Skeleton, VStack,} from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
@@ -236,38 +236,39 @@ if(text=="Mot De Passe :"){
     </NativeBaseProvider>
   );
 }
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   view1: {
     flex: 1,
     alignItems: 'flex-start',
     justifyContent: 'space-between',
-    padding: 39,
-    paddingHorizontal: 35,
-    paddingBottom: 80,
+    padding: width * 0.1, // 10% of screen width
+    paddingHorizontal: width * 0.09, // 9% of screen width
+    paddingBottom: height * 0.1, // 10% of screen height
   },
   text1: {
-    fontSize: 18,
+    fontSize: width * 0.045, // 4.5% of screen width
     fontWeight: '600',
-    marginBottom: 30,
+    marginBottom: height * 0.03, // 3% of screen height
   },
   btns: {
     backgroundColor: '#FDC100',
-    padding: 10,
+    padding: height * 0.012, // 1.2% of screen height
     borderRadius: 5,
-    width: 150,
-    marginTop: "5%",
-    marginBottom: '10%',
+    width: width * 0.4, // 40% of screen width
+    marginTop: height * 0.05, // 5% of screen height
+    marginBottom: height * 0.1, // 10% of screen height
     alignItems: 'center',
   },
   btnText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: width * 0.04, // 4% of screen width
     textAlign: "center"
   },
   image12: {
-    width: 125,
-    height: 95,
+    width: width * 0.31, // 31% of screen width
+    height: height * 0.12, // 12% of screen height
     position: "absolute",
     top: 0,
     left: 15,
