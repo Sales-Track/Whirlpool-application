@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView,Dimensions } from "react-native";
 import { NativeBaseProvider, Center, Box, Select, CheckIcon, Spinner } from "native-base";
 import Header from './header';
 import Footer from './footer';
@@ -9,7 +9,15 @@ import XLSX from 'xlsx';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import port from "../port";
+const { width, height } = Dimensions.get('window');
 
+const wp = (percentage) => {
+  return width * (percentage / 100);
+};
+
+const hp = (percentage) => {
+  return height * (percentage / 100);
+};
 function RapportDePresence() {
   const route = useRoute();
   const { adm, month, pdv } = route.params;
@@ -171,9 +179,20 @@ function RapportDePresence() {
             <Spinner size="lg" color="#FDC100"/>
           </Center>
         ) : (
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}
+          horizontal={false} // Permet le défilement vertical
+          showsVerticalScrollIndicator={true} // Affiche l'indicateur de défilement vertical
+          showsHorizontalScrollIndicator={true} // Affiche l'indicateur de défilement horizontal
+        >
+          <ScrollView
+            style={styles.horizontalScroll}
+            horizontal={true} // Permet le défilement horizontal
+          >
             <Tableaux />
           </ScrollView>
+        </ScrollView>
         )}
         <Center>
           <TouchableOpacity onPress={exportToExcel} style={styles.btns}>
@@ -187,6 +206,15 @@ function RapportDePresence() {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
+  contentContainer: {
+    flexGrow: 1, // Permet au contenu de s'étendre si nécessaire
+  },
+  horizontalScroll: {
+    flex: 1,
+  },
   container: {
     flex: 1,
   },

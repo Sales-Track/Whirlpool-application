@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator,Dimensions  } from "react-native";
 import { NativeBaseProvider, Modal } from "native-base";
 import Header from './header';
 import Footer from './footer';
@@ -12,7 +12,14 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import port from "../port";
 import { useRoute } from '@react-navigation/native';
+const { width, height } = Dimensions.get('window');
+const wp = (percentage) => {
+  return width * (percentage / 100);
+};
 
+const hp = (percentage) => {
+  return height * (percentage / 100);
+};
 function RapportExpodet() {
   const navigation = useNavigation();
   const route = useRoute();
@@ -185,10 +192,10 @@ const styles = StyleSheet.create({
   view1: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    padding: wp(5),
   },
   textexpo: {
-    fontSize: 15,
+    fontSize: wp(4),
     fontWeight: '500',
   },
   container: {
@@ -197,7 +204,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 0.5,
     borderColor: '#D0D3D4',
-    marginTop: 5,
+    marginTop: hp(1),
   },
   row: {
     flexDirection: 'row',
@@ -206,7 +213,7 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    padding: 10,
+    padding: wp(3),
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.5,
@@ -214,7 +221,7 @@ const styles = StyleSheet.create({
   },
   cell1: {
     flex: 1,
-    padding: 10,
+    padding: wp(3),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#D0D3D4',
@@ -222,15 +229,15 @@ const styles = StyleSheet.create({
     borderColor: '#D0D3D4',
   },
   image12: {
-    width: 125,
-    height: 95,
+    width: wp(30),
+    height: hp(20),
     position: "absolute",
     top: 0,
-    left: 15,
+    left: wp(5),
   },
   cell2: {
     flex: 1,
-    padding: 10,
+    padding: wp(3),
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FDC100',
@@ -242,18 +249,19 @@ const styles = StyleSheet.create({
   },
   btns: {
     backgroundColor: '#FDC100',
-    padding: 10,
+    padding: wp(4),
     borderRadius: 5,
-    width: 150,
-    marginTop: 20,
+    width: wp(40),
+    marginTop: hp(2),
     alignItems: 'center',
     alignSelf: 'center'
   },
   btnText: {
     color: 'white',
-    fontSize: 16,
+    fontSize: wp(4),
     textAlign: "center",
   },
 });
+
 
 export default RapportExpodet;

@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView,Dimensions  } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import * as Location from "expo-location";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const { width, height } = Dimensions.get('window');
 
+const wp = (percentage) => {
+  return width * (percentage / 100);
+};
+
+const hp = (percentage) => {
+  return height * (percentage / 100);
+};
 function Header() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -92,9 +100,9 @@ function Header() {
 
 const styles = StyleSheet.create({
   view1: {
-    flex: 0,
+    flex: 0, // Utilisez 1 pour que la vue occupe l'espace disponible
     justifyContent: 'center',
-    padding: 20,
+    padding: wp(1), // Utilisation du pourcentage pour le padding
   },
   container: {
     flexDirection: 'column',
@@ -105,11 +113,11 @@ const styles = StyleSheet.create({
   },
   cityContainer: {
     alignSelf: 'flex-end', // Pour placer la localisation à droite
+    paddingHorizontal: wp(2), // Exemple de padding horizontal en pourcentage
   },
   texthead: {
-    fontSize: 15,
+    fontSize: wp(4), // Utilisation du pourcentage pour la taille de police
     fontWeight: '700',
   },
 });
-
 export default Header;
