@@ -14,6 +14,7 @@ router.get('/reference/cat',referenceController.getidcategory)
 router.get('/references/marque',referenceController.getidmarque)
 router.get('/referencebycateg/:id',referenceController.RefbyCateg)
 router.put('/addObject',referenceController.AddObj)
+router.post('/refCM',referenceController.getMCref)
 
 
 module.exports = router;

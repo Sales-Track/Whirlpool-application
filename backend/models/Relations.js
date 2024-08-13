@@ -11,7 +11,6 @@ const Sellout=require("./Sellout.js")
 const Category=require("./Category.js")
 const sequelize = require("../config/config.js");
 
-
 PDV.hasMany(Users, { foreignKey: 'PDV_idPDV' });
 Users.belongsTo(PDV, { foreignKey: 'PDV_idPDV' });
 
@@ -24,8 +23,8 @@ Reference.belongsTo(Category, { foreignKey: 'Category_idCategory' });
 Reference.hasMany(Article, { foreignKey: 'Reference_idReference' });
 Article.belongsTo(Reference, { foreignKey: 'Reference_idReference' });
 
-Article.hasMany(Exposition, { foreignKey: 'Article_idArticle' });
-Exposition.belongsTo(Article, { foreignKey: 'Article_idArticle' });
+Reference.hasMany(Exposition, { foreignKey: 'Reference_idReference' });
+Exposition.belongsTo(Reference, { foreignKey: 'Reference_idReference' });
 
 PDV.hasMany(Exposition, { foreignKey: 'PDV_idPDV' });
 Exposition.belongsTo(PDV, { foreignKey: 'PDV_idPDV' });
@@ -48,7 +47,6 @@ Category.belongsToMany(PriceM, { through: 'PriceM_Category', foreignKey: 'idCate
 Reference.belongsToMany(Sellout, { through: 'Reference_has_Sellout', foreignKey: 'Reference_idReference' });
 Sellout.belongsToMany(Reference, { through: 'Reference_has_Sellout', foreignKey: 'Sellout_idSellout' });
 Article.belongsToMany(Reference, { through: 'Reference_has_Sellout', foreignKey: 'Article_idArticle' });
-
 
 PDV.hasMany(Sellout,{foreignKey:'PDV_idPDV'})
 

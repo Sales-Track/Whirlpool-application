@@ -7,7 +7,9 @@ const Exposition = sequelize.define('Exposition', {
       primaryKey: true,
       autoIncrement: true
     },
-    dateCr: DataTypes.DATE
+    dateCr: DataTypes.DATE,
+    prix: DataTypes.INTEGER
+
   });
 
   module.exports = Exposition;
