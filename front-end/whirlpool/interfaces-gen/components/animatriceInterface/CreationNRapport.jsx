@@ -14,6 +14,7 @@ function CreationNRapport() {
 
   const route = useRoute();
   const { ani } = route.params;
+  const [load,setLoad]=useState(true)
   const [marques, setMarques] = useState([]); 
   const [categories, setCategories] = useState([]);
   const [references, setReferences] = useState([]);
@@ -26,7 +27,11 @@ function CreationNRapport() {
   const [newRefName, setNewRefName] = useState("");
   const [newRefPrice, setNewRefPrice] = useState("");
 
-
+const Ref={
+  Referencename:newRefName,
+  Marque_idMarque:selecMarq,
+  Category_idCategory:selecCateg
+}
   //////////////////////FUNCTIONS//////////////////////////////////
   const Fetchallmarq = async () => {
     try {
@@ -57,6 +62,29 @@ function CreationNRapport() {
       console.error('Error fetching references:', error);
     }
   }
+  const AddExpo =async (idRef,prix)=>{
+    try{
+      await axios.post(port+"/api/expositions/expositions",{
+        Reference_idReference:idRef,
+        prix:prix,
+        PDV_idPDV:ani.PDV_idPDV,
+        // dateCr:formatDateWithoutTime(new Date())
+      })
+    }
+    catch (error) {
+      console.error('Error adding expo:', error);
+    }
+  }
+  const AddRef=async(info)=>{
+    try{
+      axios.post(port+'/api/reference/references',info)
+      setLoad(!load)
+    }
+    catch (error) {
+      console.error('Error adding ref', error)
+  
+    }
+  }
   
   const handlePriceChange = (refId, price) => {
     setPrices({
@@ -79,7 +107,7 @@ function CreationNRapport() {
   useEffect(() => {
     Fetchallmarq();
     Fetchallcateg();
-  }, []);
+  }, [!load]);
 
   useEffect(() => {
     if (serMarq && serCateg) {
@@ -88,21 +116,11 @@ function CreationNRapport() {
   }, [serMarq, serCateg]);
 
   /////////////////////////////////////////////////////////////////
-  const Exampleinput = () => {
-    return (
-      <Box alignItems="center">
-        <Input
-          mx="3"
-          placeholder="prix"
-          w="30%"
-          value={prices[serRef] || ""}
-          onChangeText={(value) => handlePriceChange(serRef, value)}
-          style={styles.priceInput}
-        />
-      </Box>
-    );
-  };
-  
+ 
+  function formatDateWithoutTime(date) {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return date.toLocaleDateString("fr-FR", options);
+  }
   return (
     <NativeBaseProvider>
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.logo} />
@@ -163,7 +181,7 @@ function CreationNRapport() {
             onChangeText={(value) => handlePriceChange(ref.idReference, value)}
             style={styles.priceInput}
           />
-          <Button title="Ajouter" onPress={() => { /* Add relevant action here */ }} />
+          <Button title="Ajouter" onPress={() => { AddExpo(ref.idReference, prices[ref.idReference]) }} />
         </View>
       ))}
     </View>
@@ -217,15 +235,9 @@ function CreationNRapport() {
                 onChangeText={setNewRefName}
                 style={styles.input}
               />
-              <Input
-                placeholder="Prix"
-                value={newRefPrice}
-                onChangeText={setNewRefPrice}
-                keyboardType="numeric"
-                style={styles.input}
-              />
               
-              <Button title="Ajouter la Référence" onPress={addNewReference} />
+              
+              <Button title="Ajouter la Référence" onPress={()=>AddRef(Ref)} />
             </VStack>
           </VStack>
         </Center>
