@@ -1,8 +1,10 @@
 const Exposition = require('../models/Exposition.js');
 const Sequelize = require('sequelize');
-const Article =require ('./ArticleC.js')
-const Reference = require ('./RefC.js')
-const Marque = require ('./MarqueC.js')
+const Article = require('./ArticleC.js');
+const Reference = require('./RefC.js');
+const Marque = require('./MarqueC.js');
+const PDV = require('./PdvC.js'); // Assuming you have a PDV model
+const Category = require('./CategoryC.js'); // Assuming you have a Category model
 
 // Create
 async function createExposition(req, res) {
@@ -73,30 +75,25 @@ async function deleteExposition(req, res) {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
-//get categorie by pdvname and date creation
-async function getexpo(req,res) {
+
+// Get expositions by PDV name and date creation
+async function getexpo(req, res) {
   try {
-    const data = await Category.findAll({
+    const data = await Exposition.findAll({
       include: [
         {
-          model: User,
+          model: PDV,
+          where: { pdvname: req.params.pdvname },
           include: [
             {
-              model: PDV,
-              where: { pdvname: req.params.pdvname },
+              model: Article,
               include: [
                 {
-                  model: Exposition,
-                  where: { dateCr: req.params.dateCr },
+                  model: Reference,
                   include: [
                     {
-                      model: Article,
-                      include: [
-                        {
-                          model: Reference,
-                          required: true // INNER JOIN with reference
-                        }
-                      ]
+                      model: Category,
+                      where: { categoryname: req.params.categoryname }
                     }
                   ]
                 }
@@ -104,24 +101,27 @@ async function getexpo(req,res) {
             }
           ]
         }
-      ]
+      ],
+      where: { dateCr: req.params.dateCr }
     });
-   res.status(200).json(data)
+    res.status(200).json(data);
   } catch (error) {
     console.error('Error:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 }
-// get countity of whirlpool article 
-async function WhirlpoolCount (req,res){
+
+// Get count of Whirlpool articles
+async function WhirlpoolCount(req, res) {
   try {
-   const whirl= await Article.findAndCountAll({
+    const whirl = await Article.findAndCountAll({
       include: [
         {
           model: Reference,
           include: [
             {
               model: Marque,
-              where: { marquename: 'Whirlpool' } // Filtrer les marques avec le nom "Whirlpool"
+              where: { marquename: 'Whirlpool' }
             }
           ]
         },
@@ -129,22 +129,24 @@ async function WhirlpoolCount (req,res){
           model: Exposition,
           include: [
             {
-              model: Pdv
+              model: PDV
             }
           ]
         }
       ]
-    })
+    });
 
-    res.status(200).json("Nombre d'articles Whirlpool exposés dans les points de vente:", whirl);
-    } catch(err) {
+    res.status(200).json({ message: "Nombre d'articles Whirlpool exposés dans les points de vente:", count: whirl.count });
+  } catch (err) {
     console.error('Erreur lors de la recherche:', err);
-  };
+    res.status(500).json({ message: 'Internal server error' });
+  }
 }
 
-async function getOtherMarque (req,res){
+// Get count of articles by other marques
+async function getOtherMarque(req, res) {
   try {
-  const  other= await marque.count({
+    const other = await Marque.count({
       include: [
         {
           model: Reference,
@@ -156,7 +158,7 @@ async function getOtherMarque (req,res){
                   model: Exposition,
                   include: [
                     {
-                      model: pdv
+                      model: PDV
                     }
                   ]
                 }
@@ -165,85 +167,85 @@ async function getOtherMarque (req,res){
           ]
         }
       ],
-      // where: {
-      //   marquename: {
-      //     [Sequelize.Op.ne]: 'Whirlpool' // Op.ne représente l'opérateur de non égalité
-      //   }
-      // }
-    })
-      res.status(200).json('Les autre marque est ', other);
-    }catch(err) {
-      console.error('Erreur lors du comptage des enregistrements:', err);
-    }
-  }
-
-
-async function getother (req, res) {
-      try {
-          const result = await Article.findAll({
-              attributes: [
-                  [sequelize.col('marque.marquename'), 'marque'],
-                  [sequelize.col('refference.refferencename'), 'refference'],
-                  [sequelize.col('article.prix'), 'article'],
-                  [sequelize.col('category.categoryname'), 'category']
-              ],
-              include: [
-                  {
-                      model: Refference,
-                      attributes: [],
-                      include: [
-                          {
-                              model: Marque,
-                              attributes: [],
-                              where: { namemarque: { [sequelize.Op.not]: 'whirlpool' }, idmarque: sequelize.col('refference.idmarque') }
-                          },
-                          {
-                              model: Category,
-                              attributes: [],
-                              where: { idcategory: sequelize.col('refference.idcategory'), namecategory: req.params.namecategory }
-                          }
-                      ]
-                  }
-              ]
-          });
-          res.json(result);
-      } catch (error) {
-          console.error(error);
-          res.status(500).json({ error: 'Internal server error' });
+      where: {
+        marquename: {
+          [Sequelize.Op.ne]: 'Whirlpool'
+        }
       }
-  };
+    });
+    res.status(200).json({ message: 'Les autres marques', count: other });
+  } catch (err) {
+    console.error('Erreur lors du comptage des enregistrements:', err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
 
- async function whirlpool (req, res){
-    try {
-        const result = await Article.findAll({
-            attributes: [
-                [sequelize.col('marque.marquename'), 'marque'],
-                [sequelize.col('refference.refferencename'), 'refference'],
-                [sequelize.col('article.prix'), 'article'],
-                [sequelize.col('category.categoryname'), 'category']
-            ],
-            include: [
-                {
-                    model: Refference,
-                    include: [
-                        {
-                            model: Marque,
-                            where: { marquename: 'whirlpool' }
-                        },
-                        {
-                            model: Category,
-                            where: { categoryname: req.params.categoryname }
-                        }
-                    ]
-                }
-            ]
-        });
-        res.json(result);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-};
+// Get articles with certain conditions
+async function getother(req, res) {
+  try {
+    const result = await Article.findAll({
+      attributes: [
+        [sequelize.col('Marque.marquename'), 'marque'],
+        [sequelize.col('Reference.refferencename'), 'reference'],
+        [sequelize.col('Article.prix'), 'prix'],
+        [sequelize.col('Category.categoryname'), 'category']
+      ],
+      include: [
+        {
+          model: Reference,
+          include: [
+            {
+              model: Marque,
+              where: { marquename: { [Sequelize.Op.not]: 'Whirlpool' } }
+            },
+            {
+              model: Category,
+              where: { categoryname: req.params.categoryname }
+            }
+          ]
+        }
+      ]
+    });
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+// Get Whirlpool articles by category name
+async function whirlpool(req, res) {
+  try {
+    const result = await Article.findAll({
+      attributes: [
+        [sequelize.col('Marque.marquename'), 'marque'],
+        [sequelize.col('Reference.refferencename'), 'reference'],
+        [sequelize.col('Article.prix'), 'prix'],
+        [sequelize.col('Category.categoryname'), 'category']
+      ],
+      include: [
+        {
+          model: Reference,
+          include: [
+            {
+              model: Marque,
+              where: { marquename: 'Whirlpool' }
+            },
+            {
+              model: Category,
+              where: { categoryname: req.params.categoryname }
+            }
+          ]
+        }
+      ]
+    });
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 module.exports = {
   whirlpool,
   getother,

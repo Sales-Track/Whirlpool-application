@@ -68,7 +68,7 @@ const Ref={
         Reference_idReference:idRef,
         prix:prix,
         PDV_idPDV:ani.PDV_idPDV,
-        // dateCr:formatDateWithoutTime(new Date())
+        dateCr:formatDateWithoutTime(new Date())
       })
     }
     catch (error) {
