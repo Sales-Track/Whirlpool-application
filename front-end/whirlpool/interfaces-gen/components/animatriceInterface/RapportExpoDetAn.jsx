@@ -16,7 +16,7 @@ import {useRoute } from '@react-navigation/native';
 function RapportExpodet() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { ani,sameExpoData} = route.params;
+  const {references, ani, expo, category, idcateg} = route.params;
   const [articles, setArticles] = useState([]);
   const [categ, setCateg] = useState('');
   const [marques, setMarques] = useState({});
@@ -25,106 +25,10 @@ function RapportExpodet() {
   const [popupData, setPopupData] = useState({});
   const [dataChanged, setDataChanged] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+console.log("hello",references);
 
   const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
-  const fetchArticleByCategory = async (categ) => {
-    try {
-      const response = await axios.get(`${port}/api/articles/artCat/${categ}`);
-  
-      // Filtrer les articles qui ont le même idArticle dans sameExpoData
-      const filteredArticles = response.data.filter(article => {
-        return sameExpoData.some(item => item.Article_idArticle === article.idArticle);
-      });
-  
-      console.log(filteredArticles); // Vérifiez la sortie dans la console pour vous assurer que les données sont correctes
-  
-      setArticles(filteredArticles); 
-      setIsLoading(false)// Mettez à jour l'état des articles avec les données filtrées
-    } catch (error) {
-      console.error('Error fetching articles:', error);
-    }
-  };
-  
-  const fetchRef = async (id) => {
-    try {
-      const response = await axios.get(`${port}/api/reference/references/${id}`);
-      setRefs(prevRefs => ({ ...prevRefs, [id]: response.data }));
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching reference:', error);
-    }
-  };
 
-  const fetchMarque = async (id) => {
-    try {
-      const response = await axios.get(`${port}/api/marques/marques/${id}`);
-      setMarques(prevMarques => ({ ...prevMarques, [id]: response.data }));
-    } catch (error) {
-      console.error('Error fetching marque:', error);
-    }
-  };
-
-  const getData = async (key) => {
-    try {
-      const value = await AsyncStorage.getItem(key);
-      if (value !== null) {
-        setCateg(value);
-      }
-    } catch (e) {
-      console.error('Error reading value from AsyncStorage:', e);
-    }
-  };
-
-  const exportToExcel = async () => {
-    const data = [
-      ["Marques", "Référence", "Prix"],
-      ...articles.map(article => [
-        marques[refs[article.Reference_idReference]?.Marque_idMarque]?.marquename || '',
-        refs[article.Reference_idReference]?.Referencename || '',
-        article.prix
-      ])
-    ];
-
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Rapport Expo");
-
-    const wbout = XLSX.write(wb, { type: 'base64', bookType: 'xlsx' });
-    const uri = FileSystem.cacheDirectory + 'rapport_expo.xlsx';
-    await FileSystem.writeAsStringAsync(uri, wbout, { encoding: FileSystem.EncodingType.Base64 });
-    await Sharing.shareAsync(uri);
-  };
-
-  useEffect(() => {
-    getData('category');
-  }, []);
-
-  useEffect(() => {
-    if (categ) {
-      fetchArticleByCategory(categ);
-    }
-  }, [categ, dataChanged]);
-
-  useEffect(() => {
-    articles.forEach(async article => {
-      const refData = await fetchRef(article.Reference_idReference);
-      if (refData) {
-        fetchMarque(refData.Marque_idMarque);
-      }
-    });
-  }, [articles,dataChanged]);
-
-  const handleModifyClick = (article) => {
-    const refData = refs[article.Reference_idReference];
-    const marqueData = marques[refData?.Marque_idMarque];
-    const price = article.idArticle;
-    setPopupData({ article, refData, marqueData, price, setDataChanged,dataChanged });
-    setShowpop(true);
-  };
-
-  const handleDataChange = () => {
-    setDataChanged(!dataChanged);
-  };
 
   return (
     <NativeBaseProvider>
@@ -134,7 +38,7 @@ function RapportExpodet() {
         <ScrollView style={{ marginTop: -150 }}>
           <View>
             <View>
-              <Text style={styles.textexpo}>{categ}</Text>
+              <Text style={styles.textexpo}>{category}</Text>
             </View>
             <View style={styles.container}>
               <View style={styles.row}>
@@ -143,20 +47,18 @@ function RapportExpodet() {
                 <View style={styles.cell}><Text>Prix</Text></View>
                 <View style={styles.cell}><Text>Action</Text></View>
               </View>
-              {isLoading ? (
-  <ActivityIndicator size="large" color="#FDC100" style={{ marginTop: 20 }} />
-) : (
 
-              articles.map((article, index) => (
+
+           {   references.map((ref, index) => (
                 <View style={styles.row} key={index}>
-                  <View style={styles.cell1}><Text>{marques[refs[article.Reference_idReference]?.Marque_idMarque]?.marquename || ''}</Text></View>
-                  <View style={styles.cell1}><Text>{refs[article.Reference_idReference]?.Referencename || ''}</Text></View>
-                  <View style={styles.cell1}><Text>{article.prix}</Text></View>
-                  <TouchableOpacity onPress={() => handleModifyClick(article)}>
+                  <View style={styles.cell1}><Text>{ref.brand}</Text></View>
+                  <View style={styles.cell1}><Text>{ref.name}</Text></View>
+                  <View style={styles.cell1}><Text>{ref.price}</Text></View>
+                  <TouchableOpacity >
                     <View style={styles.cell2}><Text style={styles.textcell2}>Modifier</Text></View>
                   </TouchableOpacity>
                 </View> 
-              )))}
+              ))}
             </View>
           </View>
         </ScrollView>
@@ -165,7 +67,7 @@ function RapportExpodet() {
         </TouchableOpacity> */}
       </View>
       <Modal isOpen={showpopup} onClose={() => setShowpop(false)}>
-        <Modifpopup {...popupData} onClose={() => setShowpop(false)} onDataChange={handleDataChange} />
+        <Modifpopup {...popupData} onClose={() => setShowpop(false)}  />
       </Modal>
       <Footer ani={ani} />
     </NativeBaseProvider>

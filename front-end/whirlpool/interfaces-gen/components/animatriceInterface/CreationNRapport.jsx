@@ -82,8 +82,12 @@ function CreationNRapport() {
     try {
       axios.post(port + '/api/reference/references', info)
       setLoad(!load)
+      Alert.alert('Succès', 'Exposition ajoutée avec succès');
+
     } catch (error) {
       console.error('Error adding ref', error)
+      Alert.alert('Erreur', "Échec de l'ajout de l'exposition");
+
     }
   }
 
@@ -231,12 +235,6 @@ function CreationNRapport() {
                 placeholder="Nom de la Référence"
                 value={newRefName}
                 onChangeText={setNewRefName}
-                style={styles.input}
-              />
-              <Input
-                placeholder="Prix de la Référence"
-                value={newRefPrice}
-                onChangeText={setNewRefPrice}
                 style={styles.input}
               />
               <Button title="Ajouter la Référence" onPress={() => { AddRef(Ref) }} />

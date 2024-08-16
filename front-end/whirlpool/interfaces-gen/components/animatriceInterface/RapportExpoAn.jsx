@@ -107,7 +107,52 @@ function RapportExpo() {
 
     return uniqueReferences.size;
   };
+  const getTotalwhirlpool = (expositions) => {
+    const formattedMonth = month.toString().padStart(2, '0');
+    const whirlpoolRefs = references.filter(ref => ref.Marque_idMarque === idWhirlpool);
+    
+    const uniqueReferences = new Set(expositions
+      .filter(exposition => 
+        whirlpoolRefs.some(ref => ref.idReference === exposition.Reference_idReference) &&
+        exposition.createdAt.slice(5, 7) === formattedMonth
+      ).map(exposition => exposition.Reference_idReference)
+    );
+  
+    return uniqueReferences.size;
+  };
+  const handleCategoryPress = (category, idCategory) => {
+    // Get references for the selected category
+    const refsInCategory = references.filter(ref => ref.Category_idCategory === idCategory);
 
+    // Get the exposition data for the selected category
+    const expoInCategory = expo.filter(expoItem =>
+      refsInCategory.some(ref => ref.idReference === expoItem.Reference_idReference) &&
+      expoItem.createdAt.slice(5, 7) === month.toString().padStart(2, '0')
+    );
+  
+    // Prepare data to pass, but only include references present in expoInCategory
+    const referencesDetails = expoInCategory.map(expoItem => {
+      const ref = refsInCategory.find(ref => ref.idReference === expoItem.Reference_idReference);
+      return {
+        name: ref?.Referencename || 'Unknown Reference', // Assuming `name` is the reference name
+        brand: marques.find(brand => brand.idMarque === ref?.Marque_idMarque)?.marquename || 'Unknown Brand',
+        price: expoItem.prix || 'N/A' // Assuming `price` is in expo
+      };
+    });
+  
+    // Navigate with detailed data
+    navigation.navigate('RapportExpoDetAn', {
+      references: referencesDetails,
+      ani,
+      expo,
+      category: category,
+      idcateg: idCategory
+    });
+  
+    // Store category data
+    storeData('category', category);
+  };
+  
   useEffect(() => {
     const fetchAllData = async () => {
       await fetchData();
@@ -152,8 +197,7 @@ function RapportExpo() {
               <View style={styles.column}>
                 <View style={styles.cell}><Text>Expo Globale</Text></View>
                 {categ.map(el => (
-                  <TouchableOpacity key={el.idCategory} onPress={() => {
-                    navigation.navigate('RapportExpoDetAn', { ani }); storeData('category', el.Categoryname); }}>
+                  <TouchableOpacity key={el.idCategory} onPress={() => handleCategoryPress(el.Categoryname, el.idCategory)}>
                     <View style={styles.cell2}>
                       <Text style={styles.textcell2}>{getTotalReferences(expo, el.idCategory)}</Text>
                     </View>
@@ -170,7 +214,7 @@ function RapportExpo() {
                     <Text>{getWhirlpool(expo, el.idCategory)}</Text>
                   </View>
                 ))}
-                <View style={styles.cell}><Text>{0}</Text></View>
+                <View style={styles.cell}><Text>{getTotalwhirlpool(expo)}</Text></View>
               </View>
 
               {/* Quatrième colonne */}
@@ -181,7 +225,7 @@ function RapportExpo() {
                     <Text>{CountTaux(getTotalReferences(expo, el.idCategory), getWhirlpool(expo, el.idCategory))}%</Text>
                   </View>
                 ))}
-                <View style={styles.cell}><Text>{0}%</Text></View>
+                <View style={styles.cell}><Text>{CountTaux(getTotalexpo(expo),getTotalwhirlpool(expo))}%</Text></View>
               </View>
             </View>
             <Center>
