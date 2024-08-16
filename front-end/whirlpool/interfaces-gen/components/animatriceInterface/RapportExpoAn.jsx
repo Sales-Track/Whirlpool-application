@@ -109,10 +109,19 @@ function RapportExpo() {
   };
 
   useEffect(() => {
-    fetchData();
-    findIdWhirlpool()
-  }, []);
-
+    const fetchAllData = async () => {
+      await fetchData();
+      findIdWhirlpool(); // Appel de la fonction après que les données ont été récupérées
+    };
+  
+    fetchAllData();
+  }, []); // Le tableau de dépendances est vide, donc cet effet s'exécute uniquement lors du montage initial
+  
+  useEffect(() => {
+    if (marques.length > 0) {
+      findIdWhirlpool();
+    }
+  }, [marques]);
   return (
     <NativeBaseProvider>
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
