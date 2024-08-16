@@ -1,34 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { View, Text,Image, StyleSheet, ScrollView, TouchableOpacity,ActivityIndicator } from "react-native";
-import { NativeBaseProvider,Modal } from "native-base";
+import React, { useState } from "react";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { NativeBaseProvider, Modal } from "native-base";
 import Header from './header';
 import Footer from './footer';
-import Modifpopup from '../AdminInterface/ModifRapExpo'
+import Modifpopup from '../AdminInterface/ModifRapExpo';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import XLSX from 'xlsx';
-import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
-import port from "../port";
-import {useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 function RapportExpodet() {
   const navigation = useNavigation();
   const route = useRoute();
-  const {references, ani, expo, category, idcateg} = route.params;
-  const [articles, setArticles] = useState([]);
-  const [categ, setCateg] = useState('');
-  const [marques, setMarques] = useState({});
-  const [refs, setRefs] = useState({});
+  const { references, ani, expo, category, idcateg } = route.params;
   const [showpopup, setShowpop] = useState(false);
   const [popupData, setPopupData] = useState({});
-  const [dataChanged, setDataChanged] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-console.log("hello",references);
-
   const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
 
+  // Function to handle the "Modifier" button click
+  const handleModifierClick = (ref) => {
+    setPopupData(ref);  // Set the popup data with the reference details
+    setShowpop(true);    // Show the popup
+  };
 
   return (
     <NativeBaseProvider>
@@ -48,27 +39,26 @@ console.log("hello",references);
                 <View style={styles.cell}><Text>Action</Text></View>
               </View>
 
-
-           {   references.map((ref, index) => (
+              {references.map((ref, index) => (
                 <View style={styles.row} key={index}>
                   <View style={styles.cell1}><Text>{ref.brand}</Text></View>
                   <View style={styles.cell1}><Text>{ref.name}</Text></View>
                   <View style={styles.cell1}><Text>{ref.price}</Text></View>
-                  <TouchableOpacity >
+                  <TouchableOpacity onPress={() => handleModifierClick(ref)}>
                     <View style={styles.cell2}><Text style={styles.textcell2}>Modifier</Text></View>
                   </TouchableOpacity>
-                </View> 
+                </View>
               ))}
             </View>
           </View>
         </ScrollView>
-        {/* <TouchableOpacity onPress={exportToExcel} style={styles.btns}>
-          <Text style={styles.btnText}>Exporter</Text>
-        </TouchableOpacity> */}
       </View>
+      
+      {/* Modal for Modifpopup */}
       <Modal isOpen={showpopup} onClose={() => setShowpop(false)}>
-        <Modifpopup {...popupData} onClose={() => setShowpop(false)}  />
+        <Modifpopup {...popupData} onClose={() => setShowpop(false)} />
       </Modal>
+      
       <Footer ani={ani} />
     </NativeBaseProvider>
   );
@@ -132,20 +122,6 @@ const styles = StyleSheet.create({
   },
   textcell2: {
     color: 'white',
-  },
-  btns: {
-    backgroundColor: '#FDC100',
-    padding: 10,
-    borderRadius: 5,
-    width: 150,
-    marginTop: 20,
-    alignItems: 'center',
-    alignSelf: 'center'
-  },
-  btnText: {
-    color: 'white',
-    fontSize: 16,
-    textAlign: "center",
   },
 });
 
