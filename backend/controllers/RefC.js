@@ -196,5 +196,6 @@ module.exports = {
   getidmarque,
   RefbyCateg,
   getrefbyname,
-  AddObj 
+  AddObj,
+  getMCref
 };

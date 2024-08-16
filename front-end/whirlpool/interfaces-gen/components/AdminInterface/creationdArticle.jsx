@@ -143,13 +143,13 @@ const PostArticle=async(data1,id,data2,showAlert )=>{
       setLoad(!load)
      
       setNewidArt(response.data.idArticle)
-      await Promise.all(selectedPdvIds.map(async (id) => {
-        await axios.post("http://" + port + ":3000/api/expositions/expositions", {
-          Article_idArticle: response.data.idArticle,
-          PDV_idPDV: id,
-          dateCr: new Date()
-        });
-      }));
+      // await Promise.all(selectedPdvIds.map(async (id) => {
+      //   await axios.post("http://" + port + ":3000/api/expositions/expositions", {
+      //     Article_idArticle: response.data.idArticle,
+      //     PDV_idPDV: id,
+      //     dateCr: new Date()
+      //   });
+      // }));
     }
 
     setLoad(!load)
@@ -818,7 +818,7 @@ const hideAlert = () => {
                 <Example text={"Type de Capacité"}/>
                 {RenderInput('Capacite',false)}
                 {RenderInput('Prix',false)}
-                <ExampleCheck />
+                {/* <ExampleCheck /> */}
                 <TouchableOpacity onPress={() =>{validAdd()}} style={styles.btns}>
         <Text style={styles.btnText}>Valideé</Text>
       </TouchableOpacity>
