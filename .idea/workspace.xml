@@ -5,17 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ddefe8a0-e9b2-4ab7-bcbe-b1c55332016e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.expo/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.expo/settings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/config/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/config/config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/creationpdv.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/creationpdv.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/animatriceInterface/CreationRapportSO.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/animatriceInterface/CreationRapportSO.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportExpo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportExpo.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/port.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/port.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

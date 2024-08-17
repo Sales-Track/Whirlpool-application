@@ -66,8 +66,8 @@ function RapportExpo() {
 
   const findIdWhirlpool = () => {
     const IdWhirlpool = marques.find(el =>(el.marquename === 'whirlpool')) 
-    console.log(IdWhirlpool.idMarque);
-    setIdwhirlpool(IdWhirlpool.idMarque)
+    console.log(IdWhirlpool? IdWhirlpool.idMarque : null);
+    setIdwhirlpool(IdWhirlpool? IdWhirlpool.idMarque : null)
   };
 
   const CountTaux = (total, partie) => {
@@ -159,31 +159,36 @@ function RapportExpo() {
     storeData('category', category);
   };
   const exportToExcel = async () => {
-    setExportLoading(true); // Commencez le chargement
+    setLoading(true); // Commencez le chargement
     try {
-      const data = [
-        ["Marques", "Référence", "Prix"],
-        ...articles.map(article => [
-          marques[refs[article.Reference_idReference]?.Marque_idMarque]?.marquename || '',
-          refs[article.Reference_idReference]?.Referencename || '',
-          article.prix
-        ])
-      ];
+        const data = [
+            ["Marques", "Référence", "Prix"],
+            ...expo.map(article => {
+                const reference = references.find(ref => ref.idReference === article.Reference_idReference);
+                const marque = marques.find(brand => brand.idMarque === reference?.Marque_idMarque);
+                return [
+                    marque?.marquename || '',
+                    reference?.Referencename || '',
+                    article.prix || 'N/A'
+                ];
+            })
+        ];
 
-      const ws = XLSX.utils.aoa_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Rapport Expo");
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Rapport Expo");
 
-      const wbout = XLSX.write(wb, { type: 'base64', bookType: 'xlsx' });
-      const uri = FileSystem.cacheDirectory + 'rapport_expo.xlsx';
-      await FileSystem.writeAsStringAsync(uri, wbout, { encoding: FileSystem.EncodingType.Base64 });
-      await Sharing.shareAsync(uri);
+        const wbout = XLSX.write(wb, { type: 'base64', bookType: 'xlsx' });
+        const uri = FileSystem.cacheDirectory + 'rapport_expo.xlsx';
+        await FileSystem.writeAsStringAsync(uri, wbout, { encoding: FileSystem.EncodingType.Base64 });
+        await Sharing.shareAsync(uri);
     } catch (error) {
-      console.error('Error exporting to Excel:', error);
+        console.error('Error exporting to Excel:', error);
     } finally {
-      setExportLoading(false); // Fin du chargement
+        setLoading(false); // Fin du chargement
     }
-  };
+};
+
   useEffect(() => {
     const fetchAllData = async () => {
       await fetchData();
