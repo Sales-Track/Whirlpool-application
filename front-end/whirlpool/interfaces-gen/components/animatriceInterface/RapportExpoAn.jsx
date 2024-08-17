@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { View, Text, Image, StyleSheet,Dimensions, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { NativeBaseProvider, Center } from "native-base";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Header from './header';
@@ -7,141 +7,61 @@ import Footer from './footer';
 import axios from 'axios';
 import port from '../port';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import XLSX from 'xlsx';
-import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
 
-
-
-
-const { width, height } = Dimensions.get('window');
 function RapportExpo() {
   const route = useRoute();
   const { ani, month, pdv } = route.params;
   const navigation = useNavigation();
 
-  const [load, setLoad] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [categ, setCateg] = useState([]);
   const [references, setReferences] = useState([]);
   const [marques, setMarques] = useState([]);
   const [expo, setExpo] = useState([]);
-  const [articles, setArticles] = useState([]);
   const [pdvs, setPdvs] = useState({});
   const [anim, setAnim] = useState([]);
-  const [expolist, setExpolist] = useState([]);
-  const [idWhirlpool, setIdwhirlpool] = useState(null);
+  const [idWhirlpool, setIdWhirlpool] = useState(null);
   const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
 
-  const storeData = async (key, category) => {
+  const storeData = async (key, value) => {
     try {
-      await AsyncStorage.setItem(key, category);
+      await AsyncStorage.setItem(key, value);
     } catch (e) {
       console.error(e);
     }
   };
 
-  // Functions
-  const getExpo = useCallback(async () => {
+  const fetchData = async () => {
     try {
-      const response = await axios.get(port + "/api/expositions/expositions");
-      setExpo(response.data);
+      const [expos, categories, refs, brands, pdvData] = await Promise.all([
+        axios.get(port + "/api/expositions/expositions"),
+        axios.get(port + "/api/categories/categorie"),
+        axios.get(port + "/api/reference/references"),
+        axios.get(port + "/api/marques/marques"),
+        axios.get(`${port}/api/pdvs/getId/${pdv}`)
+      ]);
+
+      setExpo(expos.data);
+      setCateg(categories.data);
+      setReferences(refs.data);
+      setMarques(brands.data);
+      setPdvs(pdvData.data);
+
+      if (pdvData.data.idPDV) {
+        const animators = await axios.get(`${port}/api/user/user/${pdvData.data.idPDV}`);
+        setAnim(animators.data);
+      }
+
+      setLoading(false); // Stop loading once all data is fetched
     } catch (error) {
-      console.error('Error fetching Expositions:', error);
+      console.error('Error fetching data:', error);
     }
-  }, []);
-
-  const getAllArticle = useCallback(async () => {
-    try {
-      const response = await axios.get(port+"/api/articles/articles");
-      setArticles(response.data);
-    } catch (error) {
-      console.error('Error fetching Articles:', error);
-    }
-  }, []);
-
-  const Fetchallcateg = useCallback(async () => {
-    try {
-      const response = await axios.get(port+"/api/categories/categorie");
-      setCateg(response.data);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  }, []);
-
-  const Fetchallref = useCallback(async () => {
-    try {
-      const response = await axios.get(port+"/api/reference/references");
-      setReferences(response.data);
-    } catch (error) {
-      console.error('Error fetching references:', error);
-    }
-  }, []);
-
-  const Fetchallmarq = useCallback(async () => {
-    try {
-      const response = await axios.get(port+"/api/marques/marques");
-      setMarques(response.data);
-    } catch (error) {
-      console.error('Error fetching marques:', error);
-    }
-  }, []);
-
-  const getpdvByID = useCallback(async (name) => {
-    try {
-      const response = await axios.get(`${port}/api/pdvs/getId/${name}`);
-      setPdvs(response.data);
-    } catch (error) {
-      console.error('Error fetching PDVs:', error);
-    }
-  }, []);
-
-  const FetchAnim = useCallback(async (idpdv) => {
-    try {
-      const response = await axios.get(`${port}/api/user/user/${idpdv}`);
-      setAnim(response.data);
-    } catch (error) {
-      console.log('Error fetching animators:', error);
-    }
-  }, []);
-
-  const findIdWhirlpool = useCallback(() => {
-    const marqueselement = marques.find(el => el.marquename === 'whirlpool');
-    if (marqueselement) {
-      setIdwhirlpool(marqueselement.idMarque);
-    }
-  }, [marques]);
-
-  const CountSameCateg2 = (id) => {
-    const refByCateg = references.filter(el => el.Category_idCategory === id);
-    const idArts = articles.filter(article =>
-      refByCateg.some(ref => ref.idReference === article.Reference_idReference)
-    );
-    const someExpo = expo.filter(elem =>
-      idArts.some(article => article.idArticle === elem.Article_idArticle) && pdvs.idPDV === elem.PDV_idPDV
-    );
-   return someExpo ;
   };
 
-  const CountSameCateg = (id) => {
-    const refByCateg = references.filter(el => el.Category_idCategory === id);
-    const idArts = articles.filter(article =>
-      refByCateg.some(ref => ref.idReference === article.Reference_idReference)
-    );
-    const someExpo = expo.filter(elem =>
-      idArts.some(article => article.idArticle === elem.Article_idArticle) && pdvs.idPDV === elem.PDV_idPDV
-    );
-    return someExpo.length ;
-  };
-
-  const Findwhirlpool = (id) => {
-    const refByCategMar = references.filter(el => el.Marque_idMarque === idWhirlpool && el.Category_idCategory === id);
-    const idArts = articles.filter(article =>
-      refByCategMar.some(ref => ref.idReference === article.Reference_idReference)
-    );
-    const someExpo = expo.filter(elem =>
-      idArts.some(article => article.idArticle === elem.Article_idArticle) && pdvs.idPDV === elem.PDV_idPDV
-    );
-    return someExpo.length;
+  const findIdWhirlpool = () => {
+    const IdWhirlpool = marques.find(el =>(el.marquename === 'whirlpool')) 
+    console.log(IdWhirlpool.idMarque);
+    setIdWhirlpool(IdWhirlpool.idMarque)
   };
 
   const CountTaux = (total, partie) => {
@@ -149,58 +69,104 @@ function RapportExpo() {
     return isNaN(taux) ? 0 : taux.toFixed(2);
   };
 
-  const TotalExpoGlob = () => {
-    return categ.reduce((total, el) => total + CountSameCateg(el.idCategory), 0);
+  const getTotalReferences = (expositions, idcateg) => {
+    const formattedMonth = month.toString().padStart(2, '0');
+    const refbycateg = references.filter(ref => ref.Category_idCategory === idcateg);
+
+    const referencesInPDV = expositions.filter(exposition =>
+      refbycateg.some(ref => ref.idReference === exposition.Reference_idReference) &&
+      exposition.createdAt.slice(5, 7) === formattedMonth
+    );
+
+    const uniqueReferences = new Set(referencesInPDV.map(exposition => exposition.Reference_idReference));
+
+    return uniqueReferences.size;
   };
 
-  const TotalExpoWhirl = () => {
-    return categ.reduce((total, el) => total + Findwhirlpool(el.idCategory), 0);
+  const getWhirlpool = (expositions, idcateg) => {
+    const formattedMonth = month.toString().padStart(2, '0');
+    const refbycateg = references.filter(ref => ref.Category_idCategory === idcateg &&
+      ref.Marque_idMarque === idWhirlpool
+    );
+
+    const referencesInPDV = expositions.filter(exposition =>
+      refbycateg.some(ref => ref.idReference === exposition.Reference_idReference) &&
+      exposition.createdAt.slice(5, 7) === formattedMonth
+    );
+
+    const uniqueReferences = new Set(referencesInPDV.map(exposition => exposition.Reference_idReference));
+
+    return uniqueReferences.size;
   };
 
-  const TotalTaux = () => {
-    return categ.reduce((total, el) => total + CountTaux(CountSameCateg(el.idCategory), Findwhirlpool(el.idCategory)), 0);
+  const getTotalexpo = (expositions) => {
+    const formattedMonth = month.toString().padStart(2, '0');
+    const uniqueReferences = new Set(expositions.filter(exposition =>
+      exposition.createdAt.slice(5, 7) === formattedMonth
+    ).map(exposition => exposition.Reference_idReference));
+
+    return uniqueReferences.size;
   };
-
-  const exportToExcel = async () => {
-    const data = [
-      ["Famille de produit", "Expo Globale", "Expo Whirlpool", "Taux D'exposition"],
-      ...categ.map(el => [
-        el.Categoryname,
-        CountSameCateg(el.idCategory),
-        Findwhirlpool(el.idCategory),
-        CountTaux(CountSameCateg(el.idCategory), Findwhirlpool(el.idCategory)) + "%"
-      ]),
-      ["Total", TotalExpoGlob(), TotalExpoWhirl(), TotalTaux() + "%"]
-    ];
-
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Rapport Expo", true);
-
-    const wbout = XLSX.write(wb, { type: 'base64', bookType: 'xlsx' });
-    const uri = FileSystem.cacheDirectory + 'rapport_expo.xlsx';
-    await FileSystem.writeAsStringAsync(uri, wbout, { encoding: FileSystem.EncodingType.Base64 });
-    await Sharing.shareAsync(uri);
+  const getTotalwhirlpool = (expositions) => {
+    const formattedMonth = month.toString().padStart(2, '0');
+    const whirlpoolRefs = references.filter(ref => ref.Marque_idMarque === idWhirlpool);
+    
+    const uniqueReferences = new Set(expositions
+      .filter(exposition => 
+        whirlpoolRefs.some(ref => ref.idReference === exposition.Reference_idReference) &&
+        exposition.createdAt.slice(5, 7) === formattedMonth
+      ).map(exposition => exposition.Reference_idReference)
+    );
+  
+    return uniqueReferences.size;
   };
+  const handleCategoryPress = (category, idCategory) => {
+    // Get references for the selected category
+    const refsInCategory = references.filter(ref => ref.Category_idCategory === idCategory);
 
-  useEffect(() => {
-    const initializeData = async () => {
-      await Fetchallcateg();
-      await Fetchallref();
-      await Fetchallmarq();
-      await getExpo();
-      await getAllArticle();
-      await getpdvByID(pdv);
-    };
-
-    initializeData().then(() => {
-      findIdWhirlpool();
-      if (pdvs.idPDV) {
-        FetchAnim(pdvs.idPDV);
-      }
+    // Get the exposition data for the selected category
+    const expoInCategory = expo.filter(expoItem =>
+      refsInCategory.some(ref => ref.idReference === expoItem.Reference_idReference) &&
+      expoItem.createdAt.slice(5, 7) === month.toString().padStart(2, '0')
+    );
+  
+    // Prepare data to pass, but only include references present in expoInCategory
+    const referencesDetails = expoInCategory.map(expoItem => {
+      const ref = refsInCategory.find(ref => ref.idReference === expoItem.Reference_idReference);
+      return {
+        name: ref?.Referencename || 'Unknown Reference', // Assuming `name` is the reference name
+        brand: marques.find(brand => brand.idMarque === ref?.Marque_idMarque)?.marquename || 'Unknown Brand',
+        price: expoItem.prix || 'N/A' // Assuming `price` is in expo
+      };
     });
-  }, [pdvs.idPDV, pdv, Fetchallcateg, Fetchallref, Fetchallmarq, getExpo, getAllArticle, getpdvByID, findIdWhirlpool]);
-
+  
+    // Navigate with detailed data
+    navigation.navigate('RapportExpoDetAn', {
+      references: referencesDetails,
+      ani,
+      expo,
+      category: category,
+      idcateg: idCategory
+    });
+  
+    // Store category data
+    storeData('category', category);
+  };
+  
+  useEffect(() => {
+    const fetchAllData = async () => {
+      await fetchData();
+      findIdWhirlpool(); // Appel de la fonction après que les données ont été récupérées
+    };
+  
+    fetchAllData();
+  }, []); // Le tableau de dépendances est vide, donc cet effet s'exécute uniquement lors du montage initial
+  
+  useEffect(() => {
+    if (marques.length > 0) {
+      findIdWhirlpool();
+    }
+  }, [marques]);
   return (
     <NativeBaseProvider>
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
@@ -218,7 +184,7 @@ function RapportExpo() {
             <View style={styles.container2}>
               {/* Première colonne */}
               <View style={styles.column}>
-                <View style={styles.cell}><Text>Famille de produit</Text></View >
+                <View style={styles.cell}><Text>Famille de produit</Text></View>
                 {categ.map(el => (
                   <View style={styles.cell1} key={el.idCategory}>
                     <Text>{el.Categoryname}</Text>
@@ -231,15 +197,13 @@ function RapportExpo() {
               <View style={styles.column}>
                 <View style={styles.cell}><Text>Expo Globale</Text></View>
                 {categ.map(el => (
-                  <TouchableOpacity key={el.idCategory} onPress={() => {
-                    const sameExpoData = CountSameCateg2(el.idCategory);
-                    navigation.navigate('RapportExpoDetAn', { ani,sameExpoData }); storeData('category', el.Categoryname); }}>
+                  <TouchableOpacity key={el.idCategory} onPress={() => handleCategoryPress(el.Categoryname, el.idCategory)}>
                     <View style={styles.cell2}>
-                      <Text style={styles.textcell2}>{CountSameCateg(el.idCategory)}</Text>
+                      <Text style={styles.textcell2}>{getTotalReferences(expo, el.idCategory)}</Text>
                     </View>
                   </TouchableOpacity>
                 ))}
-                <View style={styles.cell}><Text>{TotalExpoGlob()}</Text></View>
+                <View style={styles.cell}><Text>{getTotalexpo(expo)}</Text></View>
               </View>
 
               {/* Troisième colonne */}
@@ -247,10 +211,10 @@ function RapportExpo() {
                 <View style={styles.cell}><Text>Expo Whirlpool</Text></View>
                 {categ.map(el => (
                   <View style={styles.cell1} key={el.idCategory}>
-                    <Text>{Findwhirlpool(el.idCategory)}</Text>
+                    <Text>{getWhirlpool(expo, el.idCategory)}</Text>
                   </View>
                 ))}
-                <View style={styles.cell}><Text>{TotalExpoWhirl()}</Text></View>
+                <View style={styles.cell}><Text>{getTotalwhirlpool(expo)}</Text></View>
               </View>
 
               {/* Quatrième colonne */}
@@ -258,10 +222,10 @@ function RapportExpo() {
                 <View style={styles.cell}><Text>Taux D'exposition</Text></View>
                 {categ.map(el => (
                   <View style={styles.cell1} key={el.idCategory}>
-                    <Text>{CountTaux(CountSameCateg(el.idCategory), Findwhirlpool(el.idCategory))}%</Text>
+                    <Text>{CountTaux(getTotalReferences(expo, el.idCategory), getWhirlpool(expo, el.idCategory))}%</Text>
                   </View>
                 ))}
-                <View style={styles.cell}><Text>{TotalTaux()}%</Text></View>
+                <View style={styles.cell}><Text>{CountTaux(getTotalexpo(expo),getTotalwhirlpool(expo))}%</Text></View>
               </View>
             </View>
             <Center>
@@ -282,17 +246,17 @@ const styles = StyleSheet.create({
   view1: {
     flex: 1,
     justifyContent: 'center',
-    padding: width * 0.05, // Relative padding
+    padding: 20,
   },
   image12: {
-    width: width * 0.33, // Relative width
-    height: height * 0.12, // Relative height
+    width: 125,
+    height: 95,
     position: "absolute",
     top: 0,
-    left: width * 0.04, // Relative left position
+    left: 15,
   },
   textexpo: {
-    fontSize: width * 0.04, // Relative font size
+    fontSize: 15,
     fontWeight: '500',
   },
   container2: {
@@ -308,61 +272,62 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    padding: width * 0.025, // Relative padding
+    padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
     borderRightWidth: 0.5,
     borderBottomWidth: 0.5,
     borderLeftWidth: 0.5,
     borderColor: '#D0D3D4',
-    maxWidth: width * 0.25, // Relative max width
-    minWidth: width * 0.25, // Relative min width
-    maxHeight: height * 0.07, // Relative max height
-    minHeight: height * 0.07, // Relative min height
+    maxWidth: 95,
+    minWidth: 95,
+    maxHeight: 55,
+    minHeight: 55
   },
   cell1: {
     flex: 1,
-    padding: width * 0.025, // Relative padding
+    padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#D0D3D4',
     borderRightWidth: 0.5,
+    borderBottomWidth: 0.5,
     borderLeftWidth: 0.5,
-    borderTopWidth: 0.5,
-    borderColor: 'black',
-    maxWidth: width * 0.25, // Relative max width
-    minWidth: width * 0.25, // Relative min width
-    maxHeight: height * 0.07, // Relative max height
-    minHeight: height * 0.07, // Relative min height
+    borderColor: '#D0D3D4',
+    maxWidth: 95,
+    minWidth: 95,
+    maxHeight: 50,
+    minHeight: 50
   },
   cell2: {
     flex: 1,
-    padding: width * 0.025, // Relative padding
+    padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderTopWidth: 0.5,
     backgroundColor: '#FDC100',
-    borderColor: 'black',
-    maxWidth: width * 0.25, // Relative max width
-    minWidth: width * 0.25, // Relative min width
-    maxHeight: height * 0.07, // Relative max height
-    minHeight: height * 0.07, // Relative min height
+    borderRightWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderLeftWidth: 0.5,
+    borderColor: '#D0D3D4',
+    maxWidth: 95,
+    minWidth: 95,
+    maxHeight: 50,
+    minHeight: 50
   },
   textcell2: {
-    color: 'white',
+    color: '#FFF',
+    fontWeight: 'bold',
   },
   btns: {
-    backgroundColor: '#FDC100',
-    padding: width * 0.025, // Relative padding
+    marginTop: 20,
+    backgroundColor: '#2196F3',
+    paddingVertical: 10,
+    paddingHorizontal: 30,
     borderRadius: 5,
-    width: width * 0.4, // Relative width
-    marginTop: "5%",
-    alignItems: 'center',
   },
   btnText: {
-    color: 'white',
-    fontSize: width * 0.04, // Relative font size
-    textAlign: "center",
+    color: '#FFF',
+    fontWeight: 'bold',
   },
 });
 
