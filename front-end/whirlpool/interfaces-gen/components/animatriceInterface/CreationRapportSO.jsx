@@ -37,6 +37,7 @@ const [isLoading, setIsLoading] = useState(true);
 
     const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
     const [modalVisibleSup, setModalVisibleSup] = useState(false);
+    const [art,setArt]=useState({})
 
     const [selectedReferenceId, setSelectedReferenceId] = useState(null);
     const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
@@ -54,6 +55,11 @@ const [isLoading, setIsLoading] = useState(true);
             const couleurs = articles.map(article =>{
                 if(article.Reference_idReference===id){
                     return article.coloeur
+                }
+            });
+            const art = articles.map(article =>{
+                if(article.Reference_idReference===id){
+                    return article
                 }
             });
             const capacites = articles.map(article =>{
@@ -149,16 +155,18 @@ const [isLoading, setIsLoading] = useState(true);
 
     const confirmIncrement = async () => {
         try {
-            if (!couleur || !capacitee) {
-                Toast.show("remplire tou les champ svp.", Toast.LONG);
-                return;
-            }
+            // if (!couleur || !capacitee) {
+            //     Toast.show("remplire tou les champ svp.", Toast.LONG);
+            //     return;
+            // }
             
             if (selectedReferenceId !== null) {
                 const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
-                    couleur: couleur,
-                    capacite: capacitee
+                    couleur: couleurs,
+                    capacite: capacites,
                 });
+                console.log('aaa',couleur);
+                
                 const articleId = response.data.idArticle;
                 const existingSales = sales[selectedReferenceId]?.articles?.[articleId]?.sales || 0;
                 const updatedSales = existingSales + 1;
@@ -192,14 +200,14 @@ const [isLoading, setIsLoading] = useState(true);
 
     const confirmDecrement = async () => {
         try {
-            if (!couleur || !capacitee) {
-                Toast.show("remplire tout les champs svp.", Toast.LONG);
-                return;
-            }
+            // if (!couleur || !capacitee) {
+            //     Toast.show("remplire tout les champs svp.", Toast.LONG);
+            //     return;
+            // }
             if (selectedReferenceId !== null) {
                 const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
-                    couleur: couleur,
-                    capacite: capacitee
+                    couleur: couleurs,
+                    capacite: capacites,
                 });
                 const articleId = response.data.idArticle;
                 const existingSales = sales[selectedReferenceId]?.articles?.[articleId]?.sales || 0;
@@ -396,12 +404,8 @@ const [isLoading, setIsLoading] = useState(true);
                         <Modal.Header>Confirmation</Modal.Header>
                         <Modal.Body>
                             <View style={{margin:5}}>
-                                <Text>Choisir le Couleur :</Text>
-                                <Example text={'Couleur'} />
-                            </View>
-                            <View style={{margin:5}}>
-                                <Text>Choisir la Capacite :</Text>
-                                <Example text={'Capacite'} />
+                                <Text>Confirmer la vente de ce produit ?
+                                </Text>
                             </View>
                         </Modal.Body>
                         <Modal.Footer>
@@ -418,14 +422,11 @@ const [isLoading, setIsLoading] = useState(true);
                     <Modal.Content>
                         <Modal.Header>Confirmation</Modal.Header>
                         <Modal.Body>
-                            <View style={{margin:5}}>
-                                <Text>Choisir le Couleur :</Text>
-                                <Example text={'Couleur'} />
+                            <View style={{margin:10}}>
+                                <Text>Souhaitez-vous appliquer cette correction ?</Text>
+                                
                             </View>
-                            <View style={{margin:5}}>
-                                <Text>Choisir la Capacite :</Text>
-                                <Example text={'Capacite'} />
-                            </View>
+                           
                         </Modal.Body>
                         <Modal.Footer>
                             <Button.Group space={2}>

@@ -89,8 +89,10 @@ const handleClick = async (refName, obj) => {
       objectif: obj
     });
     console.log('Update successful:', response.data);
+    showAlert('success', "Un Nouveau objectif de vente a été créé");
   } catch (error) {
     console.error('Error updating data:', error);
+   
   }
 };
 const Fetchallmarq=async()=>{
