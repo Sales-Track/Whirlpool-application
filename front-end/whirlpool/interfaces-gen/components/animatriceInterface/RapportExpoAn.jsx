@@ -60,8 +60,8 @@ function RapportExpo() {
 
   const findIdWhirlpool = () => {
     const IdWhirlpool = marques.find(el =>(el.marquename === 'whirlpool')) 
-    console.log(IdWhirlpool.idMarque);
-    setIdWhirlpool(IdWhirlpool.idMarque)
+    console.log(IdWhirlpool.idMarque?IdWhirlpool.idMarque : null);
+    setIdWhirlpool(IdWhirlpool.idMarque?IdWhirlpool.idMarque : null)
   };
 
   const CountTaux = (total, partie) => {
