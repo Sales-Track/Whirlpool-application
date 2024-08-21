@@ -41,10 +41,10 @@ function WelcomeAdmin() {
 
         <View style={styles.gridContainer}>
           <TouchableOpacity
-            onPress={() => hundlehistorique({ name: 'Création de compte', link: 'CreationCompte', image: image01 })}
+            onPress={() => hundlehistorique({ name: 'Espace Compte', link: 'EspaceCompte', image: image01 })}
             style={styles.gridItem}
           >
-            <Text style={styles.textCreation}>Création de compte</Text>
+            <Text style={styles.textCreation}>Espace Compte</Text>
             <Image resizeMode="contain" source={image01} style={styles.image1} />
           </TouchableOpacity>
           <TouchableOpacity
