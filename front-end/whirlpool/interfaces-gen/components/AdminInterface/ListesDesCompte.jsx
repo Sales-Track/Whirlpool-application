@@ -3,10 +3,15 @@ import { NativeBaseProvider, Button, Input } from "native-base";
 import { ScrollView, View, StyleSheet, Image, Text, TouchableOpacity, Modal } from "react-native";
 import axios from "axios";
 import port from "../port";
+import Footer from './footer';
+import {useRoute ,useNavigation} from '@react-navigation/native';
 
 const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
 
 function ListesDesComptes() {
+    const navigation = useNavigation();
+    const route = useRoute();
+    const { adm } = route.params;
     const [modalVisible, setModalVisible] = useState(false);
     const [actionType, setActionType] = useState("");
     const [selectedAccount, setSelectedAccount] = useState(null);
@@ -111,6 +116,7 @@ React.useEffect(() => {
                     </View>
                 </View>
             </Modal>
+            <Footer adm ={adm}/>
         </NativeBaseProvider>
     );
 }
