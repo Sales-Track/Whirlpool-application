@@ -6,6 +6,8 @@ import Footer from './footer';
 
 import axios from "axios";
 import port from "../port";
+import Footer from './footer';
+import {useRoute ,useNavigation} from '@react-navigation/native';
 
 const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png')
 
