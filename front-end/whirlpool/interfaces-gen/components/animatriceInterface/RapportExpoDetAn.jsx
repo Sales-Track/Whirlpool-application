@@ -1,242 +1,89 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { NativeBaseProvider, Center } from "native-base";
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useState } from "react";
+import { View, Text, Image, StyleSheet, ScrollView,Alert, TouchableOpacity } from "react-native";
+import { NativeBaseProvider, Modal } from "native-base";
 import Header from './header';
 import Footer from './footer';
+import Modifpopup from './MOdifPopUp';
+import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import port from '../port';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-function RapportExpo() {
-  const route = useRoute();
-  const { ani, month, pdv } = route.params;
+function RapportExpodet() {
   const navigation = useNavigation();
-
-  const [loading, setLoading] = useState(true);
-  const [categ, setCateg] = useState([]);
-  const [references, setReferences] = useState([]);
-  const [marques, setMarques] = useState([]);
-  const [expo, setExpo] = useState([]);
-  const [pdvs, setPdvs] = useState({});
-  const [anim, setAnim] = useState([]);
-  const [idWhirlpool, setIdWhirlpool] = useState(null);
+  const route = useRoute();
+  const { ani, expo, category, idcateg ,tableData} = route.params;
+  const [showpopup, setShowpop] = useState(false);
+  const [popupData, setPopupData] = useState({});
   const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
 
-  const storeData = async (key, value) => {
-    try {
-      await AsyncStorage.setItem(key, value);
-    } catch (e) {
-      console.error(e);
-    }
+  // Function to handle the "Modifier" button click
+  const handleModifierClick = (ref) => {
+    setPopupData(ref);  // Set the popup data with the reference details
+    setShowpop(true);    // Show the popup
   };
-
-  const fetchData = async () => {
+  const AddExpo = async (idRef, prix) => {
     try {
-      const [expos, categories, refs, brands, pdvData] = await Promise.all([
-        axios.get(port + "/api/expositions/expositions"),
-        axios.get(port + "/api/categories/categorie"),
-        axios.get(port + "/api/reference/references"),
-        axios.get(port + "/api/marques/marques"),
-        axios.get(`${port}/api/pdvs/getId/${pdv}`)
-      ]);
-
-      setExpo(expos.data);
-      setCateg(categories.data);
-      setReferences(refs.data);
-      setMarques(brands.data);
-      setPdvs(pdvData.data);
-
-      if (pdvData.data.idPDV) {
-        const animators = await axios.get(`${port}/api/user/user/${pdvData.data.idPDV}`);
-        setAnim(animators.data);
-      }
-
-      setLoading(false); // Stop loading once all data is fetched
+      await axios.post(port + "/api/expositions/expositions", {
+        Reference_idReference: idRef,
+        prix: prix,
+        PDV_idPDV: ani.PDV_idPDV,
+        dateCr: formatDateWithoutTime(new Date())
+      });
+      Alert.alert('Succès', 'Exposition ajoutée avec succès');
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error adding expo:', error);
+      Alert.alert('Erreur', "Échec de l'ajout de l'exposition");
     }
-  };
+  }
+  function formatDateWithoutTime(date) {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return date.toLocaleDateString("fr-FR", options);
+  }
 
-  const findIdWhirlpool = () => {
-    const IdWhirlpool = marques.find(el =>(el.marquename === 'whirlpool')) 
-    console.log(IdWhirlpool.idMarque);
-    setIdWhirlpool(IdWhirlpool.idMarque)
-  };
-
-  const CountTaux = (total, partie) => {
-    const taux = (partie / total) * 100;
-    return isNaN(taux) ? 0 : taux.toFixed(2);
-  };
-
-  const getTotalReferences = (expositions, idcateg) => {
-    const formattedMonth = month.toString().padStart(2, '0');
-    const refbycateg = references.filter(ref => ref.Category_idCategory === idcateg);
-
-    const referencesInPDV = expositions.filter(exposition =>
-      refbycateg.some(ref => ref.idReference === exposition.Reference_idReference) &&
-      exposition.createdAt.slice(5, 7) === formattedMonth
-    );
-
-    const uniqueReferences = new Set(referencesInPDV.map(exposition => exposition.Reference_idReference));
-
-    return uniqueReferences.size;
-  };
-
-  const getWhirlpool = (expositions, idcateg) => {
-    const formattedMonth = month.toString().padStart(2, '0');
-    const refbycateg = references.filter(ref => ref.Category_idCategory === idcateg &&
-      ref.Marque_idMarque === idWhirlpool
-    );
-
-    const referencesInPDV = expositions.filter(exposition =>
-      refbycateg.some(ref => ref.idReference === exposition.Reference_idReference) &&
-      exposition.createdAt.slice(5, 7) === formattedMonth
-    );
-
-    const uniqueReferences = new Set(referencesInPDV.map(exposition => exposition.Reference_idReference));
-
-    return uniqueReferences.size;
-  };
-
-  const getTotalexpo = (expositions) => {
-    const formattedMonth = month.toString().padStart(2, '0');
-    const uniqueReferences = new Set(expositions.filter(exposition =>
-      exposition.createdAt.slice(5, 7) === formattedMonth
-    ).map(exposition => exposition.Reference_idReference));
-
-    return uniqueReferences.size;
-  };
-  const getTotalwhirlpool = (expositions) => {
-    const formattedMonth = month.toString().padStart(2, '0');
-    const whirlpoolRefs = references.filter(ref => ref.Marque_idMarque === idWhirlpool);
-    
-    const uniqueReferences = new Set(expositions
-      .filter(exposition => 
-        whirlpoolRefs.some(ref => ref.idReference === exposition.Reference_idReference) &&
-        exposition.createdAt.slice(5, 7) === formattedMonth
-      ).map(exposition => exposition.Reference_idReference)
-    );
-  
-    return uniqueReferences.size;
-  };
-  const handleCategoryPress = (category, idCategory) => {
-    // Get references for the selected category
-    const refsInCategory = references.filter(ref => ref.Category_idCategory === idCategory);
-
-    // Get the exposition data for the selected category
-    const expoInCategory = expo.filter(expoItem =>
-      refsInCategory.some(ref => ref.idReference === expoItem.Reference_idReference) &&
-      expoItem.createdAt.slice(5, 7) === month.toString().padStart(2, '0')
-    );
-  
-    // Prepare data to pass, but only include references present in expoInCategory
-    const referencesDetails = expoInCategory.map(expoItem => {
-      const ref = refsInCategory.find(ref => ref.idReference === expoItem.Reference_idReference);
-      return {
-        name: ref?.Referencename || 'Unknown Reference', // Assuming `name` is the reference name
-        brand: marques.find(brand => brand.idMarque === ref?.Marque_idMarque)?.marquename || 'Unknown Brand',
-        price: expoItem.prix || 'N/A' // Assuming `price` is in expo
-      };
-    });
-  
-    // Navigate with detailed data
-    navigation.navigate('RapportExpoDetAn', {
-      references: referencesDetails,
-      ani,
-      expo,
-      category: category,
-      idcateg: idCategory
-    });
-  
-    // Store category data
-    storeData('category', category);
-  };
-  
-  useEffect(() => {
-    const fetchAllData = async () => {
-      await fetchData();
-      findIdWhirlpool(); // Appel de la fonction après que les données ont été récupérées
-    };
-  
-    fetchAllData();
-  }, []); // Le tableau de dépendances est vide, donc cet effet s'exécute uniquement lors du montage initial
-  
-  useEffect(() => {
-    if (marques.length > 0) {
-      findIdWhirlpool();
-    }
-  }, [marques]);
   return (
     <NativeBaseProvider>
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
-
       <View style={styles.view1}>
         <Header />
-        <ScrollView style={{ marginTop: -50 }}>
+        <ScrollView style={{ marginTop: -150 }}>
           <View>
             <View>
-              <Text style={styles.textexpo}>Date :{month}</Text>
-              <Text style={styles.textexpo}>Zone :{pdvs.location}</Text>
-              <Text style={styles.textexpo}>Magasin :{pdv}</Text>
-              <Text style={styles.textexpo}>Animatrice : {anim.length > 0 ? anim[0].name : "Loading..."}</Text>
+              <Text style={styles.textexpo}>{category}</Text>
             </View>
-            <View style={styles.container2}>
-              {/* Première colonne */}
-              <View style={styles.column}>
-                <View style={styles.cell}><Text>Famille de produit</Text></View>
-                {categ.map(el => (
-                  <View style={styles.cell1} key={el.idCategory}>
-                    <Text>{el.Categoryname}</Text>
-                  </View>
-                ))}
-                <View style={styles.cell}><Text>Total</Text></View>
+            <View style={styles.container}>
+              <View style={styles.row}>
+             
+                <View style={styles.cell}><Text>Référence</Text></View>
+                <View style={styles.cell}><Text>Prix</Text></View>
+                <View style={styles.cell}><Text>Action</Text></View>
               </View>
 
-              {/* Deuxième colonne */}
-              <View style={styles.column}>
-                <View style={styles.cell}><Text>Expo Globale</Text></View>
-                {categ.map(el => (
-                  <TouchableOpacity key={el.idCategory} onPress={() => handleCategoryPress(el.Categoryname, el.idCategory)}>
-                    <View style={styles.cell2}>
-                      <Text style={styles.textcell2}>{getTotalReferences(expo, el.idCategory)}</Text>
-                    </View>
+              {tableData.map((ref, index) => (
+                <View style={styles.row} key={index}>
+                  <View style={styles.cell1}><Text>{ref.referenceName}</Text></View>
+                  <View style={styles.cell1}><Text>{ref.prix}</Text></View>
+                 
+                  <TouchableOpacity onPress={() => handleModifierClick(ref)}>
+                    <View style={styles.cell2}><Text style={styles.textcell2}>Modifier</Text></View>
                   </TouchableOpacity>
-                ))}
-                <View style={styles.cell}><Text>{getTotalexpo(expo)}</Text></View>
-              </View>
-
-              {/* Troisième colonne */}
-              <View style={styles.column}>
-                <View style={styles.cell}><Text>Expo Whirlpool</Text></View>
-                {categ.map(el => (
-                  <View style={styles.cell1} key={el.idCategory}>
-                    <Text>{getWhirlpool(expo, el.idCategory)}</Text>
-                  </View>
-                ))}
-                <View style={styles.cell}><Text>{getTotalwhirlpool(expo)}</Text></View>
-              </View>
-
-              {/* Quatrième colonne */}
-              <View style={styles.column}>
-                <View style={styles.cell}><Text>Taux D'exposition</Text></View>
-                {categ.map(el => (
-                  <View style={styles.cell1} key={el.idCategory}>
-                    <Text>{CountTaux(getTotalReferences(expo, el.idCategory), getWhirlpool(expo, el.idCategory))}%</Text>
-                  </View>
-                ))}
-                <View style={styles.cell}><Text>{CountTaux(getTotalexpo(expo),getTotalwhirlpool(expo))}%</Text></View>
-              </View>
+                  <TouchableOpacity onPress={() => {AddExpo(ref.idref,ref.prix)}}>
+                    <View style={styles.cell2}><Text style={styles.textcell2}>ajouter</Text></View>
+                  </TouchableOpacity>
+                </View>
+              ))}
             </View>
-            <Center>
-              {/* <TouchableOpacity onPress={exportToExcel} style={styles.btns}>
-                <Text style={styles.btnText}>Exporter</Text>
-              </TouchableOpacity> */}
-            </Center>
           </View>
         </ScrollView>
       </View>
+      
+      {/* Modal for Modifpopup */}
+      <Modal isOpen={showpopup} onClose={() => setShowpop(false)}>
+        <Modifpopup popupData={tableData}
+        ani={ani}
 
+        onClose={() => setShowpop(false)} />
+      </Modal>
+      
       <Footer ani={ani} />
     </NativeBaseProvider>
   );
@@ -248,25 +95,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
-  image12: {
-    width: 125,
-    height: 95,
-    position: "absolute",
-    top: 0,
-    left: 15,
-  },
   textexpo: {
     fontSize: 15,
     fontWeight: '500',
   },
-  container2: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 0.5,
+    borderColor: '#D0D3D4',
+    marginTop: 5,
   },
-  column: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+  row: {
+    flexDirection: 'row',
     borderBottomWidth: 1,
     borderColor: 'black',
   },
@@ -275,14 +117,8 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRightWidth: 0.5,
-    borderBottomWidth: 0.5,
-    borderLeftWidth: 0.5,
+    borderWidth: 0.5,
     borderColor: '#D0D3D4',
-    maxWidth: 95,
-    minWidth: 95,
-    maxHeight: 55,
-    minHeight: 55
   },
   cell1: {
     flex: 1,
@@ -290,14 +126,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#D0D3D4',
-    borderRightWidth: 0.5,
-    borderBottomWidth: 0.5,
-    borderLeftWidth: 0.5,
+    borderWidth: 0.5,
     borderColor: '#D0D3D4',
-    maxWidth: 95,
-    minWidth: 95,
-    maxHeight: 50,
-    minHeight: 50
+  },
+  image12: {
+    width: 125,
+    height: 95,
+    position: "absolute",
+    top: 0,
+    left: 15,
   },
   cell2: {
     flex: 1,
@@ -305,30 +142,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FDC100',
-    borderRightWidth: 0.5,
-    borderBottomWidth: 0.5,
-    borderLeftWidth: 0.5,
+    borderWidth: 0.5,
     borderColor: '#D0D3D4',
-    maxWidth: 95,
-    minWidth: 95,
-    maxHeight: 50,
-    minHeight: 50
   },
   textcell2: {
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
-  btns: {
-    marginTop: 20,
-    backgroundColor: '#2196F3',
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 5,
-  },
-  btnText: {
-    color: '#FFF',
-    fontWeight: 'bold',
+    color: 'white',
   },
 });
 
-export default RapportExpo;
+export default RapportExpodet;
