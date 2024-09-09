@@ -127,10 +127,10 @@ function CreationNRapport() {
 
   return (
     <NativeBaseProvider>
-      <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.logo} />
       <Header />
+      <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.logo} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={{marginTop:100}}>
+      <View style={{marginTop:10}}>
         <Center flex={1} px="3">
           <VStack space={4} w="90%" maxW="400px" px={4} py={2}>
             <Heading fontSize="lg" color="teal.600" mb={4}>Créer un Nouveau Rapport d'Exposition</Heading>
@@ -250,7 +250,7 @@ function CreationNRapport() {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexGrow: 1,
+    // flexGrow: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },

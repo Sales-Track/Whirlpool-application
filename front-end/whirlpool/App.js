@@ -33,7 +33,8 @@ import ManagerPriceMapDet from './interfaces-gen/components/managerInterface/Rap
 import Ouverture from './interfaces-gen/components/AdminInterface/ouverture'
 import RapportExpoAn from './interfaces-gen/components/animatriceInterface/RapportExpoAn';
 import RapportExpoDetAn from './interfaces-gen/components/animatriceInterface/RapportExpoDetAn';
-
+import EspaceCompte from './interfaces-gen/components/AdminInterface/EspaceCompte';
+import ListesDesComptes from './interfaces-gen/components/AdminInterface/ListesDesCompte'
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
@@ -57,6 +58,8 @@ export default function App() {
           <Stack.Screen name="RapportDePresence" options={{ headerShown: false }} component={RapportDePresence} />
           <Stack.Screen name="RapportLog" options={{ headerShown: false }} component={RapportLog} />
           <Stack.Screen name="CreationCompte" options={{ headerShown: false }} component={CreationCompte} />
+          <Stack.Screen name="EspaceCompte" options={{ headerShown: false }} component={EspaceCompte} />
+          <Stack.Screen name="ListesDesComptes" options={{ headerShown: false }} component={ListesDesComptes} />
          <Stack.Screen name="PopupRapport" component={PopupRapport} />
          <Stack.Screen name="CreationRapportExpo" options={{ headerShown: false }} component={CreationRapportExpo} />
           <Stack.Screen name="PopupCheckBox" options={{ headerShown: false }} component={PopupCheckBox} />
