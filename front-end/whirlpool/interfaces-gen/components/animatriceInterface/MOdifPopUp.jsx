@@ -124,7 +124,7 @@ function Modifpopup({ onClose, popupData ,ani}) {
               <Text style={styles.btnTextmod}>Modifier</Text>
             </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => { onclose()
+          <TouchableOpacity onPress={() => { onClose()
            }} style={styles.btnsup}>
             <Text style={styles.btnTextcans}>Annuler</Text>
           </TouchableOpacity>
