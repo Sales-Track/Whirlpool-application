@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { NativeBaseProvider, Button, Input } from "native-base";
 import { ScrollView, View, StyleSheet, Image, Text, TouchableOpacity, Modal } from "react-native";
 import {useRoute ,useNavigation} from '@react-navigation/native';
-import Footer from './footer';
 
 import axios from "axios";
 import port from "../port";
 import Footer from './footer';
-import {useRoute ,useNavigation} from '@react-navigation/native';
 
 const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png')
 
@@ -180,16 +178,18 @@ function ListesDesComptes() {
 const styles = StyleSheet.create({
     container: {
         padding: 16,
+        flex:1
     },
     image12: {
         width: '31%',
         height: '12%',
-        position: "absolute",
-        top: 0,
-        left: 15,
+        // position: "absolute",
+        // top: "10%",
+        // left: 15,
     },
     table: {
-        marginTop: 100,
+        // marginTop: 100,
+        flex:3
     },
     tableHeader: {
         flexDirection: "row",
