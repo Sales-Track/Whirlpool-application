@@ -146,7 +146,16 @@ function CreationCompte() {
       </Stack>
     );
   };
-
+  const findId = (data, name, dataname, idname) => {
+    return new Promise((resolve, reject) => {
+      const element = data.find(el => el[dataname] === name);
+      if (element) {
+        resolve(element[idname]);
+      } else {
+        reject(`No element found with ${dataname} = ${name}`);
+      }
+    });
+  };
   const handleCreation = async () => {
     try {
       if (role === "animatrice") {

@@ -14,6 +14,8 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
     const [month, setMonth] = React.useState("");
     const [nomspdv, setNomspdv] = React.useState([]);
     const [warningVisible, setWarningVisible] = React.useState(false);
+    console.log(pdv);
+    
 
     const fetchPdvsname = async () => {
         try {
