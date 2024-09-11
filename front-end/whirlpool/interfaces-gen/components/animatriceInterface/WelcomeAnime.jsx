@@ -162,7 +162,7 @@ function WelcomeAnime() {
     return (
       <HStack alignItems="center" space={4} ml={9}>
         <Text style={{ color: status ? "#FDC100" : "#D0D3D4", fontSize: 18 }}>
-          {status ? "On ligne" : "Off ligne"}
+          {status ? "En ligne" : "Hors ligne"}
         </Text>
         <Switch
           size="sm"

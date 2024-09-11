@@ -65,7 +65,7 @@ function RapportExpo() {
   };
 
   const findIdWhirlpool = () => {
-    const IdWhirlpool = marques.find(el =>(el.marquename === 'whirlpool')) 
+    const IdWhirlpool = marques.find(el =>(el.marquename === 'whirlpool'||el.marquename ===" WHIRLPOOL ")) 
     console.log(IdWhirlpool.idMarque);
     setIdwhirlpool(IdWhirlpool.idMarque)
   };
@@ -200,13 +200,12 @@ function RapportExpo() {
   }, [marques]);
   return (
     <NativeBaseProvider>
+        <Header />
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
       <View style={styles.view1}>
-        <Header />
-        
-          <ScrollView style={{ marginTop: -20 }}>
+          <ScrollView style={{ marginTop:-250 }} >
             <View>
-              <View>
+              <View >
                 <Text style={styles.textexpo}>Date : {month}</Text>
                 <Text style={styles.textexpo}>Zone : {pdvs.location}</Text>
                 <Text style={styles.textexpo}>Magasin : {pdv}</Text>
@@ -264,8 +263,8 @@ function RapportExpo() {
                 </TouchableOpacity>
               </Center>
             </View>
-          </ScrollView>
         
+          </ScrollView>
       </View>
       <Footer adm={adm} />
     </NativeBaseProvider>

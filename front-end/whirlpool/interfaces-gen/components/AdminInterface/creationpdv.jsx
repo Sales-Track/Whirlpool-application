@@ -313,16 +313,16 @@ const affectanim = async (nameanim, namepdv) => {
   function RowItem({ text, truc,settruc}) {
     return (
       
-      <View style={styles.row}>
+      <TouchableOpacity onPress={() => {settruc(!truc),console.log(truc,text)}}>
+          <View style={styles.row}>
         <Text style={styles.text}>{text}</Text>
-        <TouchableOpacity onPress={() => {settruc(!truc),console.log(truc,text)}}>
           <Image
             resizeMode="contain"
             source={truc ? downicon : leftimage}
             style={styles.leftimage}
           />
-        </TouchableOpacity>
       </View>
+        </TouchableOpacity>
     );
   }
     /////////////////////////Exemple//////////////////////////////
@@ -330,11 +330,11 @@ const affectanim = async (nameanim, namepdv) => {
     if(text=='Point de Vente'){
       return (
         <Center>
-        <Box maxW="400">
+        <Box maxW="250">
          
           <Select
             selectedValue={nompdv}
-            minWidth="319"
+            minWidth="200"
             accessibilityLabel={nompdv}
             placeholder={nompdv}
             _selectedItem={{
@@ -358,7 +358,7 @@ const affectanim = async (nameanim, namepdv) => {
     else if(text=='Animatrices'){
       return(
         <Center>
-        <Box maxW="400">
+        <Box maxW="250">
           <Select
             selectedValue={nomsanim}
             minWidth="240"
@@ -388,10 +388,10 @@ const affectanim = async (nameanim, namepdv) => {
     else if(text=="Categories"){
       return(
         <Center>
-        <Box maxW="400">
+        <Box maxW="250">
           <Select
             selectedValue={nomcateg}
-            minWidth="318"
+            minWidth="200"
             accessibilityLabel={nomcateg}
             placeholder= {text}
             _selectedItem={{
@@ -420,10 +420,10 @@ const affectanim = async (nameanim, namepdv) => {
     else if(text=="Marques"){
       return(
         <Center>
-        <Box maxW="400">
+        <Box maxW="250">
           <Select
             selectedValue={nommarq}
-            minWidth="318"
+            minWidth="200"
             accessibilityLabel={nommarq}
             placeholder= "Marque"
             _selectedItem={{
@@ -453,10 +453,10 @@ const affectanim = async (nameanim, namepdv) => {
     else if(text=="Reference"){
       return(
         <Center>
-        <Box maxW="400">
+        <Box maxW="250">
           <Select
             selectedValue={nomref}
-            minWidth="318"
+            minWidth="200"
             accessibilityLabel={nomref}
             placeholder= "Reference"
             _selectedItem={{
@@ -486,10 +486,10 @@ const affectanim = async (nameanim, namepdv) => {
    
     return (
       <Center>
-        <Box maxW="400">
+        <Box maxW="250">
           <Select
             selectedValue={region}
-            minWidth="240"
+            minWidth="200"
             accessibilityLabel={region}
             placeholder= {region}
             InputLeftElement={
@@ -519,7 +519,7 @@ const affectanim = async (nameanim, namepdv) => {
           <Stack space={4} w="100%" alignItems="center">
             <Input 
               w={{
-                base: "75%",
+                base: "68%",
                 md: "25%"
               }} 
               InputLeftElement={
@@ -560,10 +560,10 @@ const affectanim = async (nameanim, namepdv) => {
       <View style={styles.inputs}>
       <Center flex={1} px="3">
         <Box alignItems="center">
-          <Input mx="3" placeholder="Category" 
+          <Input  mx="3" placeholder="Category" 
             InputLeftElement={
               <Icon as={<MaterialIcons name="category" />} size={5} ml="2" color="muted.400" />
-            } onChangeText={item=>setNomcateg(item.toLowerCase())}  w="100%" />
+            } onChangeText={item=>setNomcateg(item.toLowerCase())}  w="68%" />
         </Box>
       </Center>
       <Center flex={1} px="3">
@@ -582,7 +582,7 @@ const affectanim = async (nameanim, namepdv) => {
           <Input mx="3" placeholder="Marque"
             InputLeftElement={
               <Icon as={<MaterialIcons name="sell" />} size={5} ml="2" color="muted.400" />
-            } onChangeText={item=>setNommar(item.toLowerCase())} w="100%" />
+            } onChangeText={item=>setNommar(item.toLowerCase())} w="68%" />
         </Box>
       </Center>
       <Center flex={1} px="3">
@@ -601,7 +601,7 @@ const affectanim = async (nameanim, namepdv) => {
           <Input mx="3" placeholder="Reference" 
             InputLeftElement={
               <Icon as={<MaterialIcons name="tag" />} size={5} ml="2" color="muted.400" />
-            } onChangeText={item=>setNomref(item.toLocaleLowerCase())} w="100%" />
+            } onChangeText={item=>setNomref(item.toLocaleLowerCase())} w="68%" />
         </Box>
       </Center>
       <Center flex={1} px="3">
@@ -622,7 +622,7 @@ const affectanim = async (nameanim, namepdv) => {
           <Input mx="3" placeholder="Objectif" 
             InputLeftElement={
               <Icon as={<MaterialIcons name="show-chart" />} size={5} ml="2" color="muted.400" />
-            } onChangeText={item=>setObj(item)} w="100%" />
+            } onChangeText={item=>setObj(item)} w="68%" />
         </Box>
       </Center>
       <Center flex={1} px="3">
@@ -727,6 +727,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginTop: height * 0.01, // 1% of screen height
+    marginRight:width*-0.05
   },
   text: {
     fontSize: width * 0.04, // 4% of screen width

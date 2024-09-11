@@ -284,7 +284,7 @@ React.useEffect(() => {
       };
 
       return (
-        <NativeBaseProvider>
+        <NativeBaseProvider >
           <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
           <View style={styles.container}>
             <Header />
@@ -341,6 +341,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderBottomWidth: 1,
         borderColor: 'black',
+        marginBottom:"8%",
+        marginTop:"5%"
     },
     row: {
         flexDirection: 'row',

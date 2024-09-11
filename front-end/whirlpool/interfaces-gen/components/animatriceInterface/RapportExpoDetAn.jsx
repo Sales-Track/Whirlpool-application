@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView,Alert, TouchableOpacity } from "react-native";
 import { NativeBaseProvider, Modal } from "native-base";
 import Header from './header';
 import Footer from './footer';
-import Modifpopup from '../AdminInterface/ModifRapExpo';
+import Modifpopup from './MOdifPopUp';
 import { useNavigation } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
-
+import axios from 'axios';
+import port from '../port';
 function RapportExpodet() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { references, ani, expo, category, idcateg } = route.params;
+  const { ani, expo, category, idcateg ,tableData} = route.params;
   const [showpopup, setShowpop] = useState(false);
   const [popupData, setPopupData] = useState({});
   const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
@@ -20,6 +21,24 @@ function RapportExpodet() {
     setPopupData(ref);  // Set the popup data with the reference details
     setShowpop(true);    // Show the popup
   };
+  const AddExpo = async (idRef, prix) => {
+    try {
+      await axios.post(port + "/api/expositions/expositions", {
+        Reference_idReference: idRef,
+        prix: prix,
+        PDV_idPDV: ani.PDV_idPDV,
+        dateCr: formatDateWithoutTime(new Date())
+      });
+      Alert.alert('Succès', 'Exposition ajoutée avec succès');
+    } catch (error) {
+      console.error('Error adding expo:', error);
+      Alert.alert('Erreur', "Échec de l'ajout de l'exposition");
+    }
+  }
+  function formatDateWithoutTime(date) {
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" };
+    return date.toLocaleDateString("fr-FR", options);
+  }
 
   return (
     <NativeBaseProvider>
@@ -33,19 +52,22 @@ function RapportExpodet() {
             </View>
             <View style={styles.container}>
               <View style={styles.row}>
-                <View style={styles.cell}><Text>Marques</Text></View>
+             
                 <View style={styles.cell}><Text>Référence</Text></View>
                 <View style={styles.cell}><Text>Prix</Text></View>
                 <View style={styles.cell}><Text>Action</Text></View>
               </View>
 
-              {references.map((ref, index) => (
+              {tableData.map((ref, index) => (
                 <View style={styles.row} key={index}>
-                  <View style={styles.cell1}><Text>{ref.brand}</Text></View>
-                  <View style={styles.cell1}><Text>{ref.name}</Text></View>
-                  <View style={styles.cell1}><Text>{ref.price}</Text></View>
+                  <View style={styles.cell1}><Text>{ref.referenceName}</Text></View>
+                  <View style={styles.cell1}><Text>{ref.prix}</Text></View>
+                 
                   <TouchableOpacity onPress={() => handleModifierClick(ref)}>
                     <View style={styles.cell2}><Text style={styles.textcell2}>Modifier</Text></View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => {AddExpo(ref.idref,ref.prix)}}>
+                    <View style={styles.cell2}><Text style={styles.textcell2}>ajouter</Text></View>
                   </TouchableOpacity>
                 </View>
               ))}
@@ -56,7 +78,10 @@ function RapportExpodet() {
       
       {/* Modal for Modifpopup */}
       <Modal isOpen={showpopup} onClose={() => setShowpop(false)}>
-        <Modifpopup {...popupData} onClose={() => setShowpop(false)} />
+        <Modifpopup popupData={tableData}
+        ani={ani}
+
+        onClose={() => setShowpop(false)} />
       </Modal>
       
       <Footer ani={ani} />

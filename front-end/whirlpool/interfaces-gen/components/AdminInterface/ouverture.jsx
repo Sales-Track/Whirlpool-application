@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image, Text, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import LoadingAnimation from '../Loading'; // Assurez-vous d'importer le composant correctement
 
