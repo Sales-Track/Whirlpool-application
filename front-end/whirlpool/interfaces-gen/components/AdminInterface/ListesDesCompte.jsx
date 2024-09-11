@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { NativeBaseProvider, Button, Input } from "native-base";
-import { ScrollView, View, StyleSheet, Image, Text, TouchableOpacity, Modal } from "react-native";
+import { NativeBaseProvider, Button, Input, Spinner } from "native-base";
+import { ScrollView, View, StyleSheet, Image, Text, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
 import {useRoute ,useNavigation} from '@react-navigation/native';
 
 import axios from "axios";
@@ -17,6 +17,7 @@ function ListesDesComptes() {
     const [actionType, setActionType] = useState("");
     const [selectedAccount, setSelectedAccount] = useState(null);
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true); // Track loading state
     const [newname, setNewname] = useState("");
     const [newlastn, setNewlastn] = useState("");
     const [newemail, setNewemail] = useState("");
@@ -24,6 +25,7 @@ function ListesDesComptes() {
 
     const getAllUser = async () => {
         try {
+            setLoading(true); // Start loading when fetching users
             const response = await axios.get(port + "/api/users/");
             const usersByLetter = response.data.reduce((acc, user) => {
                 const firstLetter = user.name[0].toUpperCase();
@@ -34,7 +36,6 @@ function ListesDesComptes() {
                 return acc;
             }, {});
     
-            // Ensure each letter key has an array even if no users are present
             const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
             alphabet.forEach(letter => {
                 if (!usersByLetter[letter]) {
@@ -45,14 +46,13 @@ function ListesDesComptes() {
             setUsers(usersByLetter);
         } catch (error) {
             console.error('Error getting users:', error);
+        } finally {
+            setLoading(false); // Stop loading once data is fetched
         }
     };
-    
 
     const UpdateUser = async (id, info) => {
         try {
-            console.log(info);
-            
             await axios.put(port + "/api/users/" + id, info);
             getAllUser(); // Refresh the list after update
         } catch (error) {
@@ -96,38 +96,43 @@ function ListesDesComptes() {
 
     return (
         <NativeBaseProvider>
-            <ScrollView contentContainerStyle={styles.container}>
                 <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
-                <View style={styles.table}>
-                    {Object.keys(users).sort().map((letter) => (
-                        <View key={letter}>
-                            <Text style={styles.letterHeader}>{letter}</Text>
-                            {users[letter].map((account) => (
-                                <View key={account.idusers} style={styles.tableRow}>
-                                    <Text style={styles.tableCell}>{account.name}</Text>
-                                    <Text style={styles.tableCell}>{account.lastname}</Text>
-                                    <Text style={styles.tableCell}>{account.email}</Text>
-                                    <Text style={styles.tableCell}>{account.role}</Text>
-                                    <Text style={styles.tableCell}>******</Text>
-                                    <View style={styles.tableCell}>
-                                        <TouchableOpacity
-                                            onPress={() => handleAction(account, "modify")}
-                                            style={styles.modifyButton}
-                                        >
-                                            <Text style={styles.buttonText}>Modif</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity
-                                            onPress={() => handleAction(account, "delete")}
-                                            style={styles.deleteButton}
-                                        >
-                                            <Text style={styles.buttonText}>Delete</Text>
-                                        </TouchableOpacity>
+            <ScrollView style={styles.container}>
+                
+                {loading ? ( // Display loading spinner when data is being fetched
+                    <ActivityIndicator size="large" color="#0000ff" />
+                ) : (
+                    <View style={styles.table}>
+                        {Object.keys(users).sort().map((letter) => (
+                            <View key={letter}>
+                                <Text style={styles.letterHeader}>{letter}</Text>
+                                {users[letter].map((account) => (
+                                    <View key={account.idusers} style={styles.tableRow}>
+                                        <Text style={styles.tableCell}>{account.name}</Text>
+                                        <Text style={styles.tableCell}>{account.lastname}</Text>
+                                        <Text style={styles.tableCell}>{account.email}</Text>
+                                        <Text style={styles.tableCell}>{account.role}</Text>
+                                        <Text style={styles.tableCell}>******</Text>
+                                        <View style={styles.tableCell}>
+                                            <TouchableOpacity
+                                                onPress={() => handleAction(account, "modify")}
+                                                style={styles.modifyButton}
+                                            >
+                                                <Text style={styles.buttonText}>Modif</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity
+                                                onPress={() => handleAction(account, "delete")}
+                                                style={styles.deleteButton}
+                                            >
+                                                <Text style={styles.buttonText}>Delete</Text>
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
-                                </View>
-                            ))}
-                        </View>
-                    ))}
-                </View>
+                                ))}
+                            </View>
+                        ))}
+                    </View>
+                )}
             </ScrollView>
     
             <Modal
@@ -172,7 +177,6 @@ function ListesDesComptes() {
             <Footer adm={adm}/>
         </NativeBaseProvider>
     );
-    
 }
 
 const styles = StyleSheet.create({
@@ -183,18 +187,9 @@ const styles = StyleSheet.create({
     image12: {
         width: '31%',
         height: '12%',
-        // position: "absolute",
-        // top: "10%",
-        // left: 15,
     },
     table: {
-        // marginTop: 100,
         flex:3
-    },
-    tableHeader: {
-        flexDirection: "row",
-        backgroundColor: "#f8f8f8",
-        padding: 10,
     },
     letterHeader: {
         fontWeight: "bold",
@@ -202,11 +197,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         paddingLeft: 10,
-    },
-    tableHeaderText: {
-        flex: 1,
-        fontWeight: "bold",
-        textAlign: "center",
     },
     tableRow: {
         flexDirection: "row",
