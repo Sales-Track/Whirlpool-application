@@ -29,8 +29,7 @@ function Start() {
       />
       <View style={styles.view2}>
         <Text>
-          You can log in if you have been introduced as an operator by the
-          branch manager
+        Whirlpool, le sens de l'essentiel
         </Text>
       </View>
       <View style={styles.view3} />
@@ -43,7 +42,7 @@ function Start() {
           style={styles.image3}
         />
         <View style={styles.view5}>
-          <Text>Version 1.1 Developed Aziz & Salah</Text>
+          <Text>Version 1.0.1 Developed Aziz & Salah</Text>
         </View>
       </View>
     </View>

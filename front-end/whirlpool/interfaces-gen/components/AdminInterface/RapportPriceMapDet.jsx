@@ -141,10 +141,10 @@ function RapportPriceMapDet({ route }){
     else{
         return(
             <Center>
-            <Box maxW="400" ml='-300'>
+            <Box maxW="400" ml='-280'>
               <Select
                 selectedValue={unite}
-                minWidth="30%"
+                minWidth="32%"
                 
                 accessibilityLabel="Choose Service"
                 placeholder={text}
@@ -167,7 +167,7 @@ function RapportPriceMapDet({ route }){
       const ExampleSlider = () => {
         return (
         <Box mr='-5'ml='5' w="100%">
-      <Slider w="130" maxW="300" defaultValue={onChangeValue} minValue={0} maxValue={1000} accessibilityLabel="hello world"  step={100} 
+      <Slider w="110" maxW="130" defaultValue={onChangeValue} minValue={0} maxValue={1000} accessibilityLabel="hello world"  step={100} 
       onChange={v => {
         setOnChangeValue(Math.floor(v));
       }}
@@ -268,6 +268,7 @@ return (
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop:"10%",
     },
     image12: {
       width: 125,

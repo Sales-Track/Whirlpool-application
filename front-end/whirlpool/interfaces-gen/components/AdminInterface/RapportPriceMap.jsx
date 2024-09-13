@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     padding: wp(5), // Padding proportionnel
   },
   View2: {
-    marginLeft: wp(-35), // Déplacer proportionnellement en fonction de l'écran
+    marginLeft: wp(-15), // Déplacer proportionnellement en fonction de l'écran
   },
   image12: {
     width: wp(30), // Largeur proportionnelle
