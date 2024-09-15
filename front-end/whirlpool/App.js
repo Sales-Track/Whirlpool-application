@@ -60,7 +60,7 @@ export default function App() {
           <Stack.Screen name="CreationCompte" options={{ headerShown: false }} component={CreationCompte} />
           <Stack.Screen name="EspaceCompte" options={{ headerShown: false }} component={EspaceCompte} />
           <Stack.Screen name="ListesDesComptes" options={{ headerShown: false }} component={ListesDesComptes} />
-         <Stack.Screen name="PopupRapport" component={PopupRapport} />
+         {/* <Stack.Screen name="PopupRapport" component={PopupRapport} /> */}
          <Stack.Screen name="CreationRapportExpo" options={{ headerShown: false }} component={CreationRapportExpo} />
           <Stack.Screen name="PopupCheckBox" options={{ headerShown: false }} component={PopupCheckBox} />
           <Stack.Screen name="CreationNRapport" options={{ headerShown: false }} component={CreationNRapport} />

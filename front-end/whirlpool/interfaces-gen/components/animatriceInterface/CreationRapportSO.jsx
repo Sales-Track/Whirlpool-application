@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image,ActivityIndicator } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Image,ActivityIndicator,Dimensions } from "react-native";
 import { Select, Box, Center, NativeBaseProvider, Modal, Button } from "native-base";
 import axios from 'axios';
 import port from '../port';
@@ -7,6 +7,7 @@ import Toast from 'react-native-simple-toast';
 import Header from './header';
 import Footer from './footer';
 import { useRoute } from '@react-navigation/native';
+const { width, height } = Dimensions.get('window');
 
 function CreationRapportSO() {
     console.disableYellowBox = true; // Pour masquer tous les avertissements jaunes
@@ -28,7 +29,7 @@ const [isLoading, setIsLoading] = useState(true);
     const [sales, setSales] = useState({});
 
     const [couleur, setCouleur]=useState("")
-    const [capacitee,setCapacitee]=useState(null)
+    const [capacite,setCapacite]=useState("")
 
     const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
     const [modalVisibleSup, setModalVisibleSup] = useState(false);
@@ -37,36 +38,34 @@ const [isLoading, setIsLoading] = useState(true);
     const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
 
 
+    
+
 
     const handleCityChange = (newCity) => {
         setCity(newCity);
       };
-    const  fetchallArticle=async (id)=>{
-        try{
-            const response = await axios.get(port+"/api/articles/articles")
+      const fetchallArticle = async (id) => {
+        try {
+            const response = await axios.get(port + "/api/articles/articles");
             const articles = response.data;
-            console.log("idd",id);
-            const couleurs = articles.map(article =>{
-                if(article.Reference_idReference===id){
-                    return article.coloeur
-                }
-            });
-            const capacites = articles.map(article =>{
-                if(article.Reference_idReference===id){
-                    return article.capacite
-                }
-            });
-
-            setArticle(response.data);
-            setCouleurs(couleurs)
-            setCapacites(capacites)
             
-            console.log(couleurs,capacites);
-        }
-        catch (error) {
+            const couleurs = articles
+                .filter(article => article.Reference_idReference === id && article.coloeur)
+                .map(article => article.coloeur);
+    
+            const capacites = articles
+                .filter(article => article.Reference_idReference === id && article.capacite)
+                .map(article => article.capacite);
+    
+            setArticle(articles);
+            setCouleurs(couleurs);
+            setCapacites(capacites);
+    
+            console.log(couleurs, capacites);
+        } catch (error) {
             console.error('Error fetching Article:', error);
         }
-    }
+    };
 
     const fetchAllCateg = async () => {
         try {
@@ -144,22 +143,30 @@ const [isLoading, setIsLoading] = useState(true);
 
     const confirmIncrement = async () => {
         try {
-            if (!couleur || !capacitee) {
-                Toast.show("remplire tou les champ svp.", Toast.LONG);
+            if (!couleur || !capacite) {
+                Toast.show("Remplir tous les champs, s'il vous plaît.", Toast.LONG);
                 return;
             }
-            
+    
+            // Convertir capacite en entier
+            const capaciteInt = parseInt(capacite, 10);
+            if (isNaN(capaciteInt)) {
+                Toast.show("La capacité doit être un nombre valide.", Toast.LONG);
+                return;
+            }
+    
             if (selectedReferenceId !== null) {
                 const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
                     couleur: couleur,
-                    capacite: capacitee
+                    capacite: capaciteInt // Envoyer la capacité en tant qu'entier
                 });
+    
                 const articleId = response.data.idArticle;
                 const existingSales = sales[selectedReferenceId]?.articles?.[articleId]?.sales || 0;
                 const updatedSales = existingSales + 1;
-
-                await handleSelloutCreationorUpdate(selectedReferenceId, updatedSales, articleId,"add");
-
+    
+                await handleSelloutCreationorUpdate(selectedReferenceId, updatedSales, articleId, "add");
+    
                 setSales(prevSales => ({
                     ...prevSales,
                     [selectedReferenceId]: {
@@ -170,31 +177,34 @@ const [isLoading, setIsLoading] = useState(true);
                                 ...prevSales[selectedReferenceId]?.articles?.[articleId],
                                 sales: updatedSales,
                                 couleur: couleur,
-                                capacite: capacitee
+                                capacite: capaciteInt // Assurez-vous que la capacité est également mise à jour comme un entier
                             }
                         }
                     }
                 }));
+    
                 Toast.show("Ajout avec succès!", Toast.SHORT);
                 setModalVisibleAdd(false); // Cacher le modal après validation
                 setCouleur("");
-                setCapacitee("");
+                setCapacite("");
             }
         } catch (error) {
             console.error('Error updating sales:', error);
+            Toast.show("Une erreur s'est produite lors de la mise à jour des ventes.", Toast.LONG);
         }
     };
+    
 
     const confirmDecrement = async () => {
         try {
-            if (!couleur || !capacitee) {
+            if (!couleur || !capacite) {
                 Toast.show("remplire tout les champs svp.", Toast.LONG);
                 return;
             }
             if (selectedReferenceId !== null) {
                 const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
                     couleur: couleur,
-                    capacite: capacitee
+                    capacite: capacite
                 });
                 const articleId = response.data.idArticle;
                 const existingSales = sales[selectedReferenceId]?.articles?.[articleId]?.sales || 0;
@@ -212,7 +222,7 @@ const [isLoading, setIsLoading] = useState(true);
                                 ...prevSales[selectedReferenceId]?.articles?.[articleId],
                                 sales: updatedSales, // Mettre à jour les ventes décrémentées
                                 couleur: couleur,
-                                capacite: capacitee
+                                capacite: capacite
                             }
                         }
                     }
@@ -220,7 +230,7 @@ const [isLoading, setIsLoading] = useState(true);
                 Toast.show("Correction avec succès!", Toast.SHORT);
                 setModalVisibleSup(false); // Cacher le modal après validation
                 setCouleur("");
-                setCapacitee("");
+                setCapacite("");
             }
         } catch (error) {
             console.error('Error updating sales:', error);
@@ -323,28 +333,7 @@ const [isLoading, setIsLoading] = useState(true);
                 </Center>
             );
         }
-        else if(text==="Capacite"){
-            return (
-                <Center>
-                    <Box maxW="400" mt={3}>
-                        <Select
-                            selectedValue={capacitee}
-                            minWidth="280"
-                            accessibilityLabel={text}
-                            placeholder={text}
-                            onValueChange={(itemValue) => setCapacitee(itemValue)}
-                        >
-                            {capacites.map(el =>{
-                                if(el){
-                                    return(<Select.Item label={el} value={el} />)
-                                }
-                            })}
-                        </Select>
-                    </Box>
-                </Center>
-            );
-        }
-        return null
+    
     };
 
     const Table = () => {
@@ -380,6 +369,7 @@ const [isLoading, setIsLoading] = useState(true);
     return (
         <NativeBaseProvider>
             <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
+            <View style={{marginBottom:"15%"}}></View>
             <Header onCityChange={handleCityChange} />
             <View style={styles.container}>
                 <Example text={'Categories'} />
@@ -390,45 +380,49 @@ const [isLoading, setIsLoading] = useState(true);
                 {/* Modal for Confirmation */}
                 <Modal isOpen={modalVisibleAdd} onClose={() => setModalVisibleAdd(false)}>
                     <Modal.Content>
-                        <Modal.Header>Confirmation</Modal.Header>
+                        <Modal.CloseButton />
+                        <Modal.Header>Add Sale</Modal.Header>
                         <Modal.Body>
-                            <View style={{margin:5}}>
-                                <Text>Choisir le Couleur :</Text>
-                                <Example text={'Couleur'} />
-                            </View>
-                            <View style={{margin:5}}>
-                                <Text>Choisir la Capacite :</Text>
-                                <Example text={'Capacite'} />
-                            </View>
+                            <Text>Color:</Text>
+                            <Select selectedValue={couleur} onValueChange={setCouleur}>
+                                {couleurs.map((color) => (
+                                    <Select.Item key={color} label={color} value={color} />
+                                ))}
+                            </Select>
+                            <Text>Capacity:</Text>
+                            <Select selectedValue={capacite.toString()} onValueChange={(value) => setCapacite(parseInt(value, 10))}>
+    {capacites.map((capacity) => (
+        <Select.Item key={capacity} label={capacity.toString()} value={capacity.toString()} />
+    ))}
+</Select>
+
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button.Group space={2}>
-                                <Button onPress={() => setModalVisibleAdd(false)}>Annuler</Button>
-                                <Button colorScheme="teal" onPress={confirmIncrement}>Valider</Button>
-                            </Button.Group>
+                            <Button colorScheme="blue" onPress={confirmIncrement}>Confirm</Button>
                         </Modal.Footer>
                     </Modal.Content>
                 </Modal>
-                
-                {/* Modal for Delite */}
+
                 <Modal isOpen={modalVisibleSup} onClose={() => setModalVisibleSup(false)}>
                     <Modal.Content>
-                        <Modal.Header>Confirmation</Modal.Header>
+                        <Modal.CloseButton />
+                        <Modal.Header>Correct Sale</Modal.Header>
                         <Modal.Body>
-                            <View style={{margin:5}}>
-                                <Text>Choisir le Couleur :</Text>
-                                <Example text={'Couleur'} />
-                            </View>
-                            <View style={{margin:5}}>
-                                <Text>Choisir la Capacite :</Text>
-                                <Example text={'Capacite'} />
-                            </View>
+                            <Text>Color:</Text>
+                            <Select selectedValue={couleur} onValueChange={setCouleur}>
+                                {couleurs.map((color) => (
+                                    <Select.Item key={color} label={color} value={color} />
+                                ))}
+                            </Select>
+                            <Text>Capacity:</Text>
+                            <Select selectedValue={capacite} onValueChange={setCapacite}>
+                                {capacites.map((capacity) => (
+                                    <Select.Item key={capacity} label={capacity} value={capacity} />
+                                ))}
+                            </Select>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button.Group space={2}>
-                                <Button onPress={() => setModalVisibleSup(false)}>Annuler</Button>
-                                <Button colorScheme="teal" onPress={confirmDecrement}>Valider</Button>
-                            </Button.Group>
+                            <Button colorScheme="red" onPress={confirmDecrement}>Confirm</Button>
                         </Modal.Footer>
                     </Modal.Content>
                 </Modal>
@@ -480,12 +474,12 @@ const styles = StyleSheet.create({
         margin: 2
     },
     image12: {
-        width: 125,
-        height: 95,
+        width: width * 0.3, // 30% of screen width
+        height: height * 0.2, // 20% of screen height
         position: "absolute",
         top: 0,
-        left: 15,
-    },
+        left: width * 0.01, // 3% of screen width
+      },
     cell1: {
         flex: 1,
         borderRadius: 5,

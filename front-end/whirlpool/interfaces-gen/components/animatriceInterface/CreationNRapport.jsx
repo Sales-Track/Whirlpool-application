@@ -26,6 +26,7 @@ function CreationNRapport() {
   const [prices, setPrices] = useState({});
   const [newRefName, setNewRefName] = useState("");
   const [newRefPrice, setNewRefPrice] = useState("");
+  const [city,setCity]= React.useState("");
 
   const Ref = {
     Referencename: newRefName,
@@ -131,11 +132,14 @@ function CreationNRapport() {
       FetchrefbyCM(serCateg, serMarq);
     }
   }, [serMarq, serCateg]);
-  
+  const handleCityChange = (newCity) => {
+    setCity(newCity);
+  };
 
   return (
     <NativeBaseProvider>
-      <Header />
+      <View style={{marginBottom:'10%',marginTop:'5%'}}></View>
+      <Header onCityChange={handleCityChange } />
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.logo} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={{marginTop:10}}>

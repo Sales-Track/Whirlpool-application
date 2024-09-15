@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet,Image, Button, TouchableOpacity,ScrollView,ActivityIndicator  } from "react-native";
+import { View, Text, StyleSheet,Image, Button, TouchableOpacity,ScrollView,ActivityIndicator,Dimensions } from "react-native";
 import { NativeBaseProvider, Center } from "native-base";
 import Header from './header';
 import Footer from './footer';
@@ -226,7 +226,7 @@ React.useEffect(() => {
         }
         return { percentage, color };
     };
-   
+   ///modification quand il clic sur un refernece le ligne devien jaune
     const Tableaux = () => {
         return (
             <ScrollView horizontal style={{ marginTop: 2 }}>
@@ -264,6 +264,7 @@ React.useEffect(() => {
 
                 {/* Dernière ligne */}
                 {references.map(el=>(
+
                 <View style={styles.row}>
                     <View style={styles.cell2}><Text style={styles.textcell2}>{el.Referencename}</Text></View>
                     {FetchNbrDV(el.idReference).map((nbrDV, dateIndex) => (
@@ -287,8 +288,7 @@ React.useEffect(() => {
         <NativeBaseProvider >
           <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
           <View style={styles.container}>
-            <Header />
-            <Center flex={1} mt={'-140%'}>
+            <Center flex={1} >
               <Text style={styles.title}>Rapport Sell-Out</Text>
               <View style={styles.content}>
                 {showStartDatePickerHandler()}
@@ -316,6 +316,8 @@ React.useEffect(() => {
       );
       
 }
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -437,11 +439,11 @@ const styles = StyleSheet.create({
         textAlign:"center"
       },
       image12: {
-        width: 125,
-        height: 95,
+        width: width * 0.4, // 30% of screen width
+        height: height * 0.2, // 20% of screen height
         position: "absolute",
         top: 0,
-        left: 15,
+        left: width * 0.3, // 3% of screen width
       },
       loadingContainer: {
         flex: 1,

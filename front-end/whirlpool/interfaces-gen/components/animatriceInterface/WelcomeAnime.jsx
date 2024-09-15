@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
+import { View, StyleSheet, Image, Text, TouchableOpacity, ScrollView, ActivityIndicator,Dimensions } from "react-native";
 import { Switch, HStack, NativeBaseProvider } from "native-base";
 import Header from './header';
 import Footer from './footer';
@@ -195,11 +195,7 @@ function WelcomeAnime() {
   return (
     <NativeBaseProvider>
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
-
-      {/* Affichage du chargement si loading est vrai */}
-   
-
-      <ScrollView style={{ marginTop: 10 }}>
+      <ScrollView style={{ marginTop: "15%" }}>
         <Header onCityChange={handleCityChange} />
         <Example />
         <View style={styles.view1}>
@@ -257,6 +253,7 @@ function WelcomeAnime() {
     </NativeBaseProvider>
   );
 }
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
    loadingContainer: {
@@ -330,11 +327,11 @@ const styles = StyleSheet.create({
     left: -15,
   },
   image12: {
-    width: 125,
-    height: 95,
+    width: width * 0.3, // 30% of screen width
+    height: height * 0.2, // 20% of screen height
     position: "absolute",
     top: 0,
-    left: 15,
+    left: width * 0.01, // 3% of screen width
   },
   view8: {
     borderRadius: 10,

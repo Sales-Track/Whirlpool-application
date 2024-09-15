@@ -167,7 +167,7 @@ function RapportPriceMapDet({ route }){
       const ExampleSlider = () => {
         return (
         <Box mr='-5'ml='5' w="100%">
-      <Slider w="110" maxW="130" defaultValue={onChangeValue} minValue={0} maxValue={1000} accessibilityLabel="hello world"  step={100} 
+      <Slider w="100" maxW="110" defaultValue={onChangeValue} minValue={0} maxValue={1000} accessibilityLabel="hello world"  step={100} 
       onChange={v => {
         setOnChangeValue(Math.floor(v));
       }}
@@ -234,7 +234,6 @@ return (
   <NativeBaseProvider>
     <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
     <View style={styles.container}>
-      <Header />
       {loading ? (
         <Center flex={1}>
           <ActivityIndicator size="large" color="#FDC100" />
@@ -271,16 +270,16 @@ const styles = StyleSheet.create({
         marginTop:"10%",
     },
     image12: {
-      width: 125,
-      height: 95,
+      width: width * 0.4, // 30% of screen width
+      height: height * 0.2, // 20% of screen height
       position: "absolute",
       top: 0,
-      left: 15,
+      left: width * 0.3, // 3% of screen width
     },
     scrollView: {
         flex: 1,
         padding: 20,
-        marginTop:-550
+        marginTop:'20%'
     },
     title: {
         fontSize: 18,

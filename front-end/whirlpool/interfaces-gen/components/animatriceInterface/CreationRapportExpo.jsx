@@ -1,5 +1,5 @@
 import * as React from "react";
-import {FlatList,Alert,ScrollView,View,StyleSheet,Image,Text,TouchableOpacity,Modal } from "react-native";
+import {FlatList,Alert,ScrollView,View,StyleSheet,Image,Text,TouchableOpacity,Modal,Dimensions } from "react-native";
 import { CheckIcon,Input,CloseIcon,HStack,IconButton, Divider,Heading, Button, Select, Box, Center, NativeBaseProvider,Stack, Icon,Skeleton, VStack,} from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import Header from './header'
@@ -7,6 +7,7 @@ import Footer from './footer'
 import axios from 'axios';
 import { useNavigation,useRoute } from '@react-navigation/native';
 import PopupRapport from './PopupRapportAn';
+const { width, height } = Dimensions.get('window');
 
 const leftimage = require('../../../assets/icons8-right-50.png'); 
 const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
@@ -21,9 +22,10 @@ function CreationRapportExpo(){
     const [showPopup, setShowPopup] = React.useState(false);
     const [popupType, setPopupType] = React.useState("");
     const [rapportName, setRapportName] = React.useState("hello");
-    const [pdv, setPdv] = React.useState("");
+    const [pdv, setPdv] = React.useState(ani.PDV_idPDV);
     const [link, setLink] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(true);
+console.log(ani);
 
     const handleRowItemPress = (report) => {
       setPopupType(report.popupType);
@@ -68,13 +70,7 @@ return(
             <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
  <View style={styles.view1}>
           <View style={styles.view2}>
-            <Image
-              resizeMode="contain"
-              source={{
-                uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/12f4aba34bd6fde10767af48f78f20f36401e32be5ece9adacbb2971412c1df1?apiKey=354f2f8c1f9f40aca64d3ce2e19fda26&",
-              }}
-              style={styles.image1}
-            />
+ 
          <ScrollView>
          <RowItem text="Créer un nouveau rapport" settruc2="" />
          <RowItem text="Travailler sur la base d'un anncien rapport" settruc2={"1"} />
@@ -117,10 +113,10 @@ const styles = StyleSheet.create({
         fontWeight:"600"
     },
     image12: {
-      width: 125,
-      height: 95,
-      position: "absolute",
-      top: 0,
+      width: width * 0.33, // 33% of screen width
+      height: height * 0.2, // 15% of screen height
+      position: 'absolute',
+      top: 10,
       left: 15,
     },
     btns: {
@@ -144,9 +140,10 @@ const styles = StyleSheet.create({
       flex: 1,
       alignItems: 'flex-start',
       justifyContent: 'space-between',
-      padding: 39,
-      paddingHorizontal: 35,
-      paddingBottom: 80,
+      padding: width * 0.1, // 10% of screen width
+      paddingHorizontal: width * 0.08, // 8% of screen width
+      paddingBottom: height * 0.1, // 10% of screen height
+      marginTop:height*0.08,
     },
     view2: {
       flex: 1,
