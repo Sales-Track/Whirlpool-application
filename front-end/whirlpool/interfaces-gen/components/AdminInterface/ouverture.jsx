@@ -38,8 +38,7 @@ function MyComponent() {
                     />
                     <View style={styles.view2}>
                         <Text style={styles.text}>
-                            You can log in if you have been introduced as an operator by the
-                            branch manager
+                        Whirlpool, le sens de l'essentiel
                         </Text>
                     </View>
                     <TouchableOpacity style={styles.loginButton} onPress={handlePress}>
@@ -52,7 +51,7 @@ function MyComponent() {
                             style={styles.image3}
                         />
                         <View style={styles.view5}>
-                            <Text style={styles.versionText}>Version 1.0.0 Developed by Aziz & Salah</Text>
+                            <Text style={styles.versionText}>Version 1.0.2 Developed by Aziz & Salah</Text>
                         </View>
                     </View>
                 </>
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     text: {
-        fontSize: 12,
+        fontSize: 20,
         fontFamily: "Nunito, sans-serif",
         textAlign: "center",
     },
