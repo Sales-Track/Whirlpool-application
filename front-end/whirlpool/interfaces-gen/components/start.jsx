@@ -43,7 +43,7 @@ function Start() {
           style={styles.image3}
         />
         <View style={styles.view5}>
-          <Text>Version 1.0.0 Developed Aziz & Salah</Text>
+          <Text>Version 1.1 Developed Aziz & Salah</Text>
         </View>
       </View>
     </View>

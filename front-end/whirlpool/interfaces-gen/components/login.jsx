@@ -5,16 +5,23 @@ import port from './port';
 
 const Divider = () => <View style={styles.divider} />;
 
-const InputField = ({ label, placeholder, isPassword, onChangeText }) => (
+const InputField = ({ label, placeholder, isPassword, onChangeText, showPassword, togglePasswordVisibility }) => (
   <>
     <Text style={styles.label}>{label}</Text>
-    <TextInput
-      style={styles.input}
-      placeholder={placeholder}
-      secureTextEntry={isPassword}
-      autoCapitalize="none"
-      onChangeText={(text) => onChangeText(text.toLowerCase())} // Convertir en minuscules ici
-    />
+    <View style={styles.passwordContainer}>
+      <TextInput
+        style={styles.input}
+        placeholder={placeholder}
+        secureTextEntry={isPassword && !showPassword}
+        autoCapitalize="none"
+        onChangeText={(text) => onChangeText(text.toLowerCase())} // Convertir en minuscules ici
+      />
+      {isPassword && (
+        <TouchableOpacity onPress={togglePasswordVisibility}>
+          <Text style={styles.toggleText}>{showPassword ? "Hide" : "Show"}</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   </>
 );
 
@@ -24,6 +31,11 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // État pour l'indicateur de chargement
+  const [showPassword, setShowPassword] = useState(false); // État pour basculer la visibilité du mot de passe
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Inverser la visibilité
+  };
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -81,9 +93,16 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.formContainer}>
         <InputField label="Email" placeholder="Enter your email" isPassword={false} onChangeText={setEmail} />
         <Divider />
-        <InputField label="Password" placeholder="Enter your password" isPassword={true} onChangeText={setPassword} />
+        <InputField
+          label="Password"
+          placeholder="Enter your password"
+          isPassword={true}
+          onChangeText={setPassword}
+          showPassword={showPassword}
+          togglePasswordVisibility={togglePasswordVisibility}
+        />
         <Divider />
-        {loading ? ( // Afficher l'indicateur de chargement si loading est true
+        {loading ? (
           <ActivityIndicator size="large" color="#FDC100" style={styles.loadingIndicator} />
         ) : (
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
@@ -126,9 +145,21 @@ const styles = StyleSheet.create({
     color: "#000",
     marginTop: 20,
   },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#ADADAD',
+    borderBottomWidth: 1,
+  },
   input: {
     marginTop: 4,
     padding: 10,
+    flex: 1,
+  },
+  toggleText: {
+    color: '#FDC100',
+    fontWeight: 'bold',
+    marginRight: 10,
   },
   divider: {
     height: 1,

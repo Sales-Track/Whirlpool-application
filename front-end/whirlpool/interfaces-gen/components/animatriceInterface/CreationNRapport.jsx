@@ -124,6 +124,14 @@ function CreationNRapport() {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" };
     return date.toLocaleDateString("fr-FR", options);
   }
+  useEffect(() => {
+    if (serMarq && serCateg) {
+      console.log('Marque sélectionnée:', serMarq);
+      console.log('Catégorie sélectionnée:', serCateg);
+      FetchrefbyCM(serCateg, serMarq);
+    }
+  }, [serMarq, serCateg]);
+  
 
   return (
     <NativeBaseProvider>
@@ -173,7 +181,7 @@ function CreationNRapport() {
               </Select>
             </Box>
             
-            {serMarq && serCateg && (
+            {serMarq && serCateg &&  (
               <ScrollView style={{ maxHeight: 200 }}>
                 <View>
                   {references.map((ref) => (

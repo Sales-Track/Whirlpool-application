@@ -35,31 +35,31 @@ function CreationRapportExpo(){
     function RowItem({ text,settruc2}) {
         if(settruc2==""){
             return (
-                <View style={styles.row}>
+              <TouchableOpacity onPress={() => navigation.navigate('CreationNRapport',{ ani })} >
+                    <View style={styles.row}>
                   <Text style={styles.text}>{text}</Text>
-                  <TouchableOpacity onPress={() => navigation.navigate('CreationNRapport',{ ani })} >
                     <Image
                       resizeMode="contain"
                       source={leftimage}
                       style={styles.leftimage}
                     />
-                  </TouchableOpacity>
                 </View>
+                  </TouchableOpacity>
               );
         }
         if(settruc2=="1"){
           return (
-              <View style={styles.row}>
-                <Text style={styles.text}>{text}</Text>
-                <TouchableOpacity onPress={() => {
-                  handleRowItemPress({ text: "Rapport Exposition", popupType: "expo", link: "RapportExpoAn" })}}>
+            <TouchableOpacity onPress={() => {
+              handleRowItemPress({ text: "Rapport Exposition", popupType: "expo", link: "RapportExpoAn" })}}>
+                  <View style={styles.row}>
+                    <Text style={styles.text}>{text}</Text>
                   <Image
                     resizeMode="contain"
                     source={leftimage}
                     style={styles.leftimage}
                   />
-                </TouchableOpacity>
               </View>
+                </TouchableOpacity>
             );
       }
         }
