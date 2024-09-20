@@ -120,11 +120,15 @@ React.useEffect(() => {
             return(
                 <View style={styles.dateContainer}>
                     <Text>Date Du :</Text>
-                    <TouchableOpacity onPress={() => setShowStartDatePicker(true)} >
+                    <TouchableOpacity 
+                    style={{height:"120%", width:'25%'}}
+                    onPress={() => setShowStartDatePicker(true)} >
                     <Text>{startDate.toLocaleDateString('fr-FR')}</Text>
                     </TouchableOpacity>
                     <Text>Au :</Text>
-                    <TouchableOpacity onPress={() => setShowEndDatePicker(true)} >
+                    <TouchableOpacity 
+                    style={{height:"120%", width:'25%'}}
+                    onPress={() => setShowEndDatePicker(true)} >
                     <Text>{endDate.toLocaleDateString('fr-FR')}</Text>
                     </TouchableOpacity>
                     {showStartDatePicker && (
@@ -337,7 +341,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor:'#D0D3D4',
         padding:10,
-        width:"100%"
+        width:"100%",
+        height:'33%'
     },
     container2: {
         flexDirection: 'column',

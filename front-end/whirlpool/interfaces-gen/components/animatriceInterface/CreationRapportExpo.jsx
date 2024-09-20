@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     row: {
       flexDirection: 'row', // Layout children in a row
       justifyContent: 'space-between', // Align children to the start and end of the container
-      width: '100%', // Make the row take the full width
+      width: '90%', // Make the row take the full width
       alignItems: 'center', // Align items vertically
       marginTop: 10,
     },

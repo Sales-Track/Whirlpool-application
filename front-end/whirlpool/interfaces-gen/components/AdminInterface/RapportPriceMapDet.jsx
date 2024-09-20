@@ -37,7 +37,7 @@ function RapportPriceMapDet({ route }){
     const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
 
     const Couleur=colors
-    const tdc=["L", "kg", "ft³", "W", "BTU", "bar"]  
+    const tdc=["L", "kg", "ft³", "W", "BTU", "bar","cm"]  
     const dataArt={ 
       couleur:color,
       unite:unite
@@ -56,9 +56,10 @@ function RapportPriceMapDet({ route }){
     const fetchcolor = async () => {
       try {
         const response = await axios.get(`${port}/api/articles/colors`);
-        setColors(response.data);
+        const uniqueColors = [...new Set(response.data)];
+        setColors(uniqueColors);
       } catch (error) {
-        console.error('Error fetching references:', error);
+        console.error('Error fetching colors:', error);
       }
     };
     
@@ -113,30 +114,30 @@ function RapportPriceMapDet({ route }){
     /////////////////////////Functions///////////////////////////
 
     const Example = ({text}) => {
-        if(text=="Couleur"){
+      if (text == "Couleur") {
         return (
           <Center> 
-          <Box maxW="400">
-            <Select
-              selectedValue={color}
-              minWidth="100%"
-              accessibilityLabel="Choose Service"
-              placeholder={text}
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={(itemValue) => setColor(itemValue)}
-            >
-              {Couleur.map(el=>(
-              <Select.Item label={el} value={el} />
-              ))}
-            
-            </Select>
-          </Box>
-        </Center>
-        )
+            <Box maxW="400">
+              <Select
+                selectedValue={color}
+                minWidth="100%"
+                accessibilityLabel="Choose Service"
+                placeholder={text}
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
+                }}
+                mt={1}
+                onValueChange={(itemValue) => setColor(itemValue)}
+              >
+                {/* Mapping over the unique colors */}
+                {[...new Set(Couleur)].map(el => (
+                  <Select.Item key={el} label={el} value={el} />
+                ))}
+              </Select>
+            </Box>
+          </Center>
+        );
       }
     else{
         return(

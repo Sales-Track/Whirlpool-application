@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     marginTop:wp(30)
   },
   View2: {
-    marginLeft: wp(-30), // Déplacer proportionnellement en fonction de l'écran
+    marginLeft: wp(-20), // Déplacer proportionnellement en fonction de l'écran
   },
   image12: {
     width: width * 0.4, // 30% of screen width

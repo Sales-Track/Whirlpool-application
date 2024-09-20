@@ -24,16 +24,16 @@ function CreationRapportSO() {
     const [article, setArticle]=useState([]);
     const [couleurs,setCouleurs]=useState([]);
     const [capacites,setCapacites]=useState([]);
-const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [sales, setSales] = useState({});
 
     const [couleur, setCouleur]=useState("")
     const [capacite,setCapacite]=useState("")
+    const [idWhirlpool,setIdWirlpool]=useState(null)
 
     const [modalVisibleAdd, setModalVisibleAdd] = useState(false);
     const [modalVisibleSup, setModalVisibleSup] = useState(false);
-
     const [selectedReferenceId, setSelectedReferenceId] = useState(null);
     const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
 
@@ -75,18 +75,48 @@ const [isLoading, setIsLoading] = useState(true);
             console.error('Error fetching categories:', error);
         }
     };
+
+    const getMarques = async () => {
+        try {
+          const response = await axios.get(`${port}/api/marques/marques`);
+      
+          // Check if response data exists and is an array
+          if (response.data && Array.isArray(response.data)) {
+            const idwh = response.data.find(e =>
+              e.marquename && e.marquename.trim().toUpperCase() === "WHIRLPOOL"
+            );
+      
+            // Set only idMarque if a match is found
+            if (idwh) {
+              setIdWirlpool(idwh.idMarque); // Set only the idMarque
+            } else {
+              console.warn("No matching marque found for 'WHIRLPOOL'");
+            }
+          } else {
+            console.error("Invalid response data format:", response.data);
+          }
+        } catch (e) {
+          console.error("Error getting Marque:", e);
+        }
+      };
+      
+      
+
     const fetchRefByCatg = async (id) => {
         if (!id) return;
         try {
             const response = await axios.get(`${port}/api/reference/referencebycateg/${id}`);
-            setReferences(response.data);
-            const initialSales = response.data.reduce((acc, ref) => {
+            refwh=response.data.filter(e=>e.Marque_idMarque==idWhirlpool)
+            console.log(refwh,"heyy");
+            
+            setReferences(refwh);
+            const initialSales = refwh.reduce((acc, ref) => {
                 acc[ref.idReference] = { name: ref.Referencename, sales: 0, idarticles: null };
                 return acc;
             }, {});
             setSales(initialSales);
             setIsLoading(false)
-            await fetchExistingSales(response.data, initialSales);
+            await fetchExistingSales(refwh, initialSales);
         } catch (error) {
             console.error('Error fetching references:', error);
         }
@@ -118,6 +148,7 @@ const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         fetchAllCateg();
         fetchallArticle(selectedReferenceId)
+        getMarques()
     }, [load]);
 
     useEffect(() => {
@@ -143,7 +174,7 @@ const [isLoading, setIsLoading] = useState(true);
 
     const confirmIncrement = async () => {
         try {
-            if (!couleur || !capacite) {
+            if (!couleur ) {
                 Toast.show("Remplir tous les champs, s'il vous plaît.", Toast.LONG);
                 return;
             }
@@ -296,7 +327,7 @@ const [isLoading, setIsLoading] = useState(true);
         if(text==="Categories"){
             return (
                 <Center>
-                    <Box maxW="400" mt={"85%"}>
+                    <Box maxW="400" >
                         <Select
                             selectedValue={categ}
                             minWidth="280"
@@ -439,13 +470,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         paddingHorizontal: 20,
         paddingBottom: 80,
-        marginTop: -950
+        marginTop: -300
     },
     tableContainer: {
-        // marginTop: -350,
+        marginTop: -200,
         flex:1,
         width: '100%',
-        marginBottom:'20%'
+        marginBottom:'10%'
     },
     tableHeader: {
         flexDirection: 'row',
