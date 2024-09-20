@@ -121,8 +121,10 @@ function RapportExpo() {
 </TouchableOpacity>
 
 
-        <Footer ani={ani}  />
+
       </View>
+        <Footer ani={ani}  />
+
     </NativeBaseProvider>
   );
 }

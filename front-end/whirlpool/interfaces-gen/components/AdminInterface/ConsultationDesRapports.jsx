@@ -50,16 +50,16 @@ function ConsultationDesRapports() {
                     />
                     <ScrollView>
                         {reports.map((report) => (
-                            <View key={report.popupType} style={styles.row}>
+                            <TouchableOpacity onPress={() => handleRowItemPress(report)}>
+                                    <View key={report.popupType} style={styles.row}>
                                 <Text style={styles.text}>{report.text}</Text>
-                                <TouchableOpacity onPress={() => handleRowItemPress(report)}>
                                     <Image
                                         resizeMode="contain"
                                         source={leftimage}
                                         style={styles.leftimage}
                                     />
-                                </TouchableOpacity>
                             </View>
+                                </TouchableOpacity>
                         ))}
                     </ScrollView>
                 </View>

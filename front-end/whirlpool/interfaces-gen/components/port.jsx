@@ -1,2 +1,2 @@
-const port='https://api-seles-track.khelifi-salmen.com/'
+const port='https://api-seles-track.khelifi-salmen.com'
 export default port

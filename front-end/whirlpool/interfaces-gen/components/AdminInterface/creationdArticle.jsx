@@ -427,16 +427,16 @@ const hideAlert = () => {
     function RowItem({ text, truc,settruc,settruc2}) {
         if(settruc2==""){
             return (
-                <View style={styles.row}>
+              <TouchableOpacity onPress={() => {settruc(!truc),console.log(truc,text)}}>
+                    <View style={styles.row}>
                   <Text style={styles.text}>{text}</Text>
-                  <TouchableOpacity onPress={() => {settruc(!truc),console.log(truc,text)}}>
                     <Image
                       resizeMode="contain"
                       source={truc ? downicon : leftimage}
                       style={styles.leftimage}
                     />
-                  </TouchableOpacity>
                 </View>
+                  </TouchableOpacity>
               );
         }
         else{

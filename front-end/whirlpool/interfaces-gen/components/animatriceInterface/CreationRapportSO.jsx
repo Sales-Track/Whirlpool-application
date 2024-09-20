@@ -299,7 +299,7 @@ const [isLoading, setIsLoading] = useState(true);
         if(text==="Categories"){
             return (
                 <Center>
-                    <Box maxW="400" mt={3}>
+                    <Box maxW="400" mt={"85%"}>
                         <Select
                             selectedValue={categ}
                             minWidth="280"
@@ -396,7 +396,9 @@ const [isLoading, setIsLoading] = useState(true);
             <Header onCityChange={handleCityChange} />
             <View style={styles.container}>
                 <Example text={'Categories'} />
+                <View style={{marginTop:'80%'}}>
                 <Table />
+                </View>
 
                 {/* Modal for Confirmation */}
                 <Modal isOpen={modalVisibleAdd} onClose={() => setModalVisibleAdd(false)}>
@@ -452,8 +454,15 @@ const styles = StyleSheet.create({
       marginTop: -height * 1.2, // Relative marginTop
     },
     tableContainer: {
+<<<<<<< debug
       marginTop: -height * 0.5, // Relative marginTop
       width: '100%',
+=======
+        // marginTop: -350,
+        flex:1,
+        width: '100%',
+        marginBottom:'20%'
+>>>>>>> main
     },
     tableHeader: {
       flexDirection: 'row',
