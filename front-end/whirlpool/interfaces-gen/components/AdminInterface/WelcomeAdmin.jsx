@@ -73,8 +73,8 @@ function WelcomeAdmin() {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.textRecentActivities}>Recent Activities</Text>
-        {historique.map((item, index) => (
+        <Text style={styles.textRecentActivities}></Text>
+        {/* {historique.map((item, index) => (
           <TouchableOpacity key={index} onPress={() => navigation.navigate(item.link, { adm })} style={styles.activityItem}>
             <View style={styles.activityContent}>
               <Image resizeMode="contain" source={item.image} style={styles.image4} />
@@ -82,7 +82,7 @@ function WelcomeAdmin() {
             </View>
             <Image resizeMode="contain" source={image05} style={styles.image5} />
           </TouchableOpacity>
-        ))}
+        ))} */}
       </ScrollView>
 
       {loading && (

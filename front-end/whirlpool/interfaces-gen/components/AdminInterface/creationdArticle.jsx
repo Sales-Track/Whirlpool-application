@@ -143,6 +143,7 @@ const PostArticle=async(data1,id,data2,showAlert )=>{
       setLoad(!load)
      
       setNewidArt(response.data.idArticle)
+
       // await Promise.all(selectedPdvIds.map(async (id) => {
       //   await axios.post("http://" + port + ":3000/api/expositions/expositions", {
       //     Article_idArticle: response.data.idArticle,

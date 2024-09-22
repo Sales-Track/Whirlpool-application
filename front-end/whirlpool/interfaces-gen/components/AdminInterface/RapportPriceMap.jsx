@@ -38,7 +38,7 @@ function RapportPriceMap(){
 
 const getAllPdvs = async () => {
   try {
-    let response = await axios.get(port + "/api/pdvs/pdvs");
+    let response = await axios.get(port+"/api/pdvs/pdvs");
     setPdvs(response.data);
   } catch (error) {
     console.error('Error fetching PDVs:', error);
@@ -47,7 +47,7 @@ const getAllPdvs = async () => {
 
 const Fetchallcateg = async () => {
   try {
-    const response = await axios.get(port + "/api/categories/categorie");
+    const response = await axios.get(port+"/api/categories/categorie");
     console.log(response.data);
     setCateg(response.data);
   } catch (error) {

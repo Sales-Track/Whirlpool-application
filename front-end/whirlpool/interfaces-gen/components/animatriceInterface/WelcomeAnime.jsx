@@ -13,7 +13,7 @@ const image03 = require('../../../assets/image3.png');
 const image04 = require('../../../assets/image4.png');
 const image05 = require('../../../assets/fleche.png');
 const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
-
+// const { width, height } = Dimensions.get('window');
 function WelcomeAnime() {
   const route = useRoute();
   const { ani } = route.params;
@@ -226,9 +226,9 @@ function WelcomeAnime() {
             </TouchableOpacity>
           </View>
           <View style={styles.view14}>
-            <Text style={styles.textRecentActivities}>Recent Activities</Text>
+            <Text style={styles.textRecentActivities}></Text>
           </View>
-          {historique.map((item, index) => (
+          {/* {historique.map((item, index) => (
             <TouchableOpacity key={index} disabled={!status} onPress={() => handleNavigation(item.link)}>
               <View style={styles.view15}>
                 <View style={styles.view16}>
@@ -240,7 +240,7 @@ function WelcomeAnime() {
                 <Image resizeMode="contain" source={image05} style={styles.image5} />
               </View>
             </TouchableOpacity>
-          ))}
+          ))} */}
         </View>
       </ScrollView>
       {loading && (
@@ -256,46 +256,47 @@ function WelcomeAnime() {
 const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-   loadingContainer: {
+  loadingContainer: {
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1, // Ajout de flex pour occuper tout l'espace
   },
   view1: {
-    marginTop: 85,
+    marginTop: height * 0.1, // Relative marginTop
     width: "100%",
     flexDirection: "column",
     alignItems: "center",
-    paddingHorizontal: 24,
+    paddingHorizontal: width * 0.06, // Relative paddingHorizontal
   },
   loadingLogo: {
-    width: 125,
-    height: 95,
+    width: width * 0.3, // Relative width
+    height: height * 0.12, // Relative height
   },
   view2: {
     alignItems: "stretch",
-    marginBottom: 15,
-    flexDirection: "row"
+    marginBottom: height * 0.02, // Relative marginBottom
+    flexDirection: "row",
   },
   view3: {
-    marginBottom: 5,
+    marginBottom: height * 0.006, // Relative marginBottom
   },
   textEmoji: {
-    fontSize: 16,
+    fontSize: width * 0.04, // Relative font size
     color: "#FFCE38",
   },
   view4: {},
   textAdmin: {
-    fontSize: 14,
+    fontSize: width * 0.035, // Relative font size
     color: "#263238",
   },
   view5: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 16,
-    height: 150,
-    margin: 5,
+    marginBottom: height * 0.02, // Relative marginBottom
+    height: height * 0.2, // Relative height
+    margin: width * 0.012, // Relative margin
   },
   view6: {
     borderRadius: 10,
@@ -303,28 +304,28 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -0.5, height: 2 },
     shadowOpacity: 0.16,
     backgroundColor: "#FFF",
-    padding: 16,
+    padding: width * 0.04, // Relative padding
     flex: 1,
-    marginRight: 8,
-    width: 170,
+    marginRight: width * 0.02, // Relative marginRight
+    width: width * 0.45, // Relative width
   },
   view7: {
-    marginBottom: 8,
+    marginBottom: height * 0.01, // Relative marginBottom
   },
   textCreation: {
-    fontSize: 16,
+    fontSize: width * 0.04, // Relative font size
     color: "black",
   },
   textCreation1: {
-    fontSize: 16,
+    fontSize: width * 0.04, // Relative font size
     color: "white",
   },
   image1: {
-    width: 95,
-    height: 95,
+    width: width * 0.24, // Relative width
+    height: height * 0.12, // Relative height
     position: "absolute",
-    top: 75,
-    left: -15,
+    top: height * 0.1, // Relative top position
+    left: width * -0.04, // Relative left position
   },
   image12: {
     width: width * 0.3, // 30% of screen width
@@ -339,27 +340,27 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -0.5, height: 2 },
     shadowOpacity: 0.16,
     backgroundColor: "#FFF",
-    padding: 16,
+    padding: width * 0.04, // Relative padding
     flex: 1,
-    marginLeft: 8,
-    width: 170,
+    marginLeft: width * 0.02, // Relative marginLeft
+    width: width * 0.45, // Relative width
   },
   view9: {
-    marginBottom: 8,
+    marginBottom: height * 0.01, // Relative marginBottom
   },
   image2: {
-    width: 78,
-    height: 78,
+    width: width * 0.2, // Relative width
+    height: height * 0.1, // Relative height
     position: "absolute",
-    top: 82,
-    right: -15,
+    top: height * 0.1, // Relative top position
+    right: width * -0.04, // Relative right position
   },
   view10: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 16,
-    height: 150,
-    margin: 2,
+    marginBottom: height * 0.02, // Relative marginBottom
+    height: height * 0.2, // Relative height
+    margin: width * 0.005, // Relative margin
   },
   view11: {
     borderRadius: 10,
@@ -367,27 +368,27 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -0.5, height: 2 },
     shadowOpacity: 0.16,
     backgroundColor: "#FFF",
-    padding: 16,
+    padding: width * 0.04, // Relative padding
     flex: 1,
-    marginRight: 8,
-    width: 170,
+    marginRight: width * 0.02, // Relative marginRight
+    width: width * 0.45, // Relative width
   },
   view12: {
-    marginBottom: 8,
+    marginBottom: height * 0.01, // Relative marginBottom
   },
   image3: {
-    width: 68,
-    height: 68,
+    width: width * 0.18, // Relative width
+    height: height * 0.1, // Relative height
     position: "absolute",
-    top: 90,
-    left: -5,
+    top: height * 0.12, // Relative top position
+    left: width * -0.01, // Relative left position
   },
   image03: {
-    width: 88,
-    height: 88,
+    width: width * 0.23, // Relative width
+    height: height * 0.12, // Relative height
     position: "absolute",
-    top: 80,
-    right: -20,
+    top: height * 0.1, // Relative top position
+    right: width * -0.05, // Relative right position
   },
   view13: {
     borderRadius: 10,
@@ -395,35 +396,34 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -0.5, height: 2 },
     shadowOpacity: 0.16,
     backgroundColor: "#FFF",
-    padding: 16,
+    padding: width * 0.04, // Relative padding
     flex: 1,
-    marginLeft: 8,
+    marginLeft: width * 0.02, // Relative marginLeft
     justifyContent: "center",
     alignItems: "center",
-    width: 170,
+    width: width * 0.45, // Relative width
   },
   view14: {
-    marginTop: 36,
+    marginTop: height * 0.05, // Relative marginTop
     alignSelf: "stretch",
-    marginBottom: 16,
+    marginBottom: height * 0.02, // Relative marginBottom
   },
   textRecentActivities: {
-    fontSize: 14,
+    fontSize: width * 0.035, // Relative font size
     color: "#263238",
-    fontFamily: "Open Sans, sans-serif",
     fontWeight: "700",
   },
   view15: {
     borderRadius: 10,
     backgroundColor: "#FFCC30",
     alignSelf: "stretch",
-    padding: 20,
+    padding: width * 0.05, // Relative padding
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: 360,
-    marginTop: 5,
-    marginBottom: 20,
+    width: width * 0.9, // Relative width
+    marginTop: height * 0.01, // Relative marginTop
+    marginBottom: height * 0.03, // Relative marginBottom
   },
   view16: {
     flexDirection: "row",
@@ -432,24 +432,25 @@ const styles = StyleSheet.create({
   image4: {
     backgroundColor: "#FFF",
     borderRadius: 32,
-    width: 64,
-    height: 64,
+    width: width * 0.16, // Relative width
+    height: height * 0.08, // Relative height
   },
   view17: {
-    marginLeft: 9,
+    marginLeft: width * 0.02, // Relative marginLeft
   },
   image5: {
-    width: 30,
-    height: 30,
+    width: width * 0.075, // Relative width
+    height: height * 0.04, // Relative height
   },
   loadingIndicator: {
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
+    flex: 1, // Ajout de flex pour occuper tout l'espace
   },
   loadingText: {
-    marginTop: 10,
-    fontSize: 18,
+    marginTop: height * 0.01, // Relative marginTop
+    fontSize: width * 0.045, // Relative font size
     color: "#263238",
   },
 });
