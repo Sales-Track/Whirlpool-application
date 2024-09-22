@@ -124,7 +124,7 @@ console.log(refresh);
           <View style={styles.view14}>
             <Text style={styles.textRecentActivities}>Recent Activities</Text>
           </View>
-          {historique.map((item, index) => (
+          {/* {historique.map((item, index) => (
             <TouchableOpacity key={index} onPress={() => navigation.navigate(item.link)}>
               <View style={styles.view15}>
                 <View style={styles.view16}>
@@ -136,7 +136,7 @@ console.log(refresh);
                 <Image resizeMode="contain" source={image05} style={styles.image5} />
               </View>
             </TouchableOpacity>
-          ))}
+          ))} */}
         </View>
       </ScrollView>
       <Modal

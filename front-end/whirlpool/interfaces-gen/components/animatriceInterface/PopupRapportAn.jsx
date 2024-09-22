@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, StyleSheet,Dimensions, Text, TouchableOpacity } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { CheckIcon, Center, NativeBaseProvider, Box, Select, View, Icon } from "native-base";
 import { useNavigation } from '@react-navigation/native';
 import axios from "axios";
@@ -7,9 +7,6 @@ import { MaterialIcons } from "@expo/vector-icons";  // Importing the icons from
 import port from '../port';
 import { useRoute } from '@react-navigation/native';
 
-
-
-const { width, height } = Dimensions.get('window');
 function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportName, link }) {
     const navigation = useNavigation();
     const route = useRoute();
@@ -22,8 +19,10 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
 
     const fetchPdvsname = async () => {
         try {
-            const response = await axios.get(`${port}/api/pdvs/pdvs`);
-            const pdvNames = response.data.map(pdv => pdv.pdvname);
+            const response = await axios.get(`${port}/api/pdvs/pdvs/${ani.PDV_idPDV}`);
+            const pdvNames = response.data
+console.log(pdvNames);
+
             setNomspdv(pdvNames);
         } catch (error) {
             console.error('Error fetching PDVs:', error);
@@ -34,31 +33,31 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
         fetchPdvsname();
     }, []);
 
-    const Example = ({ text, setOption, option }) => (
-        <Center>
-            <Box maxW="400" mt={5}>
-                <Select
-                    selectedValue={option}
-                    minWidth="100%"
-                    accessibilityLabel="Choisir le point de vente"
-                    placeholder={text}
-                    _selectedItem={{
-                        bg: "teal.600",
-                        endIcon: <CheckIcon size="5" />,
-                    }}
-                    InputLeftElement={
-                        <Icon as={<MaterialIcons name="store" />} size={5} ml="2" color="muted.400" />
-                    } 
-                    mt={1}
-                    onValueChange={(itemValue) => setOption(itemValue)}
-                >
-                    {nomspdv.map((el, index) => (
-                        <Select.Item key={index} label={el} value={el} />
-                    ))}
-                </Select>
-            </Box>
-        </Center>
-    );
+    // const Example = ({ text, setOption, option }) => (
+    //     <Center>
+    //         <Box maxW="400" mt={5}>
+    //             <Select
+    //                 selectedValue={option}
+    //                 minWidth="100%"
+    //                 accessibilityLabel="Choisir le point de vente"
+    //                 placeholder={text}
+    //                 _selectedItem={{
+    //                     bg: "teal.600",
+    //                     endIcon: <CheckIcon size="5" />,
+    //                 }}
+    //                 InputLeftElement={
+    //                     <Icon as={<MaterialIcons name="store" />} size={5} ml="2" color="muted.400" />
+    //                 } 
+    //                 mt={1}
+    //                 onValueChange={(itemValue) => setOption(itemValue)}
+    //             >
+    //                 {nomspdv.map((el, index) => (
+    //                     <Select.Item key={index} label={el} value={el} />
+    //                 ))}
+    //             </Select>
+    //         </Box>
+    //     </Center>
+    // );
 
     const ExampleMonth = ({ text, setOption, option }) => (
         <Center>
@@ -96,10 +95,12 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
     );
 
     const handleVerifyPress = () => {
-        if (month === "" || pdv === "") {
+        if (month === "" || nomspdv === "") {
             setWarningVisible(true);
         } else {
-            navigation.navigate(link, { month, pdv, ani });
+            navigation.navigate(link, { month,pdv, ani,nomspdv });
+        console.log('aaaaaaa',nomspdv);
+        
         }
     };
 
@@ -115,7 +116,7 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
                     <Box style={styles.modal}>
                         <Text style={styles.title}>{rapportName}</Text>
                         <ExampleMonth text={'Mois :'} setOption={setMonth} option={month} />
-                        <Example text={'Point De Vente'} setOption={setPdv} option={pdv} />
+                        {/* <Example text={'Point De Vente'} setOption={setPdv} option={pdv} /> */}
                         <Center mt={10}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <TouchableOpacity
@@ -162,66 +163,66 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
 
 const styles = StyleSheet.create({
     center: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent pour overlay derrière le modal
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent pour overlay derrière le modal
     },
     modal: {
-      backgroundColor: 'white',
-      padding: width * 0.05, // Relative padding
-      borderRadius: 15,
-      width: "80%",
-      height: "40%",
-      borderWidth: 1,
-      borderColor: '#FDC100',
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 15,
+        width: "80%",
+        height: "40%",
+        borderWidth: 1,
+        borderColor: '#FDC100',
     },
     title: {
-      fontSize: width * 0.045, // Relative font size
-      fontWeight: '600',
-      marginBottom: height * 0.03, // Relative marginBottom
-      textAlign: 'center',
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 30,
+        textAlign: 'center',
     },
     warningModal: {
-      backgroundColor: 'white',
-      padding: width * 0.05, // Relative padding
-      borderRadius: 15,
-      width: "80%",
-      height: "20%",
-      borderWidth: 1,
-      borderColor: '#FDC100',
-      alignItems: 'center',
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 15,
+        width: "80%",
+        height: "20%",
+        borderWidth: 1,
+        borderColor: '#FDC100',
+        alignItems: 'center',
     },
     warningTitle: {
-      fontSize: width * 0.045, // Relative font size
-      fontWeight: '600',
-      marginBottom: height * 0.01, // Relative marginBottom
-      textAlign: 'center',
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 10,
+        textAlign: 'center',
     },
     warningText: {
-      fontSize: width * 0.04, // Relative font size
-      marginBottom: height * 0.02, // Relative marginBottom
-      textAlign: 'center',
+        fontSize: 16,
+        marginBottom: 20,
+        textAlign: 'center',
     },
     btns: {
-      backgroundColor: 'white', // Couleur de fond du bouton
-      padding: height * 0.012, // Relative padding
-      borderRadius: 5,
-      width: width * 0.23, // Relative width
-      height: height * 0.06, // Relative height
-      marginTop: "0%",
-      marginBottom: height * 0.02, // Relative marginBottom
-      marginLeft: width * 0.02, // Relative marginLeft
-      marginRight: width * 0.02, // Relative marginRight
-      alignItems: 'center',
-      borderWidth: 1.5,
-      borderColor: '#FDC100',
+        backgroundColor: 'white', // Couleur de fond du bouton
+        padding: 10,
+        borderRadius: 5,
+        width: 90,
+        height: 50,
+        marginTop: "0%",
+        marginBottom: '10%',
+        marginLeft: '2%',
+        marginRight: '2%',
+        alignItems: 'center',
+        borderWidth: 1.5,
+        borderColor: '#FDC100',
     },
     btnText: {
-      color: '#FDC100', // Couleur du texte
-      fontSize: width * 0.04, // Relative font size
-      textAlign: "center",
+        color: '#FDC100', // Couleur du texte
+        fontSize: 16,
+        textAlign: "center"
     },
-  });
+});
 
 export default PopupRapport;

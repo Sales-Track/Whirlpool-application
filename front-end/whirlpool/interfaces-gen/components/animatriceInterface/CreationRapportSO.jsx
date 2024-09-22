@@ -454,15 +454,10 @@ const styles = StyleSheet.create({
       marginTop: -height * 1.2, // Relative marginTop
     },
     tableContainer: {
-<<<<<<< debug
+
       marginTop: -height * 0.5, // Relative marginTop
       width: '100%',
-=======
-        // marginTop: -350,
-        flex:1,
-        width: '100%',
-        marginBottom:'20%'
->>>>>>> main
+
     },
     tableHeader: {
       flexDirection: 'row',

@@ -230,9 +230,9 @@ function WelcomeAnime() {
             </TouchableOpacity>
           </View>
           <View style={styles.view14}>
-            <Text style={styles.textRecentActivities}>Recent Activities</Text>
+            <Text style={styles.textRecentActivities}></Text>
           </View>
-          {historique.map((item, index) => (
+          {/* {historique.map((item, index) => (
             <TouchableOpacity key={index} disabled={!status} onPress={() => handleNavigation(item.link)}>
               <View style={styles.view15}>
                 <View style={styles.view16}>
@@ -244,7 +244,7 @@ function WelcomeAnime() {
                 <Image resizeMode="contain" source={image05} style={styles.image5} />
               </View>
             </TouchableOpacity>
-          ))}
+          ))} */}
         </View>
       </ScrollView>
       {loading && (

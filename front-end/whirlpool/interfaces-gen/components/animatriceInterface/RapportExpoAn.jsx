@@ -11,7 +11,7 @@ import port from '../port';
 const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
 function RapportExpo() {
   const route = useRoute();
-  const { month, pdv, ani } = route.params;
+  const { month, pdv, ani , nomspdv } = route.params;
   const navigation = useNavigation();
 
   const [expo, setExpo] = useState([]);
@@ -25,12 +25,12 @@ function RapportExpo() {
         const [expos, refs, pdvss] = await Promise.all([
           axios.get(port + "/api/expositions/expositions"),
           axios.get(port + "/api/reference/references"),
-          axios.get(`${port}/api/pdvs/getId/${pdv}`)
+    
         ]);
 
         setExpo(expos.data);
         setReferences(refs.data);
-        setPdvs(pdvss.data);
+     
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -43,9 +43,12 @@ function RapportExpo() {
   const getExpositionsByMonthAndPDV = (expositions) => {
     const formattedMonth = month.toString().padStart(2, '0');
     return expositions.filter(exposition =>
-      exposition.createdAt.slice(5, 7) === formattedMonth && exposition.PDV_idPDV === pdvs.idPDV
+      exposition.createdAt.slice(5, 7) === formattedMonth && exposition.PDV_idPDV === nomspdv.idPDV
+  
+      
     );
   };
+
 
   
 
@@ -87,8 +90,8 @@ function RapportExpo() {
             
               <View>
                 <Text style={styles.textexpo}>Date : {month}</Text>
-                <Text style={styles.textexpo}>Zone : {pdvs.location}</Text>
-                <Text style={styles.textexpo}>Magasin : {pdv}</Text>
+                <Text style={styles.textexpo}>Zone : {nomspdv.location}</Text>
+                <Text style={styles.textexpo}>Magasin : {nomspdv.pdvname}</Text>
                 <Text style={styles.textexpo}>Animatrice : {ani ? ani.name : "Loading..."}</Text>
               </View>
           
