@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView,Dimensions } from "react-native";
 import { NativeBaseProvider, Center, Spinner } from "native-base";
 import Header from './header';
 import Footer from './footer';
@@ -132,8 +132,7 @@ function RapportLog() {
     <NativeBaseProvider>
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
       <View style={styles.container}>
-        <Header />
-        <Center flex={1} mt={'-140%'}>
+        <Center flex={1} >
           <Text style={styles.title}>Rapport Log</Text>
         </Center>
         {isLoading ? (
@@ -157,6 +156,7 @@ function RapportLog() {
     </NativeBaseProvider>
   );
 }
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
@@ -164,11 +164,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image12: {
-    width: 125,
-    height: 95,
+    width: width * 0.4, // 30% of screen width
+    height: height * 0.2, // 20% of screen height
     position: "absolute",
     top: 0,
-    left: 15,
+    left: width * 0.3, // 3% of screen width
   },
   content: {
     paddingHorizontal: 20,

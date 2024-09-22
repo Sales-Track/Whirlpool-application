@@ -200,10 +200,9 @@ function RapportExpo() {
   }, [marques]);
   return (
     <NativeBaseProvider>
-        <Header />
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
       <View style={styles.view1}>
-          <ScrollView style={{ marginTop:-250 }} >
+          <ScrollView style={{ marginTop:100 }} >
             <View>
               <View >
                 <Text style={styles.textexpo}>Date : {month}</Text>
@@ -279,11 +278,11 @@ const styles = StyleSheet.create({
     padding: width * 0.05, // 5% of screen width
   },
   image12: {
-    width: width * 0.3, // 30% of screen width
+    width: width * 0.4, // 30% of screen width
     height: height * 0.2, // 20% of screen height
     position: "absolute",
     top: 0,
-    left: width * 0.03, // 3% of screen width
+    left: width * 0.3, // 3% of screen width
   },
   textexpo: {
     fontSize: width * 0.04, // 4% of screen width

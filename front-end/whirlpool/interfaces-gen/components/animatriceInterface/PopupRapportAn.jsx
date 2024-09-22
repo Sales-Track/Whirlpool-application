@@ -19,8 +19,10 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
 
     const fetchPdvsname = async () => {
         try {
-            const response = await axios.get(`${port}/api/pdvs/pdvs`);
-            const pdvNames = response.data.map(pdv => pdv.pdvname);
+            const response = await axios.get(`${port}/api/pdvs/pdvs/${pdv}`);
+            const pdvNames = response.data.pdvname
+console.log(pdvNames);
+
             setNomspdv(pdvNames);
         } catch (error) {
             console.error('Error fetching PDVs:', error);
@@ -31,31 +33,31 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
         fetchPdvsname();
     }, []);
 
-    const Example = ({ text, setOption, option }) => (
-        <Center>
-            <Box maxW="400" mt={5}>
-                <Select
-                    selectedValue={option}
-                    minWidth="100%"
-                    accessibilityLabel="Choisir le point de vente"
-                    placeholder={text}
-                    _selectedItem={{
-                        bg: "teal.600",
-                        endIcon: <CheckIcon size="5" />,
-                    }}
-                    InputLeftElement={
-                        <Icon as={<MaterialIcons name="store" />} size={5} ml="2" color="muted.400" />
-                    } 
-                    mt={1}
-                    onValueChange={(itemValue) => setOption(itemValue)}
-                >
-                    {nomspdv.map((el, index) => (
-                        <Select.Item key={index} label={el} value={el} />
-                    ))}
-                </Select>
-            </Box>
-        </Center>
-    );
+    // const Example = ({ text, setOption, option }) => (
+    //     <Center>
+    //         <Box maxW="400" mt={5}>
+    //             <Select
+    //                 selectedValue={option}
+    //                 minWidth="100%"
+    //                 accessibilityLabel="Choisir le point de vente"
+    //                 placeholder={text}
+    //                 _selectedItem={{
+    //                     bg: "teal.600",
+    //                     endIcon: <CheckIcon size="5" />,
+    //                 }}
+    //                 InputLeftElement={
+    //                     <Icon as={<MaterialIcons name="store" />} size={5} ml="2" color="muted.400" />
+    //                 } 
+    //                 mt={1}
+    //                 onValueChange={(itemValue) => setOption(itemValue)}
+    //             >
+    //                 {nomspdv.map((el, index) => (
+    //                     <Select.Item key={index} label={el} value={el} />
+    //                 ))}
+    //             </Select>
+    //         </Box>
+    //     </Center>
+    // );
 
     const ExampleMonth = ({ text, setOption, option }) => (
         <Center>
@@ -93,10 +95,10 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
     );
 
     const handleVerifyPress = () => {
-        if (month === "" || pdv === "") {
+        if (month === "" || nomspdv === "") {
             setWarningVisible(true);
         } else {
-            navigation.navigate(link, { month, pdv, ani });
+            navigation.navigate(link, { month,pdv, ani,nomspdv });
         }
     };
 
@@ -112,7 +114,7 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
                     <Box style={styles.modal}>
                         <Text style={styles.title}>{rapportName}</Text>
                         <ExampleMonth text={'Mois :'} setOption={setMonth} option={month} />
-                        <Example text={'Point De Vente'} setOption={setPdv} option={pdv} />
+                        {/* <Example text={'Point De Vente'} setOption={setPdv} option={pdv} /> */}
                         <Center mt={10}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <TouchableOpacity

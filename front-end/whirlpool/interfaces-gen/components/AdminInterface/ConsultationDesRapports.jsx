@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollView, View, StyleSheet, Image, Text, TouchableOpacity, Modal } from "react-native";
+import { ScrollView, View, StyleSheet, Image, Text, TouchableOpacity, Modal,Dimensions } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import Footer from './footer';
 import PopupRapport from './PopupRapport';
@@ -41,13 +41,7 @@ function ConsultationDesRapports() {
             <View style={styles.view1}>
                 <Text style={{ fontSize: 18, fontWeight: 700, marginTop: 20 }}>Consultation Des Rapports :</Text>
                 <View style={styles.view2}>
-                    <Image
-                        resizeMode="contain"
-                        source={{
-                            uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/12f4aba34bd6fde10767af48f78f20f36401e32be5ece9adacbb2971412c1df1?apiKey=354f2f8c1f9f40aca64d3ce2e19fda26&",
-                        }}
-                        style={styles.image1}
-                    />
+
                     <ScrollView>
                         {reports.map((report) => (
                             <TouchableOpacity onPress={() => handleRowItemPress(report)}>
@@ -84,6 +78,7 @@ function ConsultationDesRapports() {
         </NativeBaseProvider>
     );
 }
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     alert: {
@@ -116,15 +111,16 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'flex-start',
         justifyContent: 'space-between',
-        padding: 39,
-        paddingHorizontal: 35,
-        paddingBottom: 80,
+        padding: width * 0.1, // 10% of screen width
+        paddingHorizontal: width * 0.08, // 8% of screen width
+        paddingBottom: height * 0.1, // 10% of screen height
+        marginTop:height*0.08,
     },
     image12: {
-        width: 125,
-        height: 95,
-        position: "absolute",
-        top: 0,
+        width: width * 0.33, // 33% of screen width
+        height: height * 0.2, // 15% of screen height
+        position: 'absolute',
+        top: 10,
         left: 15,
       },
     view2: {

@@ -11,7 +11,7 @@ import port from '../port';
 const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
 function RapportExpo() {
   const route = useRoute();
-  const { month, pdv, ani } = route.params;
+  const { month, pdv, ani,nomspdv } = route.params;
   const navigation = useNavigation();
 
   const [expo, setExpo] = useState([]);
@@ -79,16 +79,12 @@ function RapportExpo() {
     <NativeBaseProvider>
        <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12}/>
       <View style={styles.view1}>
-        
         <Header />
-
-        <ScrollView style={{ marginTop: -50 }}>
-        
-            
-              <View>
+        <ScrollView style={{ marginTop: -250 }}>  
+            <View>
                 <Text style={styles.textexpo}>Date : {month}</Text>
-                <Text style={styles.textexpo}>Zone : {pdvs.location}</Text>
-                <Text style={styles.textexpo}>Magasin : {pdv}</Text>
+                {/* <Text style={styles.textexpo}>Zone : {pdvs.location}</Text> */}
+                <Text style={styles.textexpo}>Magasin : {nomspdv}</Text>
                 <Text style={styles.textexpo}>Animatrice : {ani ? ani.name : "Loading..."}</Text>
               </View>
           
@@ -132,9 +128,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    marginTop:'15%'
   },
   container: {
     flexDirection: 'column',
+    marginTop:"10%"
   },
   headerRow: {
     flexDirection: 'row',
@@ -159,7 +157,7 @@ const styles = StyleSheet.create({
     width: 125,
     height: 95,
     position: "absolute",
-    top: 0,
+    top: 55,
     left: 15,
   },
   cell: {

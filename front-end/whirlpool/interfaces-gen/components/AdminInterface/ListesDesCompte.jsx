@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NativeBaseProvider, Button, Input, Spinner } from "native-base";
-import { ScrollView, View, StyleSheet, Image, Text, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
+import { ScrollView, View, StyleSheet, Image, Text, TouchableOpacity, Modal, ActivityIndicator,Dimensions } from "react-native";
 import {useRoute ,useNavigation} from '@react-navigation/native';
 
 import axios from "axios";
@@ -164,6 +164,7 @@ function ListesDesComptes() {
                             onPress={() => {
                                 if (actionType === "delete") {
                                     deleteAccount(selectedAccount.idusers);
+                                    setModalVisible(false)
                                 } else {
                                     handleSave();
                                 }
@@ -178,16 +179,22 @@ function ListesDesComptes() {
         </NativeBaseProvider>
     );
 }
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
         padding: 16,
-        flex:1
+        flex:1,
+        marginTop:"30%",
+        marginBottom:"10%"
     },
     image12: {
-        width: '31%',
-        height: '12%',
-    },
+        width: width * 0.4, // 30% of screen width
+        height: height * 0.2, // 20% of screen height
+        position: "absolute",
+        top: 0,
+        left: width * 0.3, // 3% of screen width
+      },
     table: {
         flex:3
     },

@@ -1,114 +1,140 @@
 import * as React from "react";
-import {
-  FlatList,
-  ScrollView,
-  View,
-  StyleSheet,
-  Image,
-  Text,
-} from "react-native";
+import { View, StyleSheet, Image, Text, TouchableOpacity, Alert } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import LoadingAnimation from '../Loading'; // Assurez-vous d'importer le composant correctement
 
-console.disableYellowBox = true; // Pour masquer tous les avertissements jaunes
-function Start() {
+function MyComponent() {
+    const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
+    const top = require('../../../assets/top.png');
+    const Garde = require('../../../assets/garde.png');
+    const navigation = useNavigation();
+    const [loading, setLoading] = React.useState(false);
 
-  return (
-    <View style={styles.view1}>
-      <Image
-        resizeMode="auto"
-        source={{
-          uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/5eabcf1f56010dd8f011a0187337088d522cc501a4b1ac85ce4475eb6ec27508?apiKey=354f2f8c1f9f40aca64d3ce2e19fda26&",
-        }}
-        style={styles.image1}
-      />
-      <Image
-        resizeMode="auto"
-        source={{
-          uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/653906d8723a7b1c34a9a4f4d68d47196e733bec982738e9d91beb2b6d2d1a05?apiKey=354f2f8c1f9f40aca64d3ce2e19fda26&",
-        }}
-        style={styles.image2}
-      />
-      <View style={styles.view2}>
-        <Text>
-          You can log in if you have been introduced as an operator by the
-          branch manager
-        </Text>
-      </View>
-      <View style={styles.view3} />
-      <View style={styles.view4}>
-        <Image
-          resizeMode="auto"
-          source={{
-            uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/d5e7d96c3527520ce55c2f9e048fe715111e9307bef02fea0543af329280d6a2?apiKey=354f2f8c1f9f40aca64d3ce2e19fda26&",
-          }}
-          style={styles.image3}
-        />
-        <View style={styles.view5}>
-          <Text>Version 1.1 Developed Aziz & Salah</Text>
+    const handlePress = () => {
+        setLoading(true);
+
+        // Simuler un appel API ou toute opération asynchrone
+        setTimeout(() => {
+            setLoading(false);
+            navigation.navigate('Login');
+        }, 2000); // délai de 2 secondes
+    };
+
+    return (
+        <View style={styles.view1}>
+            {loading ? (
+                <LoadingAnimation source={WHIRLPOOL_LOGO} />
+            ) : (
+                <>
+                    <Image
+                        resizeMode="contain"
+                        source={Garde}
+                        style={styles.image1}
+                    />
+                    <Image
+                        resizeMode="contain"
+                        source={WHIRLPOOL_LOGO}
+                        style={styles.image2}
+                    />
+                    <View style={styles.view2}>
+                        <Text style={styles.text}>
+                        Whirlpool, le sens de l'essentiel
+                        </Text>
+                    </View>
+                    <TouchableOpacity style={styles.loginButton} onPress={handlePress}>
+                        <Text style={styles.loginButtonText}>Get start</Text>
+                    </TouchableOpacity>
+                    <View style={styles.view4}>
+                        <Image
+                            resizeMode="contain"
+                            source={top}
+                            style={styles.image3}
+                        />
+                        <View style={styles.view5}>
+                            <Text style={styles.versionText}>Version 1.0.1 Developed by Aziz & Salah</Text>
+                        </View>
+                    </View>
+                </>
+            )}
         </View>
-      </View>
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
-  view1: {
-    borderRadius: 30,
-    backgroundColor: "#FFF",
-    display: "flex",
-    maxWidth: 360,
-    flexDirection: "column",
-    alignItems: "center",
-    color: "#C6C6C6",
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  image1: {
-    alignSelf: "stretch",
-    position: "relative",
-    width: "100%",
-    aspectRatio: "1.16",
-  },
-  image2: {
-    position: "relative",
-    marginTop: 54,
-    width: 171,
-    maxWidth: "100%",
-    aspectRatio: "2.27",
-  },
-  view2: {
-    marginTop: 27,
-    font: "12px ",
-  },
-  view3: {
-    borderRadius: 8,
-    backgroundColor: "#FFCE38",
-    marginTop: 26,
-    width: 248,
-    flexShrink: 0,
-    height: 48,
-  },
-  view4: {
-    alignSelf: "stretch",
-    display: "flex",
-    marginTop: 33,
-    alignItems: "stretch",
-    fontSize: 10,
-  },
-  image3: {
-    position: "relative",
-    width: 150,
-    flexShrink: 0,
-    maxWidth: "100%",
-    aspectRatio: "1.37",
-  },
-  view5: {
-    alignSelf: "start",
-    marginTop: 82,
-    flexGrow: "1",
-    flexShrink: "1",
-    flexBasis: "auto",
-  },
+    view1: {
+        backgroundColor: "#FFF",
+        display: "flex",
+        maxWidth: 500,
+        flexDirection: "column",
+        alignItems: "center",
+        color: "#C6C6C6",
+        fontWeight: "700",
+        textAlign: "center",
+        padding: 16,
+        justifyContent: "center",
+        height: '100%'
+    },
+    loader: {
+        marginTop: 20,
+    },
+    image1: {
+        width: "100%",
+        height: undefined,
+        aspectRatio: 1.16,
+    },
+    image2: {
+        marginTop: 54,
+        width: 171,
+        height: undefined,
+        aspectRatio: 2.27,
+    },
+    view2: {
+        marginTop: 27,
+    },
+    loginButton: {
+        backgroundColor: "#FDC100",
+        borderRadius: 15,
+        marginTop: 20,
+        paddingVertical: 15,
+        paddingHorizontal: 45,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    loginButtonText: {
+        color: "#FFF",
+        fontSize: 15,
+    },
+    text: {
+        fontSize: 12,
+        fontFamily: "Nunito, sans-serif",
+        textAlign: "center",
+    },
+    view3: {
+        borderRadius: 8,
+        backgroundColor: "#FFCE38",
+        marginTop: 26,
+        width: 248,
+        height: 48,
+    },
+    view4: {
+        alignSelf: "stretch",
+        display: "flex",
+        marginTop: 33,
+        alignItems: "center",
+        fontSize: 10,
+    },
+    image3: {
+        width: 150,
+        height: undefined,
+        aspectRatio: 1.37,
+    },
+    view5: {
+        marginTop: 82,
+    },
+    versionText: {
+        fontFamily: "Nunito, sans-serif",
+        textAlign: "center",
+    },
 });
 
-
-export default Start;
+export default MyComponent;

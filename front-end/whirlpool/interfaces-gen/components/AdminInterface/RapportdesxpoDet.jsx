@@ -62,8 +62,7 @@ const exportToExcel = async () => {
     <NativeBaseProvider>
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
       <View style={styles.view1}>
-        <Header />
-        <ScrollView style={{ marginTop: -150 }}>
+        <ScrollView style={{ marginTop: 150 }}>
           <View>
             <View>
               <Text style={styles.textexpo}>{category}</Text>
@@ -145,11 +144,11 @@ const styles = StyleSheet.create({
     borderColor: '#D0D3D4',
   },
   image12: {
-    width: wp(30),
-    height: hp(20),
+    width: width * 0.4, // 30% of screen width
+    height: height * 0.2, // 20% of screen height
     position: "absolute",
     top: 0,
-    left: wp(5),
+    left: width * 0.3, // 3% of screen width
   },
   cell2: {
     flex: 1,

@@ -7,7 +7,7 @@ import port from '../port'
 import axios from 'axios'
 import { useNavigation,useRoute } from '@react-navigation/native';
 import { MaterialIcons } from "@expo/vector-icons";
-const { width, height } = Dimensions.get('window');
+  const { width, height } = Dimensions.get('window');
 
 const wp = (percentage) => {
   return width * (percentage / 100);
@@ -139,7 +139,6 @@ const RenderInput=(text)=>{
           <NativeBaseProvider>
             <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
             <View style={styles.view1}>
-              <Header />
               {loading ? (
                 <Center flex={1}>
                   <ActivityIndicator size="large" color="#FDC100" />
@@ -183,16 +182,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: wp(5), // Padding proportionnel
+    marginTop:wp(30)
   },
   View2: {
-    marginLeft: wp(-35), // Déplacer proportionnellement en fonction de l'écran
+    marginLeft: wp(-20), // Déplacer proportionnellement en fonction de l'écran
   },
   image12: {
-    width: wp(30), // Largeur proportionnelle
-    height: hp(20), // Hauteur proportionnelle
-    position: 'absolute',
+    width: width * 0.4, // 30% of screen width
+    height: height * 0.2, // 20% of screen height
+    position: "absolute",
     top: 0,
-    left: wp(5), // Positionnement proportionnel
+    left: width * 0.3, // 3% of screen width
   },
   categtext: {
     width: '100%',

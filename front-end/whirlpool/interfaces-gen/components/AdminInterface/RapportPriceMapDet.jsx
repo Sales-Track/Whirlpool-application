@@ -37,7 +37,7 @@ function RapportPriceMapDet({ route }){
     const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
 
     const Couleur=colors
-    const tdc=["L", "kg", "ft³", "W", "BTU", "bar"]  
+    const tdc=["L", "kg", "ft³", "W", "BTU", "bar","cm"]  
     const dataArt={ 
       couleur:color,
       unite:unite
@@ -56,9 +56,10 @@ function RapportPriceMapDet({ route }){
     const fetchcolor = async () => {
       try {
         const response = await axios.get(`${port}/api/articles/colors`);
-        setColors(response.data);
+        const uniqueColors = [...new Set(response.data)];
+        setColors(uniqueColors);
       } catch (error) {
-        console.error('Error fetching references:', error);
+        console.error('Error fetching colors:', error);
       }
     };
     
@@ -113,38 +114,38 @@ function RapportPriceMapDet({ route }){
     /////////////////////////Functions///////////////////////////
 
     const Example = ({text}) => {
-        if(text=="Couleur"){
+      if (text == "Couleur") {
         return (
           <Center> 
-          <Box maxW="400">
-            <Select
-              selectedValue={color}
-              minWidth="100%"
-              accessibilityLabel="Choose Service"
-              placeholder={text}
-              _selectedItem={{
-                bg: "teal.600",
-                endIcon: <CheckIcon size="5" />,
-              }}
-              mt={1}
-              onValueChange={(itemValue) => setColor(itemValue)}
-            >
-              {Couleur.map(el=>(
-              <Select.Item label={el} value={el} />
-              ))}
-            
-            </Select>
-          </Box>
-        </Center>
-        )
+            <Box maxW="400">
+              <Select
+                selectedValue={color}
+                minWidth="100%"
+                accessibilityLabel="Choose Service"
+                placeholder={text}
+                _selectedItem={{
+                  bg: "teal.600",
+                  endIcon: <CheckIcon size="5" />,
+                }}
+                mt={1}
+                onValueChange={(itemValue) => setColor(itemValue)}
+              >
+                {/* Mapping over the unique colors */}
+                {[...new Set(Couleur)].map(el => (
+                  <Select.Item key={el} label={el} value={el} />
+                ))}
+              </Select>
+            </Box>
+          </Center>
+        );
       }
     else{
         return(
             <Center>
-            <Box maxW="400" ml='-300'>
+            <Box maxW="400" ml='-280'>
               <Select
                 selectedValue={unite}
-                minWidth="30%"
+                minWidth="32%"
                 
                 accessibilityLabel="Choose Service"
                 placeholder={text}
@@ -167,7 +168,7 @@ function RapportPriceMapDet({ route }){
       const ExampleSlider = () => {
         return (
         <Box mr='-5'ml='5' w="100%">
-      <Slider w="130" maxW="300" defaultValue={onChangeValue} minValue={0} maxValue={1000} accessibilityLabel="hello world"  step={100} 
+      <Slider w="100" maxW="110" defaultValue={onChangeValue} minValue={0} maxValue={1000} accessibilityLabel="hello world"  step={100} 
       onChange={v => {
         setOnChangeValue(Math.floor(v));
       }}
@@ -234,7 +235,6 @@ return (
   <NativeBaseProvider>
     <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
     <View style={styles.container}>
-      <Header />
       {loading ? (
         <Center flex={1}>
           <ActivityIndicator size="large" color="#FDC100" />
@@ -268,18 +268,19 @@ return (
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop:"10%",
     },
     image12: {
-      width: 125,
-      height: 95,
+      width: width * 0.4, // 30% of screen width
+      height: height * 0.2, // 20% of screen height
       position: "absolute",
       top: 0,
-      left: 15,
+      left: width * 0.3, // 3% of screen width
     },
     scrollView: {
         flex: 1,
         padding: 20,
-        marginTop:-550
+        marginTop:'20%'
     },
     title: {
         fontSize: 18,
