@@ -49,7 +49,7 @@ const [marques,setMarques]=React.useState([])
 const [Categories,setCategories]=React.useState([])
 const [Onearticlecc, setOnearticlecc]=React.useState([]);
 
-const tdc=["L", "kg", "ft³", "W", "BTU", "bar"]
+const tdc=["L", "kg", "ft³", "W", "BTU", "bar","cm"]
 // const colors = ["rouge", "bleu", "vert", "jaune", "noir", "blanc", "orange", "violet", "rose", "marron"]
 
 const [oneref,setOneref]=React.useState([])
@@ -441,16 +441,16 @@ const hideAlert = () => {
         }
         else{
         return (
-          <View style={styles.row}>
+          <TouchableOpacity onPress={() => {settruc(!truc),settruc2(true),console.log(truc,text)}}>
+              <View style={styles.row}>
             <Text style={styles.text}>{text}</Text>
-            <TouchableOpacity onPress={() => {settruc(!truc),settruc2(true),console.log(truc,text)}}>
               <Image
                 resizeMode="contain"
                 source={truc ? downicon : leftimage}
                 style={styles.leftimage}
-              />
+                />
+                </View>
             </TouchableOpacity>
-          </View>
           
         );
     }
@@ -857,13 +857,6 @@ const etape2=async()=>{
           />
         )}
           <View style={styles.view2}>
-            <Image
-              resizeMode="contain"
-              source={{
-                uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/12f4aba34bd6fde10767af48f78f20f36401e32be5ece9adacbb2971412c1df1?apiKey=354f2f8c1f9f40aca64d3ce2e19fda26&",
-              }}
-              style={styles.image1}
-            />
          <ScrollView>
             <RowItem text="Créer un nouveau article" truc={creatArt} settruc={setCreatArt} settruc2={""} />
             {creatArt&&renderform("Créer un nouveau article")}
@@ -920,9 +913,9 @@ const etape2=async()=>{
       },
       image12: {
         width: width * 0.33, // 33% of screen width
-        height: height * 0.15, // 15% of screen height
+        height: height * 0.2, // 15% of screen height
         position: 'absolute',
-        top: 0,
+        top: 10,
         left: 15,
       },
       btnText: {
@@ -941,6 +934,7 @@ const etape2=async()=>{
         padding: width * 0.1, // 10% of screen width
         paddingHorizontal: width * 0.08, // 8% of screen width
         paddingBottom: height * 0.1, // 10% of screen height
+        marginTop:height*0.08,
       },
       view2: {
         flex: 1,

@@ -58,6 +58,31 @@ console.log(pdvNames);
     //         </Box>
     //     </Center>
     // );
+    // const Example = ({ text, setOption, option }) => (
+    //     <Center>
+    //         <Box maxW="400" mt={5}>
+    //             <Select
+    //                 selectedValue={option}
+    //                 minWidth="100%"
+    //                 accessibilityLabel="Choisir le point de vente"
+    //                 placeholder={text}
+    //                 _selectedItem={{
+    //                     bg: "teal.600",
+    //                     endIcon: <CheckIcon size="5" />,
+    //                 }}
+    //                 InputLeftElement={
+    //                     <Icon as={<MaterialIcons name="store" />} size={5} ml="2" color="muted.400" />
+    //                 } 
+    //                 mt={1}
+    //                 onValueChange={(itemValue) => setOption(itemValue)}
+    //             >
+    //                 {nomspdv.map((el, index) => (
+    //                     <Select.Item key={index} label={el} value={el} />
+    //                 ))}
+    //             </Select>
+    //         </Box>
+    //     </Center>
+    // );
 
     const ExampleMonth = ({ text, setOption, option }) => (
         <Center>

@@ -82,13 +82,9 @@ function RapportExpo() {
     <NativeBaseProvider>
        <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12}/>
       <View style={styles.view1}>
-        
         <Header />
-
-        <ScrollView style={{ marginTop: -50 }}>
-        
-            
-              <View>
+        <ScrollView style={{ marginTop: -250 }}>  
+            <View>
                 <Text style={styles.textexpo}>Date : {month}</Text>
                 <Text style={styles.textexpo}>Zone : {nomspdv.location}</Text>
                 <Text style={styles.textexpo}>Magasin : {nomspdv.pdvname}</Text>
@@ -137,9 +133,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    marginTop:'15%'
   },
   container: {
     flexDirection: 'column',
+    marginTop:"10%"
   },
   headerRow: {
     flexDirection: 'row',
@@ -164,7 +162,7 @@ const styles = StyleSheet.create({
     width: 125,
     height: 95,
     position: "absolute",
-    top: 0,
+    top: 55,
     left: 15,
   },
   cell: {

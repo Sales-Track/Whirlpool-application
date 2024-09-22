@@ -167,8 +167,7 @@ function RapportDePresence() {
     <NativeBaseProvider>
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
       <View style={styles.container}>
-        <Header />
-        <Center flex={1} mt={'-140%'}>
+        <Center flex={1} >
           <Text style={styles.title}>Rapport De Présence</Text>
           <View style={styles.content}>
             <Example text={'Time AM/PM'} />
@@ -237,11 +236,11 @@ const styles = StyleSheet.create({
     borderColor: 'black',
   },
   image12: {
-    width: 125,
-    height: 95,
+    width: width * 0.4, // 30% of screen width
+    height: height * 0.2, // 20% of screen height
     position: "absolute",
     top: 0,
-    left: 15,
+    left: width * 0.3, // 3% of screen width
   },
   cell: {
     flex: 1,

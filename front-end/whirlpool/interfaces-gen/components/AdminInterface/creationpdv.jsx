@@ -651,13 +651,6 @@ const affectanim = async (nameanim, namepdv) => {
           />
         )}
       <View style={styles.view2}>
-        <Image
-          resizeMode="contain"
-          source={{
-            uri: "https://cdn.builder.io/api/v1/image/assets/TEMP/12f4aba34bd6fde10767af48f78f20f36401e32be5ece9adacbb2971412c1df1?apiKey=354f2f8c1f9f40aca64d3ce2e19fda26&",
-          }}
-          style={styles.image1}
-        />
      <ScrollView>
         <RowItem text="Point de vente" truc={pdv} settruc={setPdv} />
         {pdv&&renderform('pdv')}
@@ -691,10 +684,10 @@ const styles = StyleSheet.create({
     marginTop: height * 0.05, // 5% of screen height
   },
   image12: {
-    width: width * 0.3, // 30% of screen width
-    height: height * 0.1, // 10% of screen height
-    position: "absolute",
-    top: 0,
+    width: width * 0.33, // 33% of screen width
+    height: height * 0.2, // 15% of screen height
+    position: 'absolute',
+    top: 10,
     left: 15,
   },
   btnText: {
@@ -713,6 +706,8 @@ const styles = StyleSheet.create({
     padding: width * 0.1, // 10% of screen width
     paddingHorizontal: width * 0.09, // 9% of screen width
     paddingBottom: height * 0.1, // 10% of screen height
+    marginTop:height*0.08,
+
   },
   view2: {
     flex: 1,

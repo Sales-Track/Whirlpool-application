@@ -125,10 +125,16 @@ function CreationCompte() {
   };
 
   const RenderInput = (text, setState) => {
+    const [showPassword, setShowPassword] =React.useState(false);
+  
     const handleTextChange = (item) => {
       setState(item.toLowerCase());
     };
-
+  
+    const toggleShowPassword = () => {
+      setShowPassword(!showPassword);
+    };
+  
     return (
       <Stack space={4} w="100%" alignItems="center" mt="5%">
         <Input
@@ -137,11 +143,28 @@ function CreationCompte() {
             md: "25%",
           }}
           InputLeftElement={
-            <Icon as={<MaterialIcons name={text === 'Mot De Passe :' ? 'password' : 'person'} />} size={5} ml="2" color="muted.400" />
+            <Icon
+              as={<MaterialIcons name={text === 'Mot De Passe :' ? 'lock' : 'person'} />}
+              size={5}
+              ml="2"
+              color="muted.400"
+            />
+          }
+          InputRightElement={
+            text === 'Mot De Passe :' ? (
+              <Button variant="unstyled" onPress={toggleShowPassword}>
+                <Icon
+                  as={<MaterialIcons name={showPassword ? 'visibility' : 'visibility-off'} />}
+                  size={5}
+                  mr="2"
+                  color="muted.400"
+                />
+              </Button>
+            ) : null
           }
           placeholder={text}
           onChangeText={handleTextChange}
-          secureTextEntry={text === "Mot De Passe :"}
+          secureTextEntry={text === "Mot De Passe :" && !showPassword}
         />
       </Stack>
     );
@@ -164,6 +187,7 @@ function CreationCompte() {
         datauser.PDV_idPDV = pdvId;
       }
       await CreatUser(datauser, showAlert);
+  
     } catch (error) {
       console.error('Error in handleCreation:', error);
     }
@@ -225,7 +249,7 @@ const styles = StyleSheet.create({
     padding: height * 0.012, // 1.2% of screen height
     borderRadius: 5,
     width: width * 0.4, // 40% of screen width
-    marginTop: height * 0.02, // 2% of screen height
+    // marginTop: height * 0.02, // 2% of screen height
   },
   btnText: {
     textAlign: 'center',
