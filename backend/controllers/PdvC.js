@@ -6,7 +6,7 @@ async function createPDV(req, res) {
   try {
     const { pdvname, location } = req.body;
     const pdv = await PDV.create({ pdvname, location });
-    res.status(201).json(pdv);
+    res.status(200).json(pdv);
   } catch (error) {
     console.error('Error creating PDV:', error);
     res.status(500).json({ message: 'Internal server error' });

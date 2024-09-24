@@ -82,13 +82,41 @@ const Fetchallref=async()=>{
 //     console.error('Error fetching :', error)
 //   }
 // }
+const handleClick = async (nompdv, nomcateg, obj) => {
+  try {
+    // Récupération des points de vente depuis l'API
+    const pointV = await axios.get(`${port}/api/pdvs/pdvs`);
+    
+    // Trouver la catégorie correspondante à partir de la liste locale
+    const categ = categs.find(el => el.Categoryname === nomcateg); 
 
-const handleClick = async (nomref,nomcateg,obj) => {
-  {
-   console.log(nomref,   nomcateg,  obj);
-   
+    // Trouver le PDV correspondant dans les données récupérées depuis l'API
+    const pdvss = pointV.data.find(el => el.pdvname === nompdv); 
+
+    console.log("Point de vente récupéré:", categ);
+
+    // Vérification que les données ont été trouvées
+    if (!categ || !pdvss) {
+      console.error("Catégorie ou PDV non trouvés");
+      return;
+    }
+
+    // Envoi des données pour ajouter l'objectif de vente
+    const response = await axios.post(`${port}/api/pdvCat/add`, {
+      PDV_idPDV: pdvss.idPDV, // Utilisation du bon identifiant de PDV
+      Category_idCategory: categ.idCategory, // Utilisation du bon identifiant de catégorie
+      objective: obj
+    });
+
+    console.log('Mise à jour réussie:', response.data);
+    showAlert('success', "Un Nouveau objectif de vente a été créé");
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour des données:', error);
+    showAlert('error', "Échec de la création de l'objectif");
   }
 };
+
+
 const Fetchallmarq=async()=>{
   try{
     const response=await axios.get(port+"/api/marques/marques")
@@ -625,7 +653,13 @@ const affectanim = async (nameanim, namepdv) => {
       <Example text={"Categories"} />
       <Example text={"Point de Vente"} />
       <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
-        <Text style={styles.btnText}>Valider</Text>
+        <Text style={styles.btnText}>ajouter</Text> 
+      </TouchableOpacity>
+      <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
+        <Text style={styles.btnText}>mise a jour</Text> 
+      </TouchableOpacity>
+      <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
+        <Text style={styles.btnText}>suprimer</Text> 
       </TouchableOpacity>
       </Center>
       </View>

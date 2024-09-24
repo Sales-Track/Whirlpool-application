@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="ddefe8a0-e9b2-4ab7-bcbe-b1c55332016e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/Router/MarqueR.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Router/MarqueR.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/controllers/MarqueC.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/MarqueC.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportPriceMapDet.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportPriceMapDet.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportsSellOut.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportsSellOut.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/port.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/port.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/controllers/PDV_Categ_Controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/PDV_Categ_Controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/controllers/PdvC.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/PdvC.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/creationpdv.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/creationpdv.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +34,7 @@
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "Merging debug"
+    "git-widget-placeholder": "debug"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
