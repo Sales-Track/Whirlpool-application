@@ -9,27 +9,27 @@ async function AddObjectif(req, res) {
       res.status(500).json({ message: 'Internal server error' });
     }
   }
-  async function getAllObjectif(req, res) {
-    try {
-      const obj = await PDV_Category.findAll();
-      res.status(200).json(obj);
-    } catch (error) {
-      console.error('Error getting objectif:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-  }
+  // async function getAllObjectif(req, res) {
+  //   try {
+  //     const obj = await PDV_Category.findAll();
+  //     res.status(200).json(obj);
+  //   } catch (error) {
+  //     console.error('Error getting objectif:', error);
+  //     res.status(500).json({ message: 'Internal server error' });
+  //   }
+  // }
   // Fonction pour mettre à jour le champ objective
   const updatePDVCategoryObjective = async (req, res) => {
-    const { pdvId, categoryId } = req.params;
-    const { newObjective } = req.body;
+    const { PDV_idPDV, Category_idCategory } = req.params;
+    const { objective } = req.body;
   
     try {
       const updated = await PDV_Category.update(
-        { objective: newObjective },
+        { objective: objective },
         {
           where: {
-            PDV_idPDV: pdvId,
-            Category_idCategory: categoryId,
+            PDV_idPDV:PDV_idPDV,
+            Category_idCategory: Category_idCategory,
           },
         }
       );
@@ -44,16 +44,26 @@ async function AddObjectif(req, res) {
       res.status(500).json({ message: 'Internal server error' });
     }
   };
+  const getAllObjectif = async (req, res) => {
+    try {
+      const obj = await PDV_Category.findAll();
+      res.status(200).json(obj);
+    } catch (error) {
+      console.error('Error getting objectif:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  
   
   // Supprimer une relation
   const deletePDVCategory = async (req, res) => {
-    const { pdvId, categoryId } = req.params;
+    const { PDV_idPDV, Category_idCategory  } = req.params;
   
     try {
       const deleted = await PDV_Category.destroy({
         where: {
-          PDV_idPDV: pdvId,
-          Category_idCategory: categoryId,
+          PDV_idPDV: PDV_idPDV,
+          Category_idCategory: Category_idCategory,
         },
       });
   
@@ -66,12 +76,15 @@ async function AddObjectif(req, res) {
       console.error("Erreur lors de la suppression de l'objectif :", error);
       res.status(500).json({ message: 'Internal server error' });
     }
+
   };
+  
   
   
 module.exports = {
  AddObjectif,
  getAllObjectif, 
  deletePDVCategory,
- updatePDVCategoryObjective
+ updatePDVCategoryObjective,
+ getAllObjectif
   };
