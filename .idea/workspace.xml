@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="ddefe8a0-e9b2-4ab7-bcbe-b1c55332016e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/creationpdv.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/creationpdv.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/Router/MarqueR.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/Router/MarqueR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/controllers/MarqueC.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/controllers/MarqueC.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportPriceMapDet.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportPriceMapDet.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportsSellOut.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/AdminInterface/RapportsSellOut.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/port.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/whirlpool/interfaces-gen/components/port.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,16 +29,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;debug&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "Merging debug"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

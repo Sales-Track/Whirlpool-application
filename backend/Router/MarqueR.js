@@ -8,5 +8,6 @@ router.get('/marques', marqueController.getAllMarques);
 router.get('/marques/:id', marqueController.getMarqueById);
 router.put('/marques/:id', marqueController.updateMarque);
 router.delete('/marques/:id', marqueController.deleteMarque);
+router.get('/whirlpool', marqueController.getIdWhirlpool);
 
 module.exports = router;
