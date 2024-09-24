@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet,Image, Button, TouchableOpacity,ScrollView,ActivityIndicator,Dimensions } from "react-native";
-import { NativeBaseProvider, Center } from "native-base";
+import { NativeBaseProvider, Select, Box, Center } from "native-base";
 import Header from './header';
 import Footer from './footer';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -26,14 +26,27 @@ function RapportSellOut() {
     const [sellRef,setSellRef]=React.useState([])
     const [nbrDventes,setNbrDvents]=React.useState([])
     const [loading, setLoading] = useState(true);
+    const [categ, setCateg] = useState("");
+    const [categories, setCategories] = useState([]);
+    const [referencesbyc, setReferencesbyc] = React.useState([]);
+    const [whirlpoolId,setWhirlpoolId]=useState(null)
 
     const [daysBetweenDates, setDaysBetweenDates] = useState([]);
     const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
+console.log(referencesbyc,'heyyou');
 
     console.log(startDate);
     console.log(new Date());
 
 /////////////////////////////////////Functions////////////////////////////////////////
+const fetchAllCateg = async () => {
+    try {
+        const response = await axios.get(`${port}/api/categories/categorie`);
+        setCategories(response.data);
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+};
 const Fetchallref=async()=>{
     try{
       const response=await axios.get(port+"/api/reference/references")
@@ -74,7 +87,7 @@ const getPdvs = async (pdv) => {
 const exportToExcel = async () => {
     const data = [
       ["Reference", ...daysBetweenDates], // Première ligne avec les dates
-      ...references.map(ref => { // Lignes de données pour chaque référence
+      ...referencesbyc.map(ref => { // Lignes de données pour chaque référence
         const nbrDVArray = FetchNbrDV(ref.idReference);
         const totalSales = fetchTotalSales(ref.idReference);
         const objectif = FetchObjectif(ref.idReference);
@@ -93,12 +106,22 @@ const exportToExcel = async () => {
     await FileSystem.writeAsStringAsync(uri, wbout, { encoding: FileSystem.EncodingType.Base64 });
     await Sharing.shareAsync(uri);
 };
-
+const getIdWhirlpool=async()=>{
+    try{
+        const response=await axios.get(port+"/api/marques/whirlpool")
+        setWhirlpoolId(response.data)
+        console.log(response.data);
+    }catch(e){
+        console.error('Error fetching whirlpool id:', e);
+    }
+}
 React.useEffect(() => {
     setLoading(true); // Démarrer le chargement
+    fetchAllCateg();
     Fetchallref();
     GetAllSellouts();
     GetRefSel();
+    getIdWhirlpool()
     getPdvs(pdv);
     const daysArray = calculateDaysBetweenDates(startDate, endDate);
     setDaysBetweenDates(daysArray);
@@ -187,6 +210,60 @@ React.useEffect(() => {
     
         return nbrDVArray;
     };
+    const Example = ({ text }) => {
+        if(text==="Categories"){
+            return (
+                <Center mb={'5%'}>
+                    <Box maxW="400" >
+                        <Select
+                            selectedValue={categ}
+                            minWidth="280"
+                            accessibilityLabel={text}
+                            placeholder={text}
+                            onValueChange={(itemValue) => setCateg(itemValue)}
+                        >
+                            {categories.map(el => (
+                                <Select.Item label={el.Categoryname} value={el.Categoryname} key={el.idCategory} />
+                            ))}
+                        </Select>
+                    </Box>
+                </Center>
+            );
+        }
+    }
+    const findId = (data, name, dataname, idname) => {
+        return new Promise((resolve, reject) => {
+            const element = data.find(el => el[dataname] === name);
+            if (element) {
+                resolve(element[idname]);
+            } else {
+                reject(`No element found with ${dataname} = ${name}`);
+            }
+        });
+    };
+    const fetchRefByCatg = async (id) => {
+        if (!id) return;
+        try {
+            const response = await axios.get(`${port}/api/reference/referencebycateg/${id}`);
+            refwh=response.data.filter(e=>e.Marque_idMarque===whirlpoolId)
+            console.log(refwh,"heyy");
+            
+            setReferencesbyc(refwh);
+          
+        } catch (error) {
+            console.error('Error fetching references:', error);
+        }
+    };
+    useEffect(() => {
+        const fetchReferencesForCategory = async () => {
+            const categoryId = await findId(categories, categ, 'Categoryname', 'idCategory');
+            fetchRefByCatg(categoryId);
+        };
+        if (categ) {
+            fetchReferencesForCategory();
+        }
+    }, [categ, categories]);
+
     const FetchObjectif = (referenceId) => {
         const object=references.find(el=>
             el.idReference===referenceId
@@ -267,7 +344,7 @@ React.useEffect(() => {
                 </View>
 
                 {/* Dernière ligne */}
-                {references.map(el=>(
+                {Array.isArray(referencesbyc) && referencesbyc.map(el=>(
 
                 <View style={styles.row}>
                     <View style={styles.cell2}><Text style={styles.textcell2}>{el.Referencename}</Text></View>
@@ -294,6 +371,7 @@ React.useEffect(() => {
           <View style={styles.container}>
             <Center flex={1} >
               <Text style={styles.title}>Rapport Sell-Out</Text>
+            <Example text={'Categories'} />
               <View style={styles.content}>
                 {showStartDatePickerHandler()}
               </View>
@@ -329,11 +407,13 @@ const styles = StyleSheet.create({
     },
     content: {
         paddingHorizontal: 20,
+        marginBottom:'5%'
     },
     title: {
         fontSize: 18,
         fontWeight: '600',
         marginBottom: 30,
+        marginTop:'30%'
     },
     dateContainer: {
         flexDirection: 'row',
@@ -427,7 +507,7 @@ const styles = StyleSheet.create({
       scrollView: {
         flex: 1,
         padding: 20,
-        marginTop:-200
+        marginTop:-100
     },
     btns: {
         backgroundColor: '#FDC100', // Background color of the button

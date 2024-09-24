@@ -93,6 +93,15 @@ const getnamebyid=async(req,res)=>{
         res.status(500).send("erreur")
     }
 }
+const getIdWhirlpool=async(req,res)=>{
+  try{
+    const marque=await Marque.findOne({where:{marquename:"WHIRLPOOL"||"Whirlpool"||"whirlpool"}})
+    res.status(200).json(marque.idMarque)
+  }catch(er){
+    console.error(err);
+    res.status(500).send("erreur")
+  }
+}
 
 module.exports = {
   createMarque,
@@ -100,5 +109,6 @@ module.exports = {
   getMarqueById,
   updateMarque,
   deleteMarque,
-  getnamebyid
+  getnamebyid,
+  getIdWhirlpool
 };

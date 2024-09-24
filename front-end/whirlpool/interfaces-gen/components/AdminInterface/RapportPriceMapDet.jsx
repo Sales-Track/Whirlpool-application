@@ -28,7 +28,9 @@ function RapportPriceMapDet({ route }){
     const [marques,setMarques]=React.useState([])
     const [references,setReferences]=React.useState([])
     const [categories,setCategories]=React.useState([])
-    const [prix,setPrix]=React.useState([])
+    const [prix, setPrix] = useState({});
+    const [priceError, setPriceError] = useState({});
+
     const [loading, setLoading] = useState(true);
 
     const [marqueNames, setMarqueNames] = useState([]); // State to store fetched marque names
@@ -43,6 +45,34 @@ function RapportPriceMapDet({ route }){
       unite:unite
     }
     /////////////////////////Functions///////////////////////////
+    useEffect(() => {
+      references.forEach(ref => {
+        articles.forEach(article => {
+          if (article.Reference_idReference === ref.idReference) {
+            fetchPrice(ref.idReference);
+          }
+        });
+      });
+    }, [articles, references]);
+    const fetchPrice = async (idref) => {
+      try {
+        const response = await axios.get(`${port}/api/expositions/expositions`);
+        const priceData = response.data.find(e => e.Reference_idReference === idref);
+        
+        if (!priceData || priceData.prix === null || priceData.prix === undefined) {
+          setPrix(prev => ({ ...prev, [idref]: 'Prix non disponible' }));
+        } else {
+          setPrix(prev => ({ ...prev, [idref]: priceData.prix }));
+        }
+      } catch (error) {
+        setPriceError(prev => ({ ...prev, [idref]: 'Erreur lors de la récupération' }));
+      }
+    };
+    
+    
+    
+    
+
     const fetchReferences = async () => {
       try {
         const response = await axios.get(`${port}/api/reference/referencebycateg/${categoryId}`);
@@ -215,14 +245,23 @@ const Tableaux = () => {
           <View style={styles.cell}><Text>Prix</Text></View>
         </View>
 
-        {/* Deuxième ligne */}
+        {/* Rows with references */}
         {references.map((el, index) => (
           articles.filter(item => item.Reference_idReference === el.idReference && item.capacite <= onChangeValue).map((article, idx) => (
             <View style={styles.row} key={index + '-' + idx}>
               <View style={styles.cell1}><Text>{marqueNames[index]}</Text></View>
               <View style={styles.cell1}><Text style={styles.textcell1}>{el.Referencename}</Text></View>
               <View style={styles.cell1}><Text>{article.capacite}</Text></View>
-              <View style={styles.cell1}><Text>{article.prix}</Text></View>
+              <View style={styles.cell1}>
+                <Text>
+                  
+                  { prix[article.Reference_idReference] 
+                    ? prix[article.Reference_idReference] 
+                    : priceError[article.Reference_idReference] 
+                    ? priceError[article.Reference_idReference] 
+                    : "Chargement du prix..." }
+                </Text>
+              </View>
             </View>
           ))
         ))}
