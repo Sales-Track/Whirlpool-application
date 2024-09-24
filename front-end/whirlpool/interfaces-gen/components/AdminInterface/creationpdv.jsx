@@ -33,6 +33,7 @@ const [nomspdv,setNomspdv]=React.useState([]);
 const [nomsanims,setNomanims]=React.useState([]);
 const [refnom,setRefnom]=React.useState([]);
 
+
 const [nomsanim,setNomanim]=React.useState('Animatrices');
 const [nompdv,setNompdv]=React.useState("Point de Vente");
 const [nomcateg,setNomcateg]=React.useState('')
@@ -82,16 +83,9 @@ const Fetchallref=async()=>{
 //   }
 // }
 
-const handleClick = async (refName, obj) => {
-  try {
-    const response = await axios.put(port+"/api/reference/addObject", {
-      nomRef: refName,
-      objectif: obj
-    });
-    console.log('Update successful:', response.data);
-    showAlert('success', "Un Nouveau objectif de vente a été créé");
-  } catch (error) {
-    console.error('Error updating data:', error);
+const handleClick = async (nomref,nomcateg,obj) => {
+  {
+   console.log(nomref,   nomcateg,  obj);
    
   }
 };
@@ -628,8 +622,9 @@ const affectanim = async (nameanim, namepdv) => {
         </Box>
       </Center>
       <Center flex={1} px="3">
-      <Example text={"Reference"} />
-      <TouchableOpacity onPress={()=>{handleClick(nomref,obj)}} style={styles.btns}>
+      <Example text={"Categories"} />
+      <Example text={"Point de Vente"} />
+      <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
         <Text style={styles.btnText}>Valider</Text>
       </TouchableOpacity>
       </Center>
