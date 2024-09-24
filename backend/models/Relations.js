@@ -55,15 +55,15 @@ PDV.hasMany(Sellout, { foreignKey: 'PDV_idPDV' });
 PDV.belongsToMany(Category, { through: PDV_Category, foreignKey: 'PDV_idPDV' });
 Category.belongsToMany(PDV, { through: PDV_Category, foreignKey: 'Category_idCategory' });
 
-sequelize
-  .sync()
-  .then(() => {
-    console.log("Database tables synchronized successfully.");
-    // Start your application or perform any other actions here
-  })
-  .catch((error) => {
-    console.error("Error synchronizing database:", error);
-  });
+// sequelize
+//   .sync()
+//   .then(() => {
+//     console.log("Database tables synchronized successfully.");
+//     // Start your application or perform any other actions here
+//   })
+//   .catch((error) => {
+//     console.error("Error synchronizing database:", error);
+//   });
 
 // Export Models
 module.exports = {

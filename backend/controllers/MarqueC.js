@@ -93,15 +93,29 @@ const getnamebyid=async(req,res)=>{
         res.status(500).send("erreur")
     }
 }
-const getIdWhirlpool=async(req,res)=>{
-  try{
-    const marque=await Marque.findOne({where:{marquename:"WHIRLPOOL"||"Whirlpool"||"whirlpool"}})
-    res.status(200).json(marque.idMarque)
-  }catch(er){
-    console.error(err);
-    res.status(500).send("erreur")
+const { Op } = require('sequelize'); // Importer l'opérateur Sequelize
+
+const getIdWhirlpool = async (req, res) => {
+  try {
+    const marque = await Marque.findOne({
+      where: {
+        marquename: {
+          [Op.in]: ["WHIRLPOOL", "Whirlpool", "whirlpool"] // Liste des valeurs
+        }
+      }
+    });
+
+    if (marque) {
+      res.status(200).json(marque.idMarque);
+    } else {
+      res.status(404).send("Marque non trouvée");
+    }
+  } catch (err) {
+    console.error(err); // Assurez-vous que l'erreur est bien "err"
+    res.status(500).send("Erreur serveur");
   }
 }
+
 
 module.exports = {
   createMarque,

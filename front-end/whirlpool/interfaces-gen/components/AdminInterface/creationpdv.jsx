@@ -33,6 +33,7 @@ const [nomspdv,setNomspdv]=React.useState([]);
 const [nomsanims,setNomanims]=React.useState([]);
 const [refnom,setRefnom]=React.useState([]);
 
+
 const [nomsanim,setNomanim]=React.useState('Animatrices');
 const [nompdv,setNompdv]=React.useState("Point de Vente");
 const [nomcateg,setNomcateg]=React.useState('')
@@ -81,20 +82,41 @@ const Fetchallref=async()=>{
 //     console.error('Error fetching :', error)
 //   }
 // }
-
-const handleClick = async (refName, obj) => {
+const handleClick = async (nompdv, nomcateg, obj) => {
   try {
-    const response = await axios.put(port+"/api/reference/addObject", {
-      nomRef: refName,
-      objectif: obj
+    // Récupération des points de vente depuis l'API
+    const pointV = await axios.get(`${port}/api/pdvs/pdvs`);
+    
+    // Trouver la catégorie correspondante à partir de la liste locale
+    const categ = categs.find(el => el.Categoryname === nomcateg); 
+
+    // Trouver le PDV correspondant dans les données récupérées depuis l'API
+    const pdvss = pointV.data.find(el => el.pdvname === nompdv); 
+
+    console.log("Point de vente récupéré:", categ);
+
+    // Vérification que les données ont été trouvées
+    if (!categ || !pdvss) {
+      console.error("Catégorie ou PDV non trouvés");
+      return;
+    }
+
+    // Envoi des données pour ajouter l'objectif de vente
+    const response = await axios.post(`${port}/api/pdvCat/add`, {
+      PDV_idPDV: pdvss.idPDV, // Utilisation du bon identifiant de PDV
+      Category_idCategory: categ.idCategory, // Utilisation du bon identifiant de catégorie
+      objective: obj
     });
-    console.log('Update successful:', response.data);
+
+    console.log('Mise à jour réussie:', response.data);
     showAlert('success', "Un Nouveau objectif de vente a été créé");
   } catch (error) {
-    console.error('Error updating data:', error);
-   
+    console.error('Erreur lors de la mise à jour des données:', error);
+    showAlert('error', "Échec de la création de l'objectif");
   }
 };
+
+
 const Fetchallmarq=async()=>{
   try{
     const response=await axios.get(port+"/api/marques/marques")
@@ -628,9 +650,16 @@ const affectanim = async (nameanim, namepdv) => {
         </Box>
       </Center>
       <Center flex={1} px="3">
-      <Example text={"Reference"} />
-      <TouchableOpacity onPress={()=>{handleClick(nomref,obj)}} style={styles.btns}>
-        <Text style={styles.btnText}>Valider</Text>
+      <Example text={"Categories"} />
+      <Example text={"Point de Vente"} />
+      <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
+        <Text style={styles.btnText}>ajouter</Text> 
+      </TouchableOpacity>
+      <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
+        <Text style={styles.btnText}>mise a jour</Text> 
+      </TouchableOpacity>
+      <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
+        <Text style={styles.btnText}>suprimer</Text> 
       </TouchableOpacity>
       </Center>
       </View>
