@@ -1,14 +1,15 @@
-const PDV =require('./Pdv.js')
-const Users =require( './Users.js')
-const Reference =require('./Reference.js')
-const Marque =require('./Marque.js')
-const Article= require('./Article.js')
-const Exposition=require("./Exposition")
-const Presence =require("./Presence.js");
-const PriceM=require("./PriceM.js")
-const Log=require('./Log.js')
-const Sellout=require("./Sellout.js")
-const Category=require("./Category.js")
+const PDV = require('./Pdv.js');
+const Users = require('./Users.js');
+const Reference = require('./Reference.js');
+const Marque = require('./Marque.js');
+const Article = require('./Article.js');
+const Exposition = require('./Exposition');
+const Presence = require('./Presence.js');
+const PriceM = require('./PriceM.js');
+const Log = require('./Log.js');
+const Sellout = require('./Sellout.js');
+const Category = require('./Category.js');
+const PDV_Category = require('./PDV_Category.js'); // Import du modèle de table de jointure
 const sequelize = require("../config/config.js");
 
 PDV.hasMany(Users, { foreignKey: 'PDV_idPDV' });
@@ -48,28 +49,34 @@ Reference.belongsToMany(Sellout, { through: 'Reference_has_Sellout', foreignKey:
 Sellout.belongsToMany(Reference, { through: 'Reference_has_Sellout', foreignKey: 'Sellout_idSellout' });
 Article.belongsToMany(Reference, { through: 'Reference_has_Sellout', foreignKey: 'Article_idArticle' });
 
-PDV.hasMany(Sellout,{foreignKey:'PDV_idPDV'})
+PDV.hasMany(Sellout, { foreignKey: 'PDV_idPDV' });
 
-// sequelize
-//   .sync()
-//   .then(() => {
-//     console.log("Database tables synchronized successfully.");
-//     // Start your application or perform any other actions here
-//   })
-//   .catch((error) => {
-//     console.error("Error synchronizing database:", error);
-//   });
+// Relation plusieurs à plusieurs entre Category et PDV avec un champ supplémentaire 'objective'
+PDV.belongsToMany(Category, { through: PDV_Category, foreignKey: 'PDV_idPDV' });
+Category.belongsToMany(PDV, { through: PDV_Category, foreignKey: 'Category_idCategory' });
+
+sequelize
+  .sync()
+  .then(() => {
+    console.log("Database tables synchronized successfully.");
+    // Start your application or perform any other actions here
+  })
+  .catch((error) => {
+    console.error("Error synchronizing database:", error);
+  });
 
 // Export Models
 module.exports = {
- PDV ,
- Users ,
- Reference ,
- Marque ,
- Article,
- Exposition,
- Presence ,
- PriceM,
- Log,
- Sellout, Category
+  PDV,
+  Users,
+  Reference,
+  Marque,
+  Article,
+  Exposition,
+  Presence,
+  PriceM,
+  Log,
+  Sellout,
+  Category,
+  PDV_Category // N'oublie pas d'exporter la table de jointure
 };

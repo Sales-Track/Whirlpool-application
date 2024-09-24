@@ -19,8 +19,8 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
 
     const fetchPdvsname = async () => {
         try {
-            const response = await axios.get(`${port}/api/pdvs/pdvs/${pdv}`);
-            const pdvNames = response.data.pdvname
+            const response = await axios.get(`${port}/api/pdvs/pdvs/${ani.PDV_idPDV}`);
+            const pdvNames = response.data
 console.log(pdvNames);
 
             setNomspdv(pdvNames);
@@ -33,6 +33,31 @@ console.log(pdvNames);
         fetchPdvsname();
     }, []);
 
+    // const Example = ({ text, setOption, option }) => (
+    //     <Center>
+    //         <Box maxW="400" mt={5}>
+    //             <Select
+    //                 selectedValue={option}
+    //                 minWidth="100%"
+    //                 accessibilityLabel="Choisir le point de vente"
+    //                 placeholder={text}
+    //                 _selectedItem={{
+    //                     bg: "teal.600",
+    //                     endIcon: <CheckIcon size="5" />,
+    //                 }}
+    //                 InputLeftElement={
+    //                     <Icon as={<MaterialIcons name="store" />} size={5} ml="2" color="muted.400" />
+    //                 } 
+    //                 mt={1}
+    //                 onValueChange={(itemValue) => setOption(itemValue)}
+    //             >
+    //                 {nomspdv.map((el, index) => (
+    //                     <Select.Item key={index} label={el} value={el} />
+    //                 ))}
+    //             </Select>
+    //         </Box>
+    //     </Center>
+    // );
     // const Example = ({ text, setOption, option }) => (
     //     <Center>
     //         <Box maxW="400" mt={5}>
@@ -99,6 +124,8 @@ console.log(pdvNames);
             setWarningVisible(true);
         } else {
             navigation.navigate(link, { month,pdv, ani,nomspdv });
+        console.log('aaaaaaa',nomspdv);
+        
         }
     };
 

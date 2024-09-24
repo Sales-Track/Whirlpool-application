@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get('window');
 
 const leftimage = require('../../../assets/icons8-right-50.png'); 
 const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
-
+// const { width, height } = Dimensions.get('window');
 function CreationRapportExpo(){
   console.disableYellowBox = true; // Pour masquer tous les avertissements jaunes
 
@@ -101,6 +101,8 @@ return(
 
 )
 }
+
+
 const styles = StyleSheet.create({
     alert: {
       flex: 1,

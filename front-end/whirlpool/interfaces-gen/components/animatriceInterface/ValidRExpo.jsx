@@ -1,9 +1,11 @@
 import * as React from "react";
-import {FlatList,ScrollView,View,StyleSheet,Image,Text,TouchableOpacity} from "react-native";
+import {FlatList,ScrollView,Dimensions,View,StyleSheet,Image,Text,TouchableOpacity} from "react-native";
 import { NativeBaseProvider, Center,Stack,Input,Icon } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 
 
+
+const { width, height } = Dimensions.get('window');
 function ValidRExpo() {
 
     const [modif,setModif] = React.useState('');
@@ -82,73 +84,74 @@ function ValidRExpo() {
 }
 
 const styles = StyleSheet.create({
-    view1: {
-        flex: 0,
-        justifyContent: 'center',
-        padding: 5,
-        width:'80%',
-        height:'50%',
-        margin:'10%',
-        borderRadius: 5,
-        borderWidth:0.2,
-      },
-      image12: {
-        width: 125,
-        height: 95,
-        position: "absolute",
-        top: 0,
-        left: 15,
-      },
-      view2:{
-        padding: 20,
-      },
-      inputs:{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        width: "100%",
-      },
-      btnmod:{
-        borderWidth:1,
-        borderColor:"#FDC100",
-        width:100,
-        height:42,
-        alignItems:'center',
-        padding:9,
-        marginRight:15,
-        borderRadius: 5,
-      },
-      btnTextmod:{
-        color:"#FDC100"
-      },
-      btncans:{
-        borderWidth:1,
-        borderColor:"#D0D3D4",
-        width:100,
-        height:42,
-        alignItems:'center',
-        padding:9,
-        borderRadius: 5
-      },
-      btnTextcans:{
-        color:'#D0D3D4'
-      },
-      btnsh:{
-        flexDirection: "row",
-        marginTop:25
-      },
-      btnsup:{
-        borderWidth:1,
-        borderColor:"#D0D3D4",
-        width:100,
-        height:42,
-        alignItems:'center',
-        padding:9,
-        marginTop:15,
-        borderRadius: 5
-      }
-    //   allinputs:{
-    //     width:"90%"
-    //   },
-    });
+  view1: {
+    flex: 0,
+    justifyContent: 'center',
+    padding: 10,
+    width: '90%', // Utiliser une largeur en pourcentage
+    height: '50%', // Utiliser une hauteur en pourcentage
+    margin: '5%',
+    borderRadius: 5,
+    borderWidth: 0.5, // Augmenter légèrement la largeur du bord pour la visibilité
+  },
+  image12: {
+    width: width * 0.3, // Utiliser une proportion de la largeur de l'écran
+    height: height * 0.2, // Utiliser une proportion de la hauteur de l'écran
+    position: "absolute",
+    top: 0,
+    left: 15,
+  },
+  view2: {
+    padding: 15,
+  },
+  inputs: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: '100%',
+  },
+  btnmod: {
+    borderWidth: 1,
+    borderColor: "#FDC100",
+    width: width * 0.25, // Utiliser une proportion de la largeur de l'écran
+    height: height * 0.06, // Utiliser une proportion de la hauteur de l'écran
+    alignItems: 'center',
+    padding: 10,
+    marginRight: 15,
+    borderRadius: 5,
+  },
+  btnTextmod: {
+    color: "#FDC100",
+  },
+  btncans: {
+    borderWidth: 1,
+    borderColor: "#D0D3D4",
+    width: width * 0.25, // Utiliser une proportion de la largeur de l'écran
+    height: height * 0.06, // Utiliser une proportion de la hauteur de l'écran
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 5,
+  },
+  btnTextcans: {
+    color: '#D0D3D4',
+  },
+  btnsh: {
+    flexDirection: "row",
+    marginTop: 25,
+  },
+  btnsup: {
+    borderWidth: 1,
+    borderColor: "#D0D3D4",
+    width: width * 0.25, // Utiliser une proportion de la largeur de l'écran
+    height: height * 0.06, // Utiliser une proportion de la hauteur de l'écran
+    alignItems: 'center',
+    padding: 10,
+    marginTop: 15,
+    borderRadius: 5,
+  },
+  // allinputs: {
+  //   width: "90%",
+  // },
+});
+
 
 export default ValidRExpo;

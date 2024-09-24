@@ -196,4 +196,6 @@ const styles = StyleSheet.create({
   }
 });
 
+
 export default Modifpopup;
+
