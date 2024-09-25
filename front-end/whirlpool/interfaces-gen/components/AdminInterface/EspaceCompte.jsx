@@ -16,8 +16,8 @@ function EspaceCompte() {
     const [link, setLink] = React.useState("");
 
     const reports = [
-        { text: "Creation d'Un Nouveau Compte", popupType: "expo", link: "CreationCompte" },
-        { text: "Listes Des Comptes ", popupType: "priceMap", link: "ListesDesComptes" },
+        { text: "Creation d'un nouveau compte", popupType: "expo", link: "CreationCompte" },
+        { text: "Listes des comptes ", popupType: "priceMap", link: "ListesDesComptes" },
     ];
 
     const handleRowItemPress = (report) => {
@@ -31,7 +31,7 @@ function EspaceCompte() {
         <NativeBaseProvider>
             <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
             <View style={styles.view1}>
-                <Text style={styles.title}>Espace Comptes</Text>
+                <Text style={styles.title}>Espace comptes</Text>
                 <ScrollView>
                     {reports.map((report) => (
                         <View key={report.popupType}>

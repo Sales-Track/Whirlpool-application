@@ -207,7 +207,7 @@ function CreationCompte() {
                   onClose={hideAlert}
                 />
               )}
-              <Text style={styles.text1}>Creation De Compte</Text>
+              <Text style={styles.text1}>Creation de compte</Text>
               {RenderInput("Nom :", setNom)}
               {RenderInput("Prenom :", setPrenom)}
               {RenderInput("Email :", setEmail)}
@@ -218,7 +218,7 @@ function CreationCompte() {
           </View>
           <Center>
             <TouchableOpacity onPress={handleCreation} style={styles.btns}>
-              <Text style={styles.btnText}>créé</Text>
+              <Text style={styles.btnText}>Créé</Text>
             </TouchableOpacity>
           </Center>
         </ScrollView>

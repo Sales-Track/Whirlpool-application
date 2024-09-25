@@ -28,18 +28,18 @@ function ConsultationDesRapports() {
     };
     
     const reports = [
-        { text: "Rapport Exposition", popupType: "expo" ,link:"RapportExpo"},
-        { text: "Rapport Price Map", popupType: "priceMap",link:"RapportPriceMap"},
-        { text: "Rapport Sell-Out", popupType: "sellOut" ,link:"RapportSellOut"},
-        { text: "Rapport De Présence", popupType: "presence",link:"RapportDePresence"},
-        { text: "Rapport Log", popupType: "log" ,link:"RapportLog"},
+        { text: "Rapport exposition", popupType: "expo" ,link:"RapportExpo"},
+        { text: "Rapport price Map", popupType: "priceMap",link:"RapportPriceMap"},
+        { text: "Rapport sell-out", popupType: "sellOut" ,link:"RapportSellOut"},
+        { text: "Rapport de Présence", popupType: "presence",link:"RapportDePresence"},
+        { text: "Rapport log", popupType: "log" ,link:"RapportLog"},
     ];
     return (
         <NativeBaseProvider>
                   <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
 
             <View style={styles.view1}>
-                <Text style={{ fontSize: 18, fontWeight: 700, marginTop: 20 }}>Consultation Des Rapports :</Text>
+                <Text style={{ fontSize: 18, fontWeight: 700, marginTop: 20 }}>Consultation des rapports :</Text>
                 <View style={styles.view2}>
 
                     <ScrollView>
