@@ -208,7 +208,7 @@ function WelcomeAnime() {
             </View>
           </View>
           <View style={styles.view10}>
-            <TouchableOpacity disabled={!status} onPress={() => { hundlehistorique({ name: "Mes Rapports Sell-Out", link: 'CreationRapportSO', image: image03 },"Création d'articles"); handleNavigation('CreationRapportSO'); }}>
+            <TouchableOpacity disabled={!status} onPress={() => { hundlehistorique({ name: "Mes Rapports Sell-Out", link: 'CreationRapportSO', image: image03 },"Création Rapport Sell-out"); handleNavigation('CreationRapportSO'); }}>
               <View style={styles.view11}>
                 <View style={styles.view12}>
                   <Text style={styles.textCreation}>Mes Rapports Sell-out</Text>
@@ -216,7 +216,7 @@ function WelcomeAnime() {
                 <Image resizeMode="contain" source={image03} style={styles.image3} />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity disabled={!status} onPress={() => { hundlehistorique({ name: 'Mes Rapports Exposition', link: 'CreationRapportExpo', image: image03 },"Consultation des rapports"); handleNavigation('CreationRapportExpo'); }}>
+            <TouchableOpacity disabled={!status} onPress={() => { hundlehistorique({ name: 'Mes Rapports Exposition', link: 'CreationRapportExpo', image: image03 },"Consultation Rapport Expo"); handleNavigation('CreationRapportExpo'); }}>
               <View style={styles.view13}>
                 <View style={styles.view12}>
                   <Text style={styles.textCreation}>Mes Rapports Exposition</Text>
@@ -225,6 +225,16 @@ function WelcomeAnime() {
               </View>
             </TouchableOpacity>
           </View>
+          <View style={{marginBottom:'15%'}}>
+          <TouchableOpacity disabled={!status} onPress={() => { hundlehistorique({ name: "Mes Objectif", link: 'CMyObjectif', image: image03 },"Mes Objectif"); handleNavigation('MyObjectif'); }}>
+              <View style={styles.view11}>
+                <View style={styles.view12}>
+                  <Text style={styles.textCreation01}>Mes Objectif</Text>
+                </View>
+                <Image resizeMode="contain" source={image01} style={styles.image001} />
+              </View>
+            </TouchableOpacity>
+            </View>
           <View style={styles.view14}>
             <Text style={styles.textRecentActivities}></Text>
           </View>
@@ -315,6 +325,14 @@ const styles = StyleSheet.create({
   textCreation: {
     fontSize: width * 0.04, // Relative font size
     color: "black",
+    fontWeight:'600'
+
+  },
+  textCreation01: {
+    fontSize: width * 0.04, // Relative font size
+    color: "black",
+    marginLeft:'15%',
+    fontWeight:'600'
   },
   textCreation1: {
     fontSize: width * 0.04, // Relative font size
@@ -382,6 +400,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: height * 0.12, // Relative top position
     left: width * -0.01, // Relative left position
+  },
+  image001: {
+    width: width * 0.3, // Relative width
+    height: height * 0.1, // Relative height
+    position: "absolute",
+    top: height * 0.12, // Relative top position
+    left: width * 0.08, // Relative left position
   },
   image03: {
     width: width * 0.23, // Relative width

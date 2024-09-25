@@ -125,7 +125,8 @@ console.log(pdvNames);
         } else {
             navigation.navigate(link, { month,pdv, ani,nomspdv });
         console.log('aaaaaaa',nomspdv);
-        
+        onClose(); // Ferme le popup après la validation
+
         }
     };
 

@@ -51,7 +51,7 @@ function MyComponent() {
                             style={styles.image3}
                         />
                         <View style={styles.view5}>
-                            <Text style={styles.versionText}>Version 1.0.2 Developed by Aziz & Salah</Text>
+                            <Text style={styles.versionText}>Version 1.0.4 Developed by Aziz & Salah</Text>
                         </View>
                     </View>
                 </>
