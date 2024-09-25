@@ -30,15 +30,53 @@ function RapportSellOut() {
     const [categories, setCategories] = useState([]);
     const [referencesbyc, setReferencesbyc] = React.useState([]);
     const [whirlpoolId,setWhirlpoolId]=useState(null)
-
+    const [categid,setCategid]=useState(null)
+    const [objectif,setObjctif]=useState(null)
+    const [idpdv,setIdpdv]=useState(null)
     const [daysBetweenDates, setDaysBetweenDates] = useState([]);
     const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
-console.log(referencesbyc,'heyyou');
+console.log(pdvs.idPDV,'heyyou');
 
     console.log(startDate);
     console.log(new Date());
 
 /////////////////////////////////////Functions////////////////////////////////////////
+const  getpdvID=async()=>{
+    try{
+        const response = await axios.get(port+"api/pdvs/getId/"+pdv)
+        console.log(response.data,'idpdv');
+        
+        setIdpdv(response.data.idPDV)
+    }catch(e){
+
+    }
+}
+const GetObjectifByPC = async (categid) => {
+    try {
+        const response = await axios.get(port + "/api/pdvCat/get");
+        console.log(response.data, "obj");
+
+        // Ensure response.data is an array
+        if (Array.isArray(response.data)) {
+            console.log(categid,"p",);
+            
+            const objbyCategPdv = response.data.find(
+                (e) => e.PDV_idPDV === pdvs.idPDV && e.Category_idCategory === categid
+            );
+            console.log(objbyCategPdv);
+
+            if (objbyCategPdv) {
+                setObjctif(objbyCategPdv.objective); // Assuming objective is what you want to set
+            } else {
+                setObjctif(0); // No matching result, set objective to 0
+            }
+        } else {
+            console.log("Unexpected data format:", response.data);
+        }
+    } catch (e) {
+        console.log("Error fetching objectif:", e);
+    }
+};
 const fetchAllCateg = async () => {
     try {
         const response = await axios.get(`${port}/api/categories/categorie`);
@@ -257,7 +295,9 @@ React.useEffect(() => {
     useEffect(() => {
         const fetchReferencesForCategory = async () => {
             const categoryId = await findId(categories, categ, 'Categoryname', 'idCategory');
+            setCategid(categoryId)
             fetchRefByCatg(categoryId);
+            GetObjectifByPC(categoryId )
         };
         if (categ) {
             fetchReferencesForCategory();
@@ -354,9 +394,9 @@ React.useEffect(() => {
             </View>
         ))}
                         <View style={styles.cell1}><Text>{fetchTotalSales(el.idReference)}</Text></View>
-                    <View style={styles.cell1}><Text>{FetchObjectif(el.idReference)}</Text></View>
-                    <View style={[styles.cell1, { backgroundColor: calculatePercentage(fetchTotalSales(el.idReference), FetchObjectif(el.idReference)).color }]}>
-                    <Text>{calculatePercentage(fetchTotalSales(el.idReference), FetchObjectif(el.idReference)).percentage}%</Text>
+                    <View style={styles.cell1}><Text>{objectif}</Text></View>
+                    <View style={[styles.cell1, { backgroundColor: calculatePercentage(fetchTotalSales(el.idReference),objectif).color }]}>
+                    <Text>{calculatePercentage(fetchTotalSales(el.idReference), objectif).percentage}%</Text>
                         </View>
                 </View>
                 ))}
