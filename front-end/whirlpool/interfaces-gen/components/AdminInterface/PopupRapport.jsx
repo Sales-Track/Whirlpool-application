@@ -101,8 +101,10 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
             setButtonLoading(true);
             navigation.navigate(link, { month, pdv, adm });
             setButtonLoading(false);
+            onClose(); // Ferme le popup après la validation
         }
     };
+    
 
     return (
         <NativeBaseProvider>

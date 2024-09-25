@@ -174,30 +174,20 @@ function CreationRapportSO() {
 
     const confirmIncrement = async () => {
         try {
-            if (!couleur ) {
-                Toast.show("Remplir tous les champs, s'il vous plaît.", Toast.LONG);
-                return;
-            }
-    
-            // Convertir capacite en entier
-            const capaciteInt = parseInt(capacite, 10);
-            if (isNaN(capaciteInt)) {
-                Toast.show("La capacité doit être un nombre valide.", Toast.LONG);
-                return;
-            }
-    
+            console.log(selectedReferenceId,"work");
+            
             if (selectedReferenceId !== null) {
-                const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
-                    couleur: couleur,
-                    capacite: capaciteInt // Envoyer la capacité en tant qu'entier
-                });
+                // Envoyer la requête sans vérifier la couleur et la capacité
+                const response = await axios.get(`${port}/api/articles/articlesbyref/${selectedReferenceId}`);
     
                 const articleId = response.data.idArticle;
                 const existingSales = sales[selectedReferenceId]?.articles?.[articleId]?.sales || 0;
                 const updatedSales = existingSales + 1;
     
+                // Mise à jour des ventes via votre fonction
                 await handleSelloutCreationorUpdate(selectedReferenceId, updatedSales, articleId, "add");
     
+                // Mettre à jour les ventes dans l'état
                 setSales(prevSales => ({
                     ...prevSales,
                     [selectedReferenceId]: {
@@ -207,8 +197,8 @@ function CreationRapportSO() {
                             [articleId]: {
                                 ...prevSales[selectedReferenceId]?.articles?.[articleId],
                                 sales: updatedSales,
-                                couleur: couleur,
-                                capacite: capaciteInt // Assurez-vous que la capacité est également mise à jour comme un entier
+                                couleur: couleur || prevSales[selectedReferenceId]?.articles?.[articleId]?.couleur || "", // Gérer la couleur facultative
+                                capacite: capacite || prevSales[selectedReferenceId]?.articles?.[articleId]?.capacite || "" // Gérer la capacité facultative
                             }
                         }
                     }
@@ -216,7 +206,7 @@ function CreationRapportSO() {
     
                 Toast.show("Ajout avec succès!", Toast.SHORT);
                 setModalVisibleAdd(false); // Cacher le modal après validation
-                setCouleur("");
+                setCouleur(""); // Réinitialiser les champs
                 setCapacite("");
             }
         } catch (error) {
@@ -225,24 +215,23 @@ function CreationRapportSO() {
         }
     };
     
+    
 
     const confirmDecrement = async () => {
         try {
-            if (!couleur || !capacite) {
-                Toast.show("remplire tout les champs svp.", Toast.LONG);
-                return;
-            }
+            
             if (selectedReferenceId !== null) {
-                const response = await axios.post(`${port}/api/articles/arcticlebyCC/${selectedReferenceId}`, {
-                    couleur: couleur,
-                    capacite: capacite
-                });
+                // Envoyer la requête sans couleur et capacité
+                const response = await axios.get(`${port}/api/articles/articlesbyref/${selectedReferenceId}`);
+    
                 const articleId = response.data.idArticle;
                 const existingSales = sales[selectedReferenceId]?.articles?.[articleId]?.sales || 0;
-                const updatedSales = existingSales - 1; // Décrémenter au lieu d'incrémenter
+                const updatedSales = existingSales - 1; // Décrémenter les ventes
     
-                await handleSelloutCreationorUpdate(selectedReferenceId, updatedSales, articleId,"sup");
+                // Mise à jour des ventes via votre fonction
+                await handleSelloutCreationorUpdate(selectedReferenceId, updatedSales, articleId, "sup");
     
+                // Mise à jour de l'état avec les nouvelles ventes
                 setSales(prevSales => ({
                     ...prevSales,
                     [selectedReferenceId]: {
@@ -252,21 +241,23 @@ function CreationRapportSO() {
                             [articleId]: {
                                 ...prevSales[selectedReferenceId]?.articles?.[articleId],
                                 sales: updatedSales, // Mettre à jour les ventes décrémentées
-                                couleur: couleur,
-                                capacite: capacite
+                                couleur: couleur || prevSales[selectedReferenceId]?.articles?.[articleId]?.couleur || "", // Gérer la couleur s'il existe déjà
+                                capacite: capacite || prevSales[selectedReferenceId]?.articles?.[articleId]?.capacite || "" // Gérer la capacité s'il existe déjà
                             }
                         }
                     }
                 }));
+    
                 Toast.show("Correction avec succès!", Toast.SHORT);
                 setModalVisibleSup(false); // Cacher le modal après validation
-                setCouleur("");
+                setCouleur(""); // Réinitialiser les champs
                 setCapacite("");
             }
         } catch (error) {
             console.error('Error updating sales:', error);
         }
     };
+    
 
     const findId = (data, name, dataname, idname) => {
         return new Promise((resolve, reject) => {
@@ -371,32 +362,39 @@ function CreationRapportSO() {
         return (
             <View style={styles.tableContainer}>
                 <View style={styles.tableHeader}>
-                    <Text style={styles.headerCell}>References</Text>
-                    <Text style={styles.headerCell}>Ventes</Text>
-                    <Text style={styles.headerCell}>Corriger</Text>
+                    <Text style={styles.headerCell}>Références</Text>
                 </View>
                 <ScrollView>
-                {isLoading ? (
-  <ActivityIndicator size="large" color="#FDC100" style={{ marginTop: 20 }} />
-) : (
-
-                    references.map((item, index) => (
-                        <View style={styles.row} key={index}>
-                            <TouchableOpacity style={styles.cell1} onPress={() => handleReferenceClick(item.idReference)}>
-                                <Text style={styles.textcell1}>{item.Referencename}</Text>
-                            </TouchableOpacity>
-                            <View style={styles.cell}>
-                                <Text style={styles.textcell}>{sales[item.idReference] ? sales[item.idReference].sales : 0}</Text>
+                    {isLoading ? (
+                        <ActivityIndicator size="large" color="#FDC100" style={{ marginTop: 20 }} />
+                    ) : (
+                        references.map((item, index) => (
+                            <View style={styles.row} key={index}>
+                                <View style={styles.referenceContainer}>
+                                    {/* Référence affichée en dessous */}
+                                    <Text style={styles.referenceText}>{item.Referencename}</Text>
+                                    {/* Section + Nbr de ventes - */}
+                                    <View style={styles.counterContainer}>
+                                        <TouchableOpacity onPress={() => handleReferenceClick(item.idReference)}>
+                                            <Text style={styles.counterButton}>+</Text>
+                                        </TouchableOpacity>
+                                        <Text style={styles.salesText}>
+                                            {sales[item.idReference] ? sales[item.idReference].sales : 0}
+                                        </Text>
+                                        <TouchableOpacity onPress={() => handleReferenceSupClick(item.idReference)}>
+                                            <Text style={styles.counterButton}>-</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
                             </View>
-                            <TouchableOpacity style={styles.cell1} onPress={() => handleReferenceSupClick(item.idReference)}>
-                                <Text style={styles.textcell1}>Corriger</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )))}
+                        ))
+                    )}
                 </ScrollView>
             </View>
         );
     };
+    
+    
     return (
         <NativeBaseProvider>
             <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
@@ -404,59 +402,39 @@ function CreationRapportSO() {
             <Header onCityChange={handleCityChange} />
             <View style={styles.container}>
                 <Example text={'Categories'} />
-                <View style={{marginTop:'80%'}}>
+                <View style={{marginTop:'20%'}}>
                 <Table />
                 </View>
 
                 {/* Modal for Confirmation */}
-                <Modal isOpen={modalVisibleAdd} onClose={() => setModalVisibleAdd(false)}>
-                    <Modal.Content>
-                        <Modal.CloseButton />
-                        <Modal.Header>Add Sale</Modal.Header>
-                        <Modal.Body>
-                            <Text>Color:</Text>
-                            <Select selectedValue={couleur} onValueChange={setCouleur}>
-                                {couleurs.map((color) => (
-                                    <Select.Item key={color} label={color} value={color} />
-                                ))}
-                            </Select>
-                            <Text>Capacity:</Text>
-                            <Select selectedValue={capacite.toString()} onValueChange={(value) => setCapacite(parseInt(value, 10))}>
-    {capacites.map((capacity) => (
-        <Select.Item key={capacity} label={capacity.toString()} value={capacity.toString()} />
-    ))}
-</Select>
+               {/* Modal pour ajouter une vente */}
+<Modal isOpen={modalVisibleAdd} onClose={() => setModalVisibleAdd(false)}>
+    <Modal.Content>
+        <Modal.CloseButton />
+        <Modal.Header>Confirmer l'ajout</Modal.Header>
+        <Modal.Body>
+            <Text>Voulez-vous vraiment ajouter une vente pour cette référence ?</Text>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button colorScheme="yellow" onPress={confirmIncrement}>Confirmer</Button>
+        </Modal.Footer>
+    </Modal.Content>
+</Modal>
 
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button colorScheme="blue" onPress={confirmIncrement}>Confirm</Button>
-                        </Modal.Footer>
-                    </Modal.Content>
-                </Modal>
+{/* Modal pour corriger une vente */}
+<Modal isOpen={modalVisibleSup} onClose={() => setModalVisibleSup(false)}>
+    <Modal.Content>
+        <Modal.CloseButton />
+        <Modal.Header>Confirmer la correction</Modal.Header>
+        <Modal.Body>
+            <Text>Voulez-vous vraiment corriger cette vente pour cette référence ?</Text>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button colorScheme="red" onPress={confirmDecrement}>Confirmer</Button>
+        </Modal.Footer>
+    </Modal.Content>
+</Modal>
 
-                <Modal isOpen={modalVisibleSup} onClose={() => setModalVisibleSup(false)}>
-                    <Modal.Content>
-                        <Modal.CloseButton />
-                        <Modal.Header>Correct Sale</Modal.Header>
-                        <Modal.Body>
-                            <Text>Color:</Text>
-                            <Select selectedValue={couleur} onValueChange={setCouleur}>
-                                {couleurs.map((color) => (
-                                    <Select.Item key={color} label={color} value={color} />
-                                ))}
-                            </Select>
-                            <Text>Capacity:</Text>
-                            <Select selectedValue={capacite} onValueChange={setCapacite}>
-                                {capacites.map((capacity) => (
-                                    <Select.Item key={capacity} label={capacity} value={capacity} />
-                                ))}
-                            </Select>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button colorScheme="red" onPress={confirmDecrement}>Confirm</Button>
-                        </Modal.Footer>
-                    </Modal.Content>
-                </Modal>
             </View>
             <Footer ani={ani} />
         </NativeBaseProvider>
@@ -473,28 +451,46 @@ const styles = StyleSheet.create({
         marginTop: -300
     },
     tableContainer: {
-        marginTop: -200,
-        flex:1,
-        width: '100%',
-        marginBottom:'10%'
+        padding: 10,
+ 
     },
     tableHeader: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        padding: 10,
+        backgroundColor: '#f2f2f2',
     },
     headerCell: {
-        textAlign: 'center',
-        paddingVertical: 10,
         fontWeight: 'bold',
-        margin: 5,
-        padding: 10,
-        backgroundColor: '#f0f0f0',
-        width: '30%',
-        borderRadius: 5
+        fontSize: 18,
     },
     row: {
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+    },
+    referenceContainer: {
+        alignItems: 'center',
+    },
+    referenceText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 5, // Espace entre le nom et les boutons
+    },
+    counterContainer: {
         flexDirection: 'row',
-        paddingVertical: 8,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%', // Largeur adaptée pour contenir les éléments
+    },
+    counterButton: {
+        fontSize: 24,
+        paddingHorizontal: 20,
+        color: 'white',
+        backgroundColor:'#FDC100',
+        borderRadius:20
+    },
+    salesText: {
+        fontSize: 20,
+        fontWeight: 'bold',
     },
     cell: {
         flex: 1,

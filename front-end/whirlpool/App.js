@@ -34,7 +34,8 @@ import Ouverture from './interfaces-gen/components/AdminInterface/ouverture'
 import RapportExpoAn from './interfaces-gen/components/animatriceInterface/RapportExpoAn';
 import RapportExpoDetAn from './interfaces-gen/components/animatriceInterface/RapportExpoDetAn';
 import EspaceCompte from './interfaces-gen/components/AdminInterface/EspaceCompte';
-import ListesDesComptes from './interfaces-gen/components/AdminInterface/ListesDesCompte'
+import ListesDesComptes from './interfaces-gen/components/AdminInterface/ListesDesCompte';
+import MyObjectif from './interfaces-gen/components/animatriceInterface/MyObjectif';
 export default function App() {
   const Stack = createNativeStackNavigator();
   return (
@@ -75,6 +76,7 @@ export default function App() {
           <Stack.Screen name="ManagerPresence" options={{ headerShown: false }} component={ManagerPresence} />
           <Stack.Screen name="ManagerPriceMap" options={{ headerShown: false }} component={ManagerPriceMap} />
           <Stack.Screen name="ManagerPriceMapDet" options={{ headerShown: false }} component={ManagerPriceMapDet} />
+          <Stack.Screen name="MyObjectif" options={{ headerShown: false }} component={MyObjectif} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

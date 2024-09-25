@@ -63,12 +63,20 @@ function RapportExpo() {
       console.error('Error fetching data:', error);
     }
   };
-
-  const findIdWhirlpool = () => {
-    const IdWhirlpool = marques.find(el =>(el.marquename === 'whirlpool'||el.marquename ===" WHIRLPOOL ")) 
-    console.log(IdWhirlpool.idMarque);
-    setIdwhirlpool(IdWhirlpool.idMarque)
-  };
+  const getIdWhirlpool=async()=>{
+    try{
+        const response=await axios.get(port+"/api/marques/whirlpool")
+        setIdwhirlpool(response.data)
+        console.log(response.data);
+    }catch(e){
+        console.error('Error fetching whirlpool id:', e);
+    }
+}
+  // const findIdWhirlpool = () => {
+  //   const IdWhirlpool = marques.find(el =>(el.marquename === 'whirlpool'||el.marquename ===" WHIRLPOOL ")) 
+  //   console.log(IdWhirlpool.idMarque);
+  //   setIdwhirlpool(IdWhirlpool.idMarque)
+  // };
 
   const CountTaux = (total, partie) => {
     const taux = (partie / total) * 100;
@@ -187,7 +195,7 @@ function RapportExpo() {
   useEffect(() => {
     const fetchAllData = async () => {
       await fetchData();
-      findIdWhirlpool(); // Appel de la fonction après que les données ont été récupérées
+      getIdWhirlpool(); // Appel de la fonction après que les données ont été récupérées
     };
   
     fetchAllData();
@@ -195,7 +203,7 @@ function RapportExpo() {
   
   useEffect(() => {
     if (marques.length > 0) {
-      findIdWhirlpool();
+      getIdWhirlpool();
     }
   }, [marques]);
   return (
