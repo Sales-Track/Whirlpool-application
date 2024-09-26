@@ -231,7 +231,7 @@ function RapportExpo() {
                 </View>
                 {/* Deuxième colonne */}
                 <View style={styles.column}>
-                  <View style={styles.cell}><Text>Expo Globale</Text></View>
+                  <View style={styles.cell}><Text>Expo globale</Text></View>
                   {categ.map(el => (
                   <TouchableOpacity key={el.idCategory} onPress={() => handleCategoryPress(el.Categoryname, el.idCategory)}>
                     <View style={styles.cell2}>

@@ -14,6 +14,7 @@ function PopupRapport({ popupType, onClose, setPdv, setDate, date, pdv, rapportN
     const [month, setMonth] = React.useState("");
     const [nomspdv, setNomspdv] = React.useState([]);
     const [warningVisible, setWarningVisible] = React.useState(false);
+    const [categs,setCategs]=React.useState([]);
     console.log(pdv);
     
 
@@ -28,36 +29,48 @@ console.log(pdvNames);
             console.error('Error fetching PDVs:', error);
         }
     };
+    const Fetchallcateg=async()=>{
+        try{
+          const response=await axios.get(port+"/api/categories/categorie")
+          setCategs(response.data)
+          console.log(response.data); 
+        }
+        catch (error) {
+          console.error('Error fetching :', error)
+        }
+      }
 
     React.useEffect(() => {
         fetchPdvsname();
+        Fetchallcateg()
     }, []);
 
-    // const Example = ({ text, setOption, option }) => (
-    //     <Center>
-    //         <Box maxW="400" mt={5}>
-    //             <Select
-    //                 selectedValue={option}
-    //                 minWidth="100%"
-    //                 accessibilityLabel="Choisir le point de vente"
-    //                 placeholder={text}
-    //                 _selectedItem={{
-    //                     bg: "teal.600",
-    //                     endIcon: <CheckIcon size="5" />,
-    //                 }}
-    //                 InputLeftElement={
-    //                     <Icon as={<MaterialIcons name="store" />} size={5} ml="2" color="muted.400" />
-    //                 } 
-    //                 mt={1}
-    //                 onValueChange={(itemValue) => setOption(itemValue)}
-    //             >
-    //                 {nomspdv.map((el, index) => (
-    //                     <Select.Item key={index} label={el} value={el} />
-    //                 ))}
-    //             </Select>
-    //         </Box>
-    //     </Center>
-    // );
+    const Example = ({ text, setOption, option }) => (
+        <Center>
+            <Box maxW="400" mt={5}>
+                <Select
+                    selectedValue={option}
+                    minWidth="100%"
+                    accessibilityLabel="Choisir la catégorie"
+                    placeholder="Catégories"
+                    _selectedItem={{
+                        bg: "teal.600",
+                        endIcon: <CheckIcon size="5" />,
+                    }}
+                    InputLeftElement={
+                        <Icon as={<MaterialIcons name="category" />} size={5} ml="2" color="muted.400" />
+                    } 
+                    mt={1}
+                    onValueChange={(itemValue) => setOption(itemValue)} // Assurez-vous que l'ID de la catégorie soit passé ici
+                >
+                    {categs.map((el, index) => (
+                        <Select.Item key={index} label={el.Categoryname} value={el.idCategory} />
+                    ))}
+                </Select>
+            </Box>
+        </Center>
+    );
+    
     // const Example = ({ text, setOption, option }) => (
     //     <Center>
     //         <Box maxW="400" mt={5}>
@@ -120,15 +133,16 @@ console.log(pdvNames);
     );
 
     const handleVerifyPress = () => {
-        if (month === "" || nomspdv === "") {
+        if (month === "" || categs.Categoryname === "") {
             setWarningVisible(true);
         } else {
-            navigation.navigate(link, { month,pdv, ani,nomspdv });
-        console.log('aaaaaaa',nomspdv);
-        onClose(); // Ferme le popup après la validation
-
+            // Vous pouvez passer l'ID de la catégorie dans la navigation ici
+            navigation.navigate(link, { month, pdv, ani, nomspdv });
+            console.log('Catégorie sélectionnée:', pdv); // pdv contiendra l'ID de la catégorie
+            onClose(); // Ferme le popup après la validation
         }
     };
+    
 
     return (
         <NativeBaseProvider>
@@ -142,14 +156,14 @@ console.log(pdvNames);
                     <Box style={styles.modal}>
                         <Text style={styles.title}>{rapportName}</Text>
                         <ExampleMonth text={'Mois :'} setOption={setMonth} option={month} />
-                        {/* <Example text={'Point De Vente'} setOption={setPdv} option={pdv} /> */}
+                        <Example text={'Point De Vente'} setOption={setPdv} option={pdv} />
                         <Center mt={10}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <TouchableOpacity
                                     onPress={handleVerifyPress}
                                     style={styles.btns}
                                 >
-                                    <Text style={styles.btnText}>Vérifier</Text>
+                                    <Text style={styles.btnText}>Vérifier</Text> 
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     onPress={onClose}

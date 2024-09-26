@@ -89,7 +89,7 @@ console.log('ref modifier');
   return (
     <NativeBaseProvider>
     <View style={styles.view1}>
-        <Center><View style={styles.view2}><Text style={{fontWeight:500}}>Modifer Cette Ligne</Text></View></Center>
+        <Center><View style={styles.view2}><Text style={{fontWeight:500}}>Modifer cette ligne</Text></View></Center>
         <View style={styles.allinputs}>
         {RenderInput('Reference', reff, setReff)}
         <View style={styles.inputs}>

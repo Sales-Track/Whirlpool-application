@@ -145,14 +145,14 @@ function CreationNRapport() {
       <View style={{marginTop:10}}>
         <Center flex={1} px="3">
           <VStack space={4} w="90%" maxW="400px" px={4} py={2}>
-            <Heading fontSize="lg" color="teal.600" mb={4}>Créer un Nouveau Rapport d'Exposition</Heading>
+            <Heading fontSize="lg" color="teal.600" mb={4}>Créer un nouveau rapport d'exposition</Heading>
             
             <Box mb={4}>
               <Select
                 selectedValue={serMarq}
                 minWidth="100%"
                 accessibilityLabel="Choisir la Marque"
-                placeholder="Choisir la Marque"
+                placeholder="Choisir la marque"
                 _selectedItem={{
                   bg: "teal.600",
                   endIcon: <CheckIcon size="5" />
@@ -171,7 +171,7 @@ function CreationNRapport() {
                 selectedValue={serCateg}
                 minWidth="100%"
                 accessibilityLabel="Choisir la Catégorie"
-                placeholder="Choisir la Catégorie"
+                placeholder="Choisir la catégorie"
                 _selectedItem={{
                   bg: "teal.600",
                   endIcon: <CheckIcon size="5" />
@@ -205,13 +205,13 @@ function CreationNRapport() {
             )}
           
             <VStack space={4}>
-              <Heading fontSize="md" color="teal.600">Ajouter une Nouvelle Référence</Heading>
+              <Heading fontSize="md" color="teal.600">Ajouter une nouvelle référence</Heading>
               <Box mb={0}>
                 <Select
                   selectedValue={selecMarq}
                   minWidth="100%"
                   accessibilityLabel="Choisir la Marque"
-                  placeholder="Choisir la Marque"
+                  placeholder="Choisir la marque"
                   _selectedItem={{
                     bg: "teal.600",
                     endIcon: <CheckIcon size="5" />
@@ -230,7 +230,7 @@ function CreationNRapport() {
                   selectedValue={selecCateg}
                   minWidth="100%"
                   accessibilityLabel="Choisir la Catégorie"
-                  placeholder="Choisir la Catégorie"
+                  placeholder="Choisir la catégorie"
                   _selectedItem={{
                     bg: "teal.600",
                     endIcon: <CheckIcon size="5" />
@@ -244,7 +244,7 @@ function CreationNRapport() {
                 </Select>
               </Box>
               <Input
-                placeholder="Nom de la Référence"
+                placeholder="Nom de la référence"
                 value={newRefName}
                 onChangeText={setNewRefName}
                 style={styles.input}
