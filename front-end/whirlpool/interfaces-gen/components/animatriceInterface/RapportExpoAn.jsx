@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -13,6 +13,7 @@ function RapportExpo() {
   const route = useRoute();
   const { month, pdv, ani, nomspdv } = route.params;
   const navigation = useNavigation();
+  const { width, height } = Dimensions.get('window'); // Responsive hook
 
   const [expo, setExpo] = useState([]);
   const [references, setReferences] = useState([]);
@@ -26,7 +27,7 @@ function RapportExpo() {
           axios.get(port + "/api/reference/references"),
         ]);
 
-        // Debugging pour voir les données récupérées
+        // Debugging to check the fetched data
         console.log("Expositions:", expos.data);
         console.log("Références:", refs.data);
 
@@ -73,10 +74,10 @@ function RapportExpo() {
 
   return (
     <NativeBaseProvider>
-      <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
-      <View style={styles.view1}>
+      <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={[styles.image12, { width: width * 0.3, height: height * 0.15 }]} />
+      <View style={[styles.view1, { paddingHorizontal: width * 0.05 }]}>
         <Header />
-        <ScrollView style={{ marginTop: -250 }}>
+        <ScrollView style={{ marginTop: -height * 0.5, flex:1 }}>
           <View>
             <Text style={styles.textexpo}>Date : {month}</Text>
             <Text style={styles.textexpo}>Zone : {nomspdv.location}</Text>
@@ -126,7 +127,6 @@ const styles = StyleSheet.create({
   view1: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
     marginTop: '15%',
   },
   container: {
@@ -153,8 +153,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   image12: {
-    width: 125,
-    height: 95,
     position: "absolute",
     top: 55,
     left: 15,
@@ -170,11 +168,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 10,
     alignItems: 'center',
+    marginBottom:10
   },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  textexpo: {
+    fontSize: 16,
+    marginVertical: 5,
+    textAlign: 'center',
   },
 });
 
