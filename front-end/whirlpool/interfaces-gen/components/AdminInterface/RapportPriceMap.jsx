@@ -148,7 +148,7 @@ const RenderInput=(text)=>{
                   <Text style={{ fontSize: 18, fontWeight: 600, marginBottom: 30 }}>Rapports Price Map :</Text>
                   <View style={styles.View2}>
                     <Text style={{ fontSize: 18, fontWeight: 300 }}>Date : {month}</Text>
-                    <Text style={{ fontSize: 18, fontWeight: 300 }}>Point De Vente : {pdv}</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 300 }}>Point de vente : {pdv}</Text>
                   </View>
                   <View style={styles.categtext}>
                     <Text style={{ fontSize: 18, fontWeight: 300 }}>Categories</Text>

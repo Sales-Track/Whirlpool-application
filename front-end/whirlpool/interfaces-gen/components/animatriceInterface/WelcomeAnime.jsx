@@ -211,7 +211,7 @@ function WelcomeAnime() {
             <TouchableOpacity disabled={!status} onPress={() => { hundlehistorique({ name: "Mes Rapports Sell-Out", link: 'CreationRapportSO', image: image03 },"Création Rapport Sell-out"); handleNavigation('CreationRapportSO'); }}>
               <View style={styles.view11}>
                 <View style={styles.view12}>
-                  <Text style={styles.textCreation}>Mes Rapports Sell-out</Text>
+                  <Text style={styles.textCreation}>Mes rapports sell-out</Text>
                 </View>
                 <Image resizeMode="contain" source={image03} style={styles.image3} />
               </View>
@@ -219,7 +219,7 @@ function WelcomeAnime() {
             <TouchableOpacity disabled={!status} onPress={() => { hundlehistorique({ name: 'Mes Rapports Exposition', link: 'CreationRapportExpo', image: image03 },"Consultation Rapport Expo"); handleNavigation('CreationRapportExpo'); }}>
               <View style={styles.view13}>
                 <View style={styles.view12}>
-                  <Text style={styles.textCreation}>Mes Rapports Exposition</Text>
+                  <Text style={styles.textCreation}>Mes rapports exposition</Text>
                 </View>
                 <Image resizeMode="contain" source={image03} style={styles.image03} />
               </View>
@@ -229,7 +229,7 @@ function WelcomeAnime() {
           <TouchableOpacity disabled={!status} onPress={() => { hundlehistorique({ name: "Mes Objectif", link: 'CMyObjectif', image: image03 },"Mes Objectif"); handleNavigation('MyObjectif'); }}>
               <View style={styles.view11}>
                 <View style={styles.view12}>
-                  <Text style={styles.textCreation01}>Mes Objectif</Text>
+                  <Text style={styles.textCreation01}>Mes objectif</Text>
                 </View>
                 <Image resizeMode="contain" source={image01} style={styles.image001} />
               </View>

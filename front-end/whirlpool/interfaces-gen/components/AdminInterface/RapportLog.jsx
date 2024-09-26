@@ -133,7 +133,7 @@ function RapportLog() {
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
       <View style={styles.container}>
         <Center flex={1} >
-          <Text style={styles.title}>Rapport Log</Text>
+          <Text style={styles.title}>Rapport log</Text>
         </Center>
         {isLoading ? (
           <Center flex={1}>

@@ -821,7 +821,7 @@ const hideAlert = () => {
                 {RenderInput('Prix',false)}
                 {/* <ExampleCheck /> */}
                 <TouchableOpacity onPress={() =>{validAdd()}} style={styles.btns}>
-        <Text style={styles.btnText}>Valideé</Text>
+        <Text style={styles.btnText}>Valider</Text>
       </TouchableOpacity>
             </Center>
             </View>
