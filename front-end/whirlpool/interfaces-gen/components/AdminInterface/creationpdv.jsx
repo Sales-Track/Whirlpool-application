@@ -116,7 +116,67 @@ const handleClick = async (nompdv, nomcateg, obj) => {
   }
 };
 
+const MAJ = async (nompdv, nomcateg, obj) => {
+  try {
+    // Récupération des points de vente depuis l'API
+    const pointV = await axios.get(`${port}/api/pdvs/pdvs`);
+    
+    // Trouver la catégorie correspondante à partir de la liste locale
+    const categ = categs.find(el => el.Categoryname === nomcateg); 
 
+    // Trouver le PDV correspondant dans les données récupérées depuis l'API
+    const pdvss = pointV.data.find(el => el.pdvname === nompdv); 
+
+    console.log("Point de vente récupéré:", pdvss);
+
+    // Vérification que les données ont été trouvées
+    if (!categ || !pdvss) {
+      console.error("Catégorie ou PDV non trouvés");
+      return;
+    }
+
+    // Envoi des données pour ajouter l'objectif de vente
+    const response = await axios.put(`${port}/api/pdvCat/update/${pdvss.idPDV}/${categ.idCategory}`,{
+      objective: obj
+    }
+    );
+
+    console.log('Mise à jour réussie:', response.data);
+    showAlert('success', "Mise à jour effectuée");
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour des données:', error);
+    showAlert('error', "Échec de la mise a jour de l'objectif");
+  }
+};
+const supp = async (nompdv, nomcateg) => {
+  try {
+    // Récupération des points de vente depuis l'API
+    const pointV = await axios.get(`${port}/api/pdvs/pdvs`);
+    
+    // Trouver la catégorie correspondante à partir de la liste locale
+    const categ = categs.find(el => el.Categoryname === nomcateg); 
+
+    // Trouver le PDV correspondant dans les données récupérées depuis l'API
+    const pdvss = pointV.data.find(el => el.pdvname === nompdv); 
+
+    console.log("Point de vente récupéré:", categ);
+
+    // Vérification que les données ont été trouvées
+    if (!categ || !pdvss) {
+      console.error("Catégorie ou PDV non trouvés");
+      return;
+    }
+
+    // Envoi des données pour ajouter l'objectif de vente
+    const response = await axios.delete(`${port}/api/pdvCat/del/${pdvss.idPDV}/${categ.idCategory}`);
+
+    console.log('Mise à jour réussie:', response.data);
+    showAlert('success', "Objectif de vente a été supprimé");
+  } catch (error) {
+    console.error('Erreur lors de la suppression des données:', error);
+    showAlert('error', "Échec de la suppression de l'objectif");
+  }
+};
 const Fetchallmarq=async()=>{
   try{
     const response=await axios.get(port+"/api/marques/marques")
@@ -556,7 +616,7 @@ const affectanim = async (nameanim, namepdv) => {
           </Stack>
         <Example text="Region" />
         <TouchableOpacity onPress={() =>{ Addpdvs(Pdv,showAlert),console.log('add',Pdv);}} style={styles.btns}>
-        <Text style={styles.btnText}>Valideé</Text>
+        <Text style={styles.btnText}>Valider</Text>
       </TouchableOpacity>
         </Center>
         </View>
@@ -584,7 +644,7 @@ const affectanim = async (nameanim, namepdv) => {
       <View style={styles.inputs}>
       <Center flex={1} px="3">
         <Box alignItems="center">
-          <Input  mx="3" placeholder="Category" 
+          <Input  mx="3" placeholder="Categorie" 
             InputLeftElement={
               <Icon as={<MaterialIcons name="category" />} size={5} ml="2" color="muted.400" />
             } onChangeText={item=>setNomcateg(item.toLowerCase())}  w="68%" />
@@ -653,13 +713,13 @@ const affectanim = async (nameanim, namepdv) => {
       <Example text={"Categories"} />
       <Example text={"Point de Vente"} />
       <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
-        <Text style={styles.btnText}>ajouter</Text> 
+        <Text style={styles.btnText}>Ajouter</Text> 
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
-        <Text style={styles.btnText}>mise a jour</Text> 
+      <TouchableOpacity onPress={()=>{MAJ(nompdv,nomcateg,obj)}} style={styles.btns}>
+        <Text style={styles.btnText}>Mise a jour</Text> 
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>{handleClick(nompdv,nomcateg,obj)}} style={styles.btns}>
-        <Text style={styles.btnText}>suprimer</Text> 
+      <TouchableOpacity onPress={()=>{supp(nompdv,nomcateg)}} style={styles.btns}>
+        <Text style={styles.btnText}>Suprimer</Text>
       </TouchableOpacity>
       </Center>
       </View>
@@ -671,7 +731,7 @@ const affectanim = async (nameanim, namepdv) => {
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
 
     <View style={styles.view1}>
-      <Text style={{fontSize:18, fontWeight:700 , marginTop:20}}>Creation de Point de Vente :</Text>
+      <Text style={{fontSize:18, fontWeight:700 , marginTop:20}}>Creation de point de vente :</Text>
     {alertData.visible && (
           <ExampleAlert
             status={alertData.status}
@@ -683,13 +743,13 @@ const affectanim = async (nameanim, namepdv) => {
      <ScrollView>
         <RowItem text="Point de vente" truc={pdv} settruc={setPdv} />
         {pdv&&renderform('pdv')}
-        <RowItem text="Affectation Animatrice" truc={affanim} settruc={setAffanim}/>
+        <RowItem text="Affectation animatrice" truc={affanim} settruc={setAffanim}/>
         {affanim&&renderform('affanim')}
-        <RowItem text="Categories" truc={categ} settruc={setCateg}/>
+        <RowItem text="Categorie" truc={categ} settruc={setCateg}/>
         {categ&&renderform('categ')}
-        <RowItem text="Marques"truc={marque} settruc={setMarque} />
+        <RowItem text="Marque"truc={marque} settruc={setMarque} />
         {marque&&renderform('marque')}
-        <RowItem text="References" truc={ref} settruc={setRef}/>
+        <RowItem text="Reference" truc={ref} settruc={setRef}/>
         {ref&&renderform('ref')}
         <RowItem text="Objectif" truc={object} settruc={setObject}/>
         {object&&renderform('obj')}

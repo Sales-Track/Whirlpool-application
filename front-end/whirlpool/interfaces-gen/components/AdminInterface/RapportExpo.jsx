@@ -232,7 +232,7 @@ function RapportExpo() {
                 </View>
                 {/* Deuxième colonne */}
                 <View style={styles.column}>
-                  <View style={styles.cell}><Text>Expo Globale</Text></View>
+                  <View style={styles.cell}><Text>Expo globale</Text></View>
                   {categ.map(el => (
                   <TouchableOpacity key={el.idCategory} onPress={() => handleCategoryPress(el.Categoryname, el.idCategory)}>
                     <View style={styles.cell2}>
@@ -244,7 +244,7 @@ function RapportExpo() {
                 </View>
                 {/* Troisième colonne */}
                 <View style={styles.column}>
-                  <View style={styles.cell}><Text>Expo Whirlpool</Text></View>
+                  <View style={styles.cell}><Text>Expo whirlpool</Text></View>
                   {categ.map(el => (
                   <View style={styles.cell1} key={el.idCategory}>
                     <Text>{getWhirlpool(expo, el.idCategory)}</Text>
@@ -254,7 +254,7 @@ function RapportExpo() {
                 </View>
                 {/* Quatrième colonne */}
                 <View style={styles.column}>
-                  <View style={styles.cell}><Text>Taux D'exposition</Text></View>
+                  <View style={styles.cell}><Text>Taux d'exposition</Text></View>
                   {categ.map(el => (
                   <View style={styles.cell1} key={el.idCategory}>
                     <Text>{CountTaux(getTotalReferences(expo, el.idCategory), getWhirlpool(expo, el.idCategory))}%</Text>

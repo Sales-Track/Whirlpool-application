@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text,Image, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -7,30 +7,31 @@ import Header from './header';
 import Footer from './footer';
 import port from '../port';
 
-
 const WHIRLPOOL_LOGO = require('../../../assets/WHIRLPOOL_LOGO.png');
+
 function RapportExpo() {
   const route = useRoute();
-  const { month, pdv, ani , nomspdv } = route.params;
+  const { month, pdv, ani, nomspdv } = route.params;
   const navigation = useNavigation();
 
   const [expo, setExpo] = useState([]);
   const [references, setReferences] = useState([]);
-  const [pdvs, setPdvs] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [expos, refs, pdvss] = await Promise.all([
+        const [expos, refs] = await Promise.all([
           axios.get(port + "/api/expositions/expositions"),
           axios.get(port + "/api/reference/references"),
-    
         ]);
+
+        // Debugging pour voir les données récupérées
+        console.log("Expositions:", expos.data);
+        console.log("Références:", refs.data);
 
         setExpo(expos.data);
         setReferences(refs.data);
-     
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -43,67 +44,63 @@ function RapportExpo() {
   const getExpositionsByMonthAndPDV = (expositions) => {
     const formattedMonth = month.toString().padStart(2, '0');
     return expositions.filter(exposition =>
-      exposition.createdAt.slice(5, 7) === formattedMonth && exposition.PDV_idPDV === nomspdv.idPDV
-  
-      
+      exposition.createdAt.slice(5, 7) === formattedMonth &&
+      exposition.PDV_idPDV === nomspdv.idPDV &&
+      references.find(ref => ref.idReference === exposition.Reference_idReference)?.Category_idCategory === pdv
     );
   };
 
-
-  
-
   const navigateToNewPage = () => {
-    const filteredExpositions = getExpositionsByMonthAndPDV(expo); // Filtrer les expositions affichées dans le tableau
-  
-    // Préparer les données à afficher
+    const filteredExpositions = getExpositionsByMonthAndPDV(expo);
+
     const displayedData = filteredExpositions.map(exposition => {
       const reference = references.find(ref => ref.idReference === exposition.Reference_idReference);
-  
+
       return {
-        referenceName: reference?.Referencename || 'N/A', // Nom de la référence
-        prix: exposition.prix || 'N/A', // Prix de l'exposition
-        Marque_idMarque: reference?.Marque_idMarque || 'N/A', // Identifiant de la marque
-        Category_idCategory: reference?.Category_idCategory || 'N/A', // Identifiant de la catégorie
-        idref: reference ?.idReference || 'N/A'
+        referenceName: reference?.Referencename || 'N/A',
+        prix: exposition.prix || 'N/A',
+        Marque_idMarque: reference?.Marque_idMarque || 'N/A',
+        Category_idCategory: reference?.Category_idCategory || 'N/A',
+        idref: reference?.idReference || 'N/A',
       };
     });
-  
-    // Naviguer vers la nouvelle page avec les données filtrées
+
     navigation.navigate('RapportExpoDetAn', {
-      tableData: displayedData, 
-      ani// Passer les données du tableau avec la référence, le prix, la marque et la catégorie
+      tableData: displayedData,
+      ani,
     });
   };
-  
-  
-  
 
   return (
     <NativeBaseProvider>
-       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12}/>
+      <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
       <View style={styles.view1}>
         <Header />
-        <ScrollView style={{ marginTop: -250 }}>  
-            <View>
-                <Text style={styles.textexpo}>Date : {month}</Text>
-                <Text style={styles.textexpo}>Zone : {nomspdv.location}</Text>
-                <Text style={styles.textexpo}>Magasin : {nomspdv.pdvname}</Text>
-                <Text style={styles.textexpo}>Animatrice : {ani ? ani.name : "Loading..."}</Text>
-              </View>
-          
+        <ScrollView style={{ marginTop: -250 }}>
+          <View>
+            <Text style={styles.textexpo}>Date : {month}</Text>
+            <Text style={styles.textexpo}>Zone : {nomspdv.location}</Text>
+            <Text style={styles.textexpo}>Magasin : {nomspdv.pdvname}</Text>
+            <Text style={styles.textexpo}>Animatrice : {ani ? ani.name : "Loading..."}</Text>
+          </View>
+
           <View style={styles.container}>
             {/* Header */}
             <View style={styles.headerRow}>
               <Text style={styles.headerText}>Référence</Text>
               <Text style={styles.headerText}>Prix</Text>
-              
             </View>
 
             {/* Rows */}
             {getExpositionsByMonthAndPDV(expo).map((exposition, index) => {
               const reference = references.find(ref => ref.idReference === exposition.Reference_idReference);
+
+              if (!reference) {
+                console.warn(`Référence non trouvée pour l'exposition ID: ${exposition.idExpo}`);
+              }
+
               return (
-                <TouchableOpacity key={index} >
+                <TouchableOpacity key={index}>
                   <View style={styles.row}>
                     <Text style={styles.cell}>{reference?.Referencename || 'N/A'}</Text>
                     <Text style={styles.cell}>{exposition.prix || 'N/A'}</Text>
@@ -116,14 +113,11 @@ function RapportExpo() {
 
         {/* Button to navigate to another page (below the table) */}
         <TouchableOpacity style={styles.button} onPress={navigateToNewPage}>
-  <Text style={styles.buttonText}>Utiliser</Text>
-</TouchableOpacity>
-
-
-
+          <Text style={styles.buttonText}>Utiliser</Text>
+        </TouchableOpacity>
       </View>
-        <Footer ani={ani}  />
 
+      <Footer ani={ani} />
     </NativeBaseProvider>
   );
 }
@@ -133,11 +127,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    marginTop:'15%'
+    marginTop: '15%',
   },
   container: {
     flexDirection: 'column',
-    marginTop:"10%"
+    marginTop: '10%',
   },
   headerRow: {
     flexDirection: 'row',

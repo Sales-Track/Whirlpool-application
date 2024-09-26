@@ -168,7 +168,7 @@ function RapportDePresence() {
       <Image resizeMode="contain" source={WHIRLPOOL_LOGO} style={styles.image12} />
       <View style={styles.container}>
         <Center flex={1} >
-          <Text style={styles.title}>Rapport De Présence</Text>
+          <Text style={styles.title}>Rapport de présence</Text>
           <View style={styles.content}>
             <Example text={'Time AM/PM'} />
           </View>
