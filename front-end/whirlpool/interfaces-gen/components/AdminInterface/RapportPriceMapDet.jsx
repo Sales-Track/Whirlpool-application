@@ -40,7 +40,7 @@ function RapportPriceMapDet({ route }){
     console.log(marqueNames);
     
     const Couleur=colors
-    const tdc=["L", "kg", "ft³", "W", "BTU", "bar","cm"]  
+    const tdc=["L", "KG", "Nbre de feu", "COUVERTS","cm"]  
     const dataArt={ 
       couleur:color,
       unite:unite
@@ -51,7 +51,7 @@ function RapportPriceMapDet({ route }){
         articles.forEach(article => {
           if (article.Reference_idReference === ref.idReference) {
             fetchPrice(ref.idReference);
-          }
+      }
         });
       });
     }, [articles, references]);
