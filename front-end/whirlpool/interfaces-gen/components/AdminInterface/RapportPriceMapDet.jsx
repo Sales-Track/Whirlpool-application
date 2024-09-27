@@ -19,7 +19,7 @@ const hp = (percentage) => {
 };
 function RapportPriceMapDet({ route }){
 
-  const { categoryId,adm } = route.params;
+  const { Category,categoryId,adm } = route.params;
 
     const [color,setColor]=React.useState('')
     const [onChangeValue, setOnChangeValue] = React.useState(0);
@@ -27,7 +27,7 @@ function RapportPriceMapDet({ route }){
     const [unite,setUnite]=React.useState('')
     const [marques,setMarques]=React.useState([])
     const [references,setReferences]=React.useState([])
-    const [categories,setCategories]=React.useState([])
+    const [categories,setCategories]=React.useState(Category)
     const [prix, setPrix] = useState({});
     const [priceError, setPriceError] = useState({});
 
@@ -37,9 +37,10 @@ function RapportPriceMapDet({ route }){
     const [articles,setArticles]= useState([])
     const [colors,setColors]=useState([])
     const WHIRLPOOL_LOGO=require('../../../assets/WHIRLPOOL_LOGO.png')
-
+    console.log(marqueNames);
+    
     const Couleur=colors
-    const tdc=["L", "kg", "ft³", "W", "BTU", "bar","cm"]  
+    const tdc=["L", "KG", "Nbre de feu", "COUVERTS","cm"]  
     const dataArt={ 
       couleur:color,
       unite:unite
@@ -50,7 +51,7 @@ function RapportPriceMapDet({ route }){
         articles.forEach(article => {
           if (article.Reference_idReference === ref.idReference) {
             fetchPrice(ref.idReference);
-          }
+      }
         });
       });
     }, [articles, references]);
@@ -211,31 +212,30 @@ function RapportPriceMapDet({ route }){
     </Box>
         );
     };
-     const exportToExcel = async () => {
-  const data = [
-    ["marque", "References", "Capacité", "prix"],
-    ...categ.map(el => [
-      el.Categoryname,
-      CountSameCateg(el.idCategory),
-      Findwhirlpool(el.idCategory),
-      CountTaux(CountSameCateg(el.idCategory), Findwhirlpool(el.idCategory)) + "%"
-    ])
-  ];
-
-  const ws = XLSX.utils.aoa_to_sheet(data);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Rapport Expo",true);
-
-  const wbout = XLSX.write(wb, { type: 'base64', bookType: 'xlsx' });
-  const uri = FileSystem.cacheDirectory + 'rapport_expo.xlsx';
-  console.log("good");
-  await FileSystem.writeAsStringAsync(uri, wbout, { encoding: FileSystem.EncodingType.Base64 });
-  await Sharing.shareAsync(uri);
-};
+    const exportToExcel = async () => {
+      const data = [
+        ["Marque", "References", "Capacité", "Prix"],
+        ...articles.map(article => [
+          fetchMarqueById(article.Marque_idMarque),
+          references.find(ref => ref.idReference === article.Reference_idReference)?.Referencename || "",
+          article.capacite,
+          prix[article.Reference_idReference] || "Non disponible"
+        ])
+      ];
+    
+      const ws = XLSX.utils.aoa_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Rapport Expo", true);
+    
+      const wbout = XLSX.write(wb, { type: 'base64', bookType: 'xlsx' });
+      const uri = FileSystem.cacheDirectory + 'rapport_expo.xlsx';
+      await FileSystem.writeAsStringAsync(uri, wbout, { encoding: FileSystem.EncodingType.Base64 });
+      await Sharing.shareAsync(uri);
+    };
 
 const Tableaux = () => {
   return (
-    <View style={{ marginTop: 20 }}>
+    <View style={{ marginTop: 20, marginBottom:20 }}>
       <View style={styles.container}>
         {/* Première ligne */}
         <View style={styles.row}>
@@ -249,7 +249,7 @@ const Tableaux = () => {
         {references.map((el, index) => (
           articles.filter(item => item.Reference_idReference === el.idReference && item.capacite <= onChangeValue).map((article, idx) => (
             <View style={styles.row} key={index + '-' + idx}>
-              <View style={styles.cell1}><Text>{marqueNames[index]}</Text></View>
+              <View style={styles.cell1}><Text>{fetchMarqueById(el.Marque_idMarque)}</Text></View>
               <View style={styles.cell1}><Text style={styles.textcell1}>{el.Referencename}</Text></View>
               <View style={styles.cell1}><Text>{article.capacite}</Text></View>
               <View style={styles.cell1}>

@@ -160,7 +160,7 @@ const RenderInput=(text)=>{
                           style={styles.btns}
                           key={el.idCategory}
                           onPress={() => {
-                            navigation.navigate('RapportPriceMapDet', { categoryId: el.idCategory, adm });
+                            navigation.navigate('RapportPriceMapDet', { Category:el,categoryId: el.idCategory, adm });
                           }}
                         >
                           <Text style={styles.btnText}>{el.Categoryname}</Text>
