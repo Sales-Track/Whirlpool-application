@@ -12,6 +12,16 @@
       "backgroundColor": "#ffffff",
       "permissions": ["INTERNET"]
     },
+    "plugins": [
+      [
+          "expo-build-properties",
+          {
+              "android": {
+                  "usesCleartextTraffic": true
+              }
+          }
+      ]
+  ],
     "assetBundlePatterns": [
       "**/*"
     ],

@@ -80,6 +80,10 @@ const LoginScreen = ({ navigation }) => {
     } catch (error) {
       console.error(error);
       Alert.alert("Error", "An error occurred. Please try again.");
+      console.log("haithem",error);
+      console.log("haithem",port);
+      
+      
     } finally {
       setLoading(false); // Arrêter l'indicateur de chargement
     }
