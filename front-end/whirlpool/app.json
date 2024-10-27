@@ -9,8 +9,19 @@
     "splash": {
       "image": "./assets/WHIRLPOOL_LOGO.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "permissions": ["INTERNET"]
     },
+    "plugins": [
+      [
+          "expo-build-properties",
+          {
+              "android": {
+                  "usesCleartextTraffic": true
+              }
+          }
+      ]
+  ],
     "assetBundlePatterns": [
       "**/*"
     ],
